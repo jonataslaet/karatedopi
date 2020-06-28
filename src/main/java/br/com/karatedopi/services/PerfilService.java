@@ -45,10 +45,12 @@ public class PerfilService {
 	public ResponseEntity<PerfilDto> criarPerfil(CadastroPerfil cadastroPerfil) {
 
 		// Captura o usuário logado
-		Usuario usuarioLogado = ur.findById(2L).get();
+		Usuario usuarioLogado = ur.findById(1L).get();
 
 		// Monta o Perfil
-		Perfil perfil = new Perfil(cadastroPerfil.getNome(), cadastroPerfil.getNomeCompleto());
+		Perfil perfil = new Perfil(cadastroPerfil.getNome(), cadastroPerfil.getNomeCompleto(), cadastroPerfil.getNomeDoPai(), 
+				cadastroPerfil.getNomeDaMae(), cadastroPerfil.getNaturalidade(), cadastroPerfil.getDataNascimento(), cadastroPerfil.getDataCadastro(), cadastroPerfil.getCpf(), 
+				cadastroPerfil.getRg(), cadastroPerfil.getContatos());
 
 		// Seta o usuário logado
 		perfil.setUsuario(usuarioLogado);

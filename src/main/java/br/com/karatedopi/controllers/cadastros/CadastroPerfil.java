@@ -1,8 +1,16 @@
 package br.com.karatedopi.controllers.cadastros;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.br.CPF;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CadastroPerfil {
 
@@ -10,10 +18,37 @@ public class CadastroPerfil {
 	@Size(min = 7, max = 64)
 	private String nome;
 
-	@NotNull
+	@NotBlank
 	@Size(min = 7, max = 64)
 	private String nomeCompleto;
+	
+	@NotBlank
+	@Size(min = 7, max = 64)
+	private String nomeDoPai;
+	
+	@NotNull
+	@Size(min = 7, max = 64)
+	private String nomeDaMae;
+	
+	@NotBlank
+	@Size(min = 3, max = 64)
+	private String naturalidade; //Piauiense?
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataNascimento;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataCadastro = LocalDate.now();
+	
+	@CPF
+	private String cpf;
+	
+	@NotBlank
+	@Size(min = 3, max = 10)
+	private String rg;
 
+	private List<String> contatos = new ArrayList<>();
+	
 	public CadastroPerfil() {
 
 	}
@@ -37,6 +72,70 @@ public class CadastroPerfil {
 
 	public void setNomeCompleto(String nomeCompleto) {
 		this.nomeCompleto = nomeCompleto;
+	}
+
+	public String getNomeDoPai() {
+		return nomeDoPai;
+	}
+
+	public void setNomeDoPai(String nomeDoPai) {
+		this.nomeDoPai = nomeDoPai;
+	}
+
+	public String getNomeDaMae() {
+		return nomeDaMae;
+	}
+
+	public void setNomeDaMae(String nomeDaMae) {
+		this.nomeDaMae = nomeDaMae;
+	}
+
+	public String getNaturalidade() {
+		return naturalidade;
+	}
+
+	public void setNaturalidade(String naturalidade) {
+		this.naturalidade = naturalidade;
+	}
+
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public List<String> getContatos() {
+		return contatos;
+	}
+
+	public void setContatos(List<String> contatos) {
+		this.contatos = contatos;
 	}
 	
 }
