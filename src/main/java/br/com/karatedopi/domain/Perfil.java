@@ -3,10 +3,13 @@ package br.com.karatedopi.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -34,9 +37,9 @@ public class Perfil implements Serializable {
 	private List<TransferenciaDeFaixa> transferenciasDeFaixa = new ArrayList<>();
 
 	@ElementCollection
-	private List<String> contatos = new ArrayList<>();
+	private Set<String> contatos = new HashSet<>();
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Localidade localidade;
 
 	@OneToOne
@@ -48,7 +51,7 @@ public class Perfil implements Serializable {
 	}
 
 	public Perfil(String nome, String nomeCompleto, String nomeDoPai, String nomeDaMae, String naturalidade,
-			LocalDate dataNascimento, LocalDate dataCadastro, String cpf, String rg, List<String> contatos) {
+			LocalDate dataNascimento, LocalDate dataCadastro, String cpf, String rg, Set<String> contatos) {
 		this.nome = nome;
 		this.nomeCompleto = nomeCompleto;
 		this.nomeDoPai = nomeDoPai;
@@ -141,11 +144,11 @@ public class Perfil implements Serializable {
 		this.transferenciasDeFaixa = transferenciasDeFaixa;
 	}
 
-	public List<String> getContatos() {
+	public Set<String> getContatos() {
 		return contatos;
 	}
 
-	public void setContatos(List<String> contatos) {
+	public void setContatos(Set<String> contatos) {
 		this.contatos = contatos;
 	}
 

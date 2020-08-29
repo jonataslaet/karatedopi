@@ -1,8 +1,8 @@
 package br.com.karatedopi.controllers.cadastros;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,7 +47,9 @@ public class CadastroPerfil {
 	@Size(min = 3, max = 10)
 	private String rg;
 
-	private List<String> contatos = new ArrayList<>();
+	private CadastroLocalidade localidade;
+	
+	private Set<String> contatos = new HashSet<>();
 	
 	public CadastroPerfil() {
 
@@ -122,6 +124,14 @@ public class CadastroPerfil {
 		this.rg = rg;
 	}
 
+	public CadastroLocalidade getLocalidade() {
+		return localidade;
+	}
+
+	public void setLocalidade(CadastroLocalidade localidade) {
+		this.localidade = localidade;
+	}
+
 	public LocalDate getDataCadastro() {
 		return dataCadastro;
 	}
@@ -130,11 +140,11 @@ public class CadastroPerfil {
 		this.dataCadastro = dataCadastro;
 	}
 
-	public List<String> getContatos() {
+	public Set<String> getContatos() {
 		return contatos;
 	}
 
-	public void setContatos(List<String> contatos) {
+	public void setContatos(Set<String> contatos) {
 		this.contatos = contatos;
 	}
 	

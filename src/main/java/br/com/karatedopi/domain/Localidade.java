@@ -1,13 +1,19 @@
 package br.com.karatedopi.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.com.karatedopi.domain.enums.EstadoEnum;
@@ -23,29 +29,27 @@ public class Localidade implements Serializable {
 	private String numero;
 	private String cep;
 	private String bairro;
-	private String cidade;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Municipio municipio;
 	
 	@Enumerated(EnumType.STRING)
 	private EstadoEnum uf;
-	
-	private String country;
 
 	@OneToOne(mappedBy="localidade")
 	private Entidade entidade;	
 	
+	@OneToMany(mappedBy="localidade", cascade = CascadeType.PERSIST)
+	private Set<Perfil> perfis = new HashSet<>();
+	
 	public Localidade() {
-
 	}
 
-	public Localidade(String rua, String numero, String cep, String bairro, String cidade, EstadoEnum uf,
-			String country) {
+	public Localidade(String rua, String numero, String cep, String bairro) {
 		this.rua = rua;
 		this.numero = numero;
 		this.cep = cep;
 		this.bairro = bairro;
-		this.cidade = cidade;
-		this.uf = uf;
-		this.country = country;
 	}
 
 	public Long getId() {
@@ -88,12 +92,12 @@ public class Localidade implements Serializable {
 		this.bairro = bairro;
 	}
 
-	public String getCidade() {
-		return cidade;
+	public Municipio getMunicipio() {
+		return municipio;
 	}
 
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
 	}
 
 	public EstadoEnum getUf() {
@@ -104,20 +108,20 @@ public class Localidade implements Serializable {
 		this.uf = uf;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
 	public Entidade getEntidade() {
 		return entidade;
 	}
 
 	public void setEntidade(Entidade entidade) {
 		this.entidade = entidade;
+	}
+
+	public Set<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(Set<Perfil> perfil) {
+		this.perfis = perfil;
 	}
 
 	@Override

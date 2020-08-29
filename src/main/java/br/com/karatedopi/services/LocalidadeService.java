@@ -14,12 +14,16 @@ import br.com.karatedopi.controllers.dtos.LocalidadeDto;
 import br.com.karatedopi.controllers.errors.ObjectNotFoundException;
 import br.com.karatedopi.domain.Localidade;
 import br.com.karatedopi.repositories.LocalidadeRepository;
+import br.com.karatedopi.repositories.MunicipioRepository;
 
 @Service
 public class LocalidadeService {
 	@Autowired
 	LocalidadeRepository lr;
 
+	@Autowired
+	MunicipioRepository mr;
+	
 	// Retorna todas as localidadeidades
 	public ResponseEntity<List<LocalidadeDto>> retornaLocais() {
 		List<LocalidadeDto> locaisEncontrados = LocalidadeDto.locaisDto(lr.findAll());
@@ -40,11 +44,11 @@ public class LocalidadeService {
 	public ResponseEntity<LocalidadeDto> criaLocalidade(CadastroLocalidade cadastroLocalidade) {
 
 		// Monta o local
-		Localidade local = new Localidade(cadastroLocalidade.getRua(), cadastroLocalidade.getNumero(), cadastroLocalidade.getCep(), cadastroLocalidade.getBairro(), cadastroLocalidade.getCidade(), cadastroLocalidade.getUf(), cadastroLocalidade.getCountry());
+		Localidade local = new Localidade(cadastroLocalidade.getRua(), cadastroLocalidade.getNumero(), cadastroLocalidade.getCep(), cadastroLocalidade.getBairro());
 
 		// Salva o local
 		lr.save(local);
-
+		
 		// Cria o dto do local
 		LocalidadeDto localDto = new LocalidadeDto(local);
 

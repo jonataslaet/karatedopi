@@ -8,15 +8,16 @@ import br.com.karatedopi.domain.Localidade;
 public class LocalidadeDto {
 	
 	private Long id;
-	private String cidade;
-	private String estado;
-	private String country;
+	private String rua;
+	private String numero;
+	private String cep;
+	private String bairro;
 	
 	public LocalidadeDto(Localidade localidade) {
 		this.id = localidade.getId();
-		this.cidade = localidade.getCidade();
-		this.estado = localidade.getUf().toString();
-		this.country = localidade.getCountry();
+		this.numero = localidade.getNumero();
+		this.cep = localidade.getCep();
+		this.bairro = localidade.getBairro();
 	}
 
 	public Long getId() {
@@ -27,30 +28,38 @@ public class LocalidadeDto {
 		this.id = id;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getRua() {
+		return rua;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setRua(String rua) {
+		this.rua = rua;
 	}
 
-	public String getCidade() {
-		return cidade;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
-	public String getEstado() {
-		return estado;
+	public String getCep() {
+		return cep;
 	}
 
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
-	
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
 	public static List<LocalidadeDto> locaisDto(List<Localidade> locais){
 		return locais.stream().map(LocalidadeDto::new).collect(Collectors.toList());
 	}
