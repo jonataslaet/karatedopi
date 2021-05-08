@@ -1,14 +1,22 @@
 package br.com.karatedopi.domain;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
-public class Usuario implements Serializable{
+public class Usuario implements Serializable, UserDetails{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -16,6 +24,20 @@ public class Usuario implements Serializable{
 	private Long id;
 	private String email;
 	private String senha;
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	private Set<Papel> papeis = new HashSet<>();
+	
+	public Usuario() {
+		
+	}
+	
+	public Usuario(Long id, String email, String senha) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.senha = senha;
+	}
 
 	public Long getId() {
 		return id;
@@ -39,6 +61,14 @@ public class Usuario implements Serializable{
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Set<Papel> getPapeis() {
+		return papeis;
+	}
+
+	public void setPapeis(Set<Papel> papeis) {
+		this.papeis = papeis;
 	}
 
 	@Override
@@ -66,4 +96,42 @@ public class Usuario implements Serializable{
 		return true;
 	}
 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.papeis;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	public void addPapel(Papel papel) {
+		this.getPapeis().add(papel);
+	}
 }
