@@ -27,11 +27,13 @@ public class DBService {
 	public boolean instanciaDataBase() {
 		
 		Papel papelADMIN = new Papel(null, "ROLE_ADMIN");
+		Papel papelUSER = new Papel(null, "ROLE_USER");
 
 		Usuario user01 = new Usuario(null, "aluno@gmail.com", encoder.encode("12345"));
 		user01.addPapel(papelADMIN);
+		user01.addPapel(papelUSER);
 		
-		papelRepository.saveAll(Arrays.asList(papelADMIN));
+		papelRepository.saveAll(Arrays.asList(papelADMIN, papelUSER));
 		usuarioRepository.saveAll(Arrays.asList(user01));
 		
 		return true;

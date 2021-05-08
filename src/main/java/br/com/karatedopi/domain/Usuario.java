@@ -5,15 +5,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import br.com.karatedopi.controllers.dtos.UsuarioDTO;
 
 @Entity
 public class Usuario implements Serializable, UserDetails{
@@ -25,7 +27,7 @@ public class Usuario implements Serializable, UserDetails{
 	private String email;
 	private String senha;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	private Set<Papel> papeis = new HashSet<>();
 	
 	public Usuario() {
@@ -37,6 +39,11 @@ public class Usuario implements Serializable, UserDetails{
 		this.id = id;
 		this.email = email;
 		this.senha = senha;
+	}
+
+	public Usuario(UsuarioDTO usuarioDTO) {
+		this.email = usuarioDTO.getEmail();
+		this.senha = usuarioDTO.getSenha();
 	}
 
 	public Long getId() {

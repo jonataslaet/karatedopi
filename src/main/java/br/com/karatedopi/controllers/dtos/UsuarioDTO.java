@@ -3,12 +3,18 @@ package br.com.karatedopi.controllers.dtos;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import br.com.karatedopi.domain.Papel;
 import br.com.karatedopi.domain.Usuario;
 
 public class UsuarioDTO{
 	private Long id;
 	private String email;
+	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String senha;
 	
 	private Set<Papel> papeis = new HashSet<>();
@@ -24,6 +30,7 @@ public class UsuarioDTO{
 		this.papeis = usuario.getPapeis();
 	}
 
+	@JsonIgnore
 	public Long getId() {
 		return id;
 	}
@@ -48,6 +55,7 @@ public class UsuarioDTO{
 		this.senha = senha;
 	}
 
+	@JsonIgnore
 	public Set<Papel> getPapeis() {
 		return papeis;
 	}
