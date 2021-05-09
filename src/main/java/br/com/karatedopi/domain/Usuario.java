@@ -5,12 +5,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +31,9 @@ public class Usuario implements Serializable, UserDetails{
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	private Set<Papel> papeis = new HashSet<>();
+	
+	@OneToOne(mappedBy="usuario", cascade = CascadeType.ALL)
+	private Perfil perfil;
 	
 	public Usuario() {
 		
@@ -76,6 +81,14 @@ public class Usuario implements Serializable, UserDetails{
 
 	public void setPapeis(Set<Papel> papeis) {
 		this.papeis = papeis;
+	}
+
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
 	}
 
 	@Override
