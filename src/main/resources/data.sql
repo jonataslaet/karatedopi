@@ -13,7 +13,7 @@ INSERT INTO estado (nome, uf) VALUES ('Alagoas', 'AL');
 INSERT INTO estado (nome, uf) VALUES ('Amazonas', 'AM');
 INSERT INTO estado (nome, uf) VALUES ('Amapá', 'AP');
 INSERT INTO estado (nome, uf) VALUES ('Bahia', 'BA');
-INSERT INTO estado (nome, uf) VALUES ('Ceará', 'C');
+INSERT INTO estado (nome, uf) VALUES ('Ceará', 'CE');
 INSERT INTO estado (nome, uf) VALUES ('Distrito Federal', 'DF');
 INSERT INTO estado (nome, uf) VALUES ('Espírito Santo', 'ES');
 INSERT INTO estado (nome, uf) VALUES ('Goiás', 'GO');
