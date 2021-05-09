@@ -23,7 +23,7 @@ INSERT INTO estado (nome, uf) VALUES ('Mato Grosso do Sul', 'MS');
 INSERT INTO estado (nome, uf) VALUES ('Mato Grosso', 'MT');
 INSERT INTO estado (nome, uf) VALUES ('Pará', 'PA');
 INSERT INTO estado (nome, uf) VALUES ('Paraíba', 'PB');
-INSERT INTO estado (nome, uf) VALUES ('Pernambuco', 'P');
+INSERT INTO estado (nome, uf) VALUES ('Pernambuco', 'PE');
 INSERT INTO estado (nome, uf) VALUES ('Piauí', 'PI');
 INSERT INTO estado (nome, uf) VALUES ('Paraná', 'PR');
 INSERT INTO estado (nome, uf) VALUES ('Rio de Janeiro', 'RJ');
@@ -32,7 +32,7 @@ INSERT INTO estado (nome, uf) VALUES ('Rondônia', 'RO');
 INSERT INTO estado (nome, uf) VALUES ('Roraima', 'RR');
 INSERT INTO estado (nome, uf) VALUES ('Rio Grande do Sul', 'RS');
 INSERT INTO estado (nome, uf) VALUES ('Santa Catarina', 'SC');
-INSERT INTO estado (nome, uf) VALUES ('Sergipe', 'S');
+INSERT INTO estado (nome, uf) VALUES ('Sergipe', 'SE');
 INSERT INTO estado (nome, uf) VALUES ('São Paulo', 'SP');
 INSERT INTO estado (nome, uf) VALUES ('Tocantins', 'TO');
 
