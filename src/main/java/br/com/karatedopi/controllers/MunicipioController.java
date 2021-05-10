@@ -12,15 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.karatedopi.controllers.dtos.MunicipioDTO;
 import br.com.karatedopi.domain.enums.EstadoEnum;
-import br.com.karatedopi.services.EstadoService;
 import br.com.karatedopi.services.MunicipioService;
 
 @RestController
 @RequestMapping(value="/municipios")
 public class MunicipioController {
-	
-	@Autowired
-	private EstadoService estadoService;
 	
 	@Autowired
 	private MunicipioService municipioService;

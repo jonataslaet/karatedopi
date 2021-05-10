@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.Fetch;
-
 import br.com.karatedopi.controllers.dtos.PerfilDTO;
 
 @Entity

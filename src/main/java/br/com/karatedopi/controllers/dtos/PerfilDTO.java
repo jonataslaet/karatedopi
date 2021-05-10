@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -48,7 +47,6 @@ public class PerfilDTO {
 		this.rg = perfil.getRg();
 	}
 
-//	@JsonIgnore
 	public Long getId() {
 		return id;
 	}

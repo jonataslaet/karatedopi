@@ -7,12 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.karatedopi.controllers.dtos.PerfilDTO;
-import br.com.karatedopi.controllers.dtos.UsuarioDTO;
 import br.com.karatedopi.domain.Perfil;
 import br.com.karatedopi.domain.Usuario;
 import br.com.karatedopi.repositories.PerfilRepository;
