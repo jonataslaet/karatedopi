@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.karatedopi.controllers.dtos.PerfilDTO;
 import br.com.karatedopi.domain.Perfil;
 import br.com.karatedopi.domain.Usuario;
+import br.com.karatedopi.domain.enums.EstadoEnum;
 import br.com.karatedopi.repositories.PerfilRepository;
 import br.com.karatedopi.repositories.UsuarioRepository;
 
@@ -54,5 +57,14 @@ public class PerfilService {
 		}
 		List<PerfilDTO> perfisDTO = perfis.stream().map(u -> new PerfilDTO(u)).collect(Collectors.toList());
 		return ResponseEntity.ok(perfisDTO);
+	}
+
+	public Page<PerfilDTO> retornarPerfisPaginados(String naturalidade, Pageable paginacao) {
+		if (naturalidade == null || naturalidade.isEmpty()) {
+			Page<Perfil> perfis = perfilRepository.findAll(paginacao);
+			return perfis.map(PerfilDTO::new);
+		}
+		Page<Perfil> perfis = perfilRepository.findAllByNaturalidade(naturalidade, paginacao);
+		return perfis.map(PerfilDTO::new);
 	}
 }
