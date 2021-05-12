@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.karatedopi.controllers.dtos.PerfilDTO;
-import br.com.karatedopi.domain.enums.EstadoEnum;
 import br.com.karatedopi.services.PerfilService;
 
 @RestController

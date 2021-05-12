@@ -15,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.karatedopi.controllers.dtos.PerfilDTO;
 import br.com.karatedopi.domain.Perfil;
 import br.com.karatedopi.domain.Usuario;
-import br.com.karatedopi.domain.enums.EstadoEnum;
 import br.com.karatedopi.repositories.PerfilRepository;
 import br.com.karatedopi.repositories.UsuarioRepository;
 
