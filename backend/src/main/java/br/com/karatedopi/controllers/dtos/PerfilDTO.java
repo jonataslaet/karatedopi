@@ -45,6 +45,7 @@ public class PerfilDTO {
 		this.dataCadastro = perfil.getDataCadastro();
 		this.cpf = perfil.getCpf();
 		this.rg = perfil.getRg();
+		this.contatos = perfil.getContatos();
 	}
 
 	public Long getId() {

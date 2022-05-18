@@ -67,6 +67,7 @@ public class Perfil implements Serializable {
 		this.dataCadastro = perfilDTO.getDataCadastro();
 		this.cpf = perfilDTO.getCpf();
 		this.rg = perfilDTO.getRg();
+		this.contatos = perfilDTO.getContatos();
 	}
 
 	public Long getId() {
