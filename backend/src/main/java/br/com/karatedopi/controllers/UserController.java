@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,7 +23,6 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
-	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<Page<UserDTO>> findAllPaged(@PageableDefault(page = 0, size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<UserDTO> usersDTOs = userService.findAllPaged(pageable);
 		return ResponseEntity.ok().body(usersDTOs);

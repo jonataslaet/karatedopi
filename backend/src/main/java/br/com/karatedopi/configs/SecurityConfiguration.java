@@ -4,9 +4,7 @@ import br.com.karatedopi.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,7 +23,8 @@ public class SecurityConfiguration {
     private final LogoutHandler logoutHandler;
 
     public static final String[] PUBLIC_MATCHERS = {
-            "/api/v1/auth", "/hello"
+//            TODO: Fix /** below in order to have security of all endpoints
+            "/**"
     };
 
     @Bean
@@ -35,9 +34,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
-//                .requestMatchers(HttpMethod.GET, "/profiles/**", "/users/**").permitAll()
-//                .requestMatchers(HttpMethod.GET, "/cities/**", "/states/**").hasAnyAuthority("ADMIN", "USER")
+//                TODO: Put more restricted matchers
                 .anyRequest()
                 .authenticated()
                 .and()

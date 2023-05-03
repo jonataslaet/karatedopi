@@ -1,10 +1,15 @@
 package br.com.karatedopi.entities.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Enum que contém todos os estados brasileiros.
  * @author Jerônimo Nunes Rocha
  * Adaptado por Jonatas Laet em 09/05/2021
  */
+@Getter
+@RequiredArgsConstructor
 public enum StateAbbreviation {
 
 	RO(11,"Rondônia"),
@@ -36,22 +41,6 @@ public enum StateAbbreviation {
 	DF(53,"Distrito Federal");
 
 	private final int codigoIbge;
-	private final String nome;
+	private final String name;
 
-	private StateAbbreviation(int codigoIbge, String nome) {
-		this.codigoIbge = codigoIbge;
-		this.nome = nome;
-	}
-	
-	public String getCodigo() {
-		return Integer.toString(codigoIbge);
-	}
-	
-	public String getNome(){
-		return nome;
-	}
-	
-	public int getCodigoIbge(){
-		return codigoIbge;
-	}
 }

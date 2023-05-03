@@ -1,4 +1,7 @@
 spring:
+  name: karatedopi
+  allowed:
+    origins: localhost:8080,localhost:4200,localhost:3000
   datasource:
     url: jdbc:postgresql://localhost:5432/dbkaratedopi
     username: jonataslaet

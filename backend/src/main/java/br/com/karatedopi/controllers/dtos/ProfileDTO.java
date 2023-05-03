@@ -30,7 +30,11 @@ public class ProfileDTO {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDateTime registrationDate = LocalDateTime.now();
+	private LocalDateTime creationDate = LocalDateTime.now();
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
+	@JsonProperty(access = Access.READ_ONLY)
+	private LocalDateTime lastUpdate = LocalDateTime.now();
 	
 	private String cpf;
 	private String rg;

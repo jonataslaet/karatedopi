@@ -21,7 +21,6 @@ public class StateController {
 	private final StateService stateService;
 
 	@GetMapping
-	@PreAuthorize("hasAnyAuthority('ADMIN','USER')")
 	public Page<StateDTO> getStates(@PageableDefault(page = 0, size=10, sort="name", direction = Sort.Direction.DESC) Pageable pagination){
 		return stateService.getStates(pagination);
 	}

@@ -31,7 +31,7 @@ public class Profile {
 	private String rg;
 
 	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> phoneNumbers = new HashSet<>();
+	private Set<String> phoneNumbers;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
