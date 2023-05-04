@@ -8,10 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/profiles")
@@ -21,9 +18,26 @@ public class ProfileController {
 	private final ProfileService profileService;
 	
 	@GetMapping
-	public ResponseEntity<Page<ProfileDTO>> getPagedProfiles(@RequestParam(required = false) String uf, @PageableDefault(page = 0, size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable){
+	public ResponseEntity<Page<ProfileDTO>> getPagedProfiles(@RequestParam(required = false) String uf, @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
 		Page<ProfileDTO> profiles = profileService.getPagedProfiles(uf, pageable);
 		return ResponseEntity.ok().body(profiles);
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<ProfileDTO> getProfile(@PathVariable("id") Long id){
+		ProfileDTO profile = profileService.getProfileDTO(id);
+		return ResponseEntity.ok().body(profile);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<ProfileDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileDTO profileDTO){
+		ProfileDTO updatedProfile = profileService.updateProfile(id, profileDTO);
+		return ResponseEntity.ok().body(updatedProfile);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ProfileDTO> updateProfile(@PathVariable("id") Long id){
+		profileService.deleteProfile(id);
+		return ResponseEntity.noContent().build();
+	}
 }
