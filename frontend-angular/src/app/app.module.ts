@@ -1,16 +1,27 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
-import { ProfileListComponent } from './components/profile-list/profile-list/profile-list.component';
+import { ProfileListComponent } from './components/profile-list/profile-list.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfileService } from './services/profile.service';
-import { MatSortModule } from '@angular/material/sort';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
+import { FormsModule } from '@angular/forms';
+import { CreateProfileComponent } from './components/create-profile/create-profile.component';
+import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
-const routes: Routes = [
+const routes: Routes = [,
+  {
+    path:'profile/create',
+    component: CreateProfileComponent
+  },
+  {
+    path:'profile/update/:id', component: UpdateProfileComponent
+  },
   {
     path: 'profiles', component: ProfileListComponent
   },
@@ -22,10 +33,15 @@ const routes: Routes = [
   }
 ];
 
+// registerLocaleData(localePt, 'pt-BR');
+
 @NgModule({
   declarations: [
     AppComponent,
-    ProfileListComponent
+    ProfileListComponent,
+    UpdateProfileComponent,
+    CreateProfileComponent,
+    DeleteDialogProfileComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -33,7 +49,9 @@ const routes: Routes = [
     MaterialModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    MatDialogModule
   ],
   providers: [ProfileService],
   bootstrap: [AppComponent]

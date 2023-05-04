@@ -1,5 +1,5 @@
 table {
-    width: 100%;
+    width: 80%;
 }
 
 .mat-form-field {
@@ -9,4 +9,8 @@ table {
 
 td, th {
     width: 25%;
+}
+
+.profile-list-container {
+    padding: 20px;
 }
