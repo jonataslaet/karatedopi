@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Profile } from 'src/app/common/profile';
+import { ProfileInput } from 'src/app/common/profile-input';
 import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
@@ -11,10 +11,8 @@ import { ProfileService } from 'src/app/services/profile.service';
 })
 export class UpdateProfileComponent implements OnInit {
 
-  profileForm: Profile = {
+  profileForm: ProfileInput = {
     id: 0,
-    email: '',
-    password: '',
     firstname: '',
     lastname: '',
     father: '',
@@ -44,6 +42,9 @@ export class UpdateProfileComponent implements OnInit {
   getProfileById(id: number) {
     this.profileService.getProfileById(id).subscribe((data) => {
       this.profileForm = data;
+      // map(a => {
+      //   this.profileForm = data
+      // })
     });
   }
 

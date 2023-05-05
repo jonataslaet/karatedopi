@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { RegistrationService } from 'src/app/services/registration.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,14 +14,13 @@ export class DeleteDialogProfileComponent {
   constructor(
     public dialogRef: MatDialogRef<DeleteDialogProfileComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private userService: UserService,
-    private router: Router
+    private registrationService: RegistrationService
   ) {}
 
   ngOnInit(): void {}
  
   confirmDelete() {
-    this.userService.deleteUser(this.data.id).subscribe(() => {
+    this.registrationService.deleteRegistrationByUserId(this.data.id).subscribe(() => {
       this.dialogRef.close(this.data.id);
     });
   }

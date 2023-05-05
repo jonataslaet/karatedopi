@@ -10,14 +10,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProfileService } from './services/profile.service';
 import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 import { FormsModule } from '@angular/forms';
-import { CreateProfileComponent } from './components/create-profile/create-profile.component';
 import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
+import { RegistrationService } from './services/registration.service';
 
-const routes: Routes = [,
+const routes: Routes = [
   {
-    path:'profile/create',
-    component: CreateProfileComponent
+    path:'registration',
+    component: CreateRegistrationComponent
   },
   {
     path:'profile/update/:id', component: UpdateProfileComponent
@@ -33,15 +34,13 @@ const routes: Routes = [,
   }
 ];
 
-// registerLocaleData(localePt, 'pt-BR');
-
 @NgModule({
   declarations: [
     AppComponent,
     ProfileListComponent,
     UpdateProfileComponent,
-    CreateProfileComponent,
-    DeleteDialogProfileComponent
+    DeleteDialogProfileComponent,
+    CreateRegistrationComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -53,7 +52,7 @@ const routes: Routes = [,
     FormsModule,
     MatDialogModule
   ],
-  providers: [ProfileService],
+  providers: [RegistrationService, ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
