@@ -1,6 +1,8 @@
 package br.com.karatedopi.controllers;
 
-import br.com.karatedopi.controllers.dtos.ProfileDTO;
+import br.com.karatedopi.controllers.dtos.ProfileInputDTO;
+import br.com.karatedopi.controllers.dtos.ProfileReadResponseDTO;
+import br.com.karatedopi.controllers.dtos.ProfileUpdateResponseDTO;
 import br.com.karatedopi.services.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,20 +20,20 @@ public class ProfileController {
 	private final ProfileService profileService;
 	
 	@GetMapping
-	public ResponseEntity<Page<ProfileDTO>> getPagedProfiles(@RequestParam(required = false) String uf, @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-		Page<ProfileDTO> profiles = profileService.getPagedProfiles(uf, pageable);
+	public ResponseEntity<Page<ProfileReadResponseDTO>> getPagedProfiles(@RequestParam(required = false) String uf, @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
+		Page<ProfileReadResponseDTO> profiles = profileService.getPagedProfiles(uf, pageable);
 		return ResponseEntity.ok().body(profiles);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ProfileDTO> getProfile(@PathVariable("id") Long id){
-		ProfileDTO profile = profileService.getProfileDTO(id);
+	public ResponseEntity<ProfileReadResponseDTO> getProfileReadResponse(@PathVariable("id") Long id){
+		ProfileReadResponseDTO profile = profileService.getProfileReadResponseDTO(id);
 		return ResponseEntity.ok().body(profile);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ProfileDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileDTO profileDTO){
-		ProfileDTO updatedProfile = profileService.updateProfile(id, profileDTO);
+	public ResponseEntity<ProfileUpdateResponseDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileInputDTO profileInputDTO){
+		ProfileUpdateResponseDTO updatedProfile = profileService.updateProfile(id, profileInputDTO);
 		return ResponseEntity.ok().body(updatedProfile);
 	}
 }

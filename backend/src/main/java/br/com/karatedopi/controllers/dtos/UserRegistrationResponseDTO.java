@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCreateResponseDTO {
+public class UserRegistrationResponseDTO {
 
     private Long id;
 
@@ -22,8 +22,8 @@ public class UserCreateResponseDTO {
     @JsonProperty("firstAndLastName")
     private String firstAndLastName;
 
-    public static UserCreateResponseDTO getByUserAndTokens(User user, String jwtToken, String refreshToken) {
-        return UserCreateResponseDTO.builder()
+    public static UserRegistrationResponseDTO getByUserAndTokens(User user, String jwtToken, String refreshToken) {
+        return UserRegistrationResponseDTO.builder()
                 .id(user.getId())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)

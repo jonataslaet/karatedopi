@@ -1,6 +1,8 @@
 package br.com.karatedopi.services;
 
-import br.com.karatedopi.controllers.dtos.ProfileDTO;
+import br.com.karatedopi.controllers.dtos.ProfileInputDTO;
+import br.com.karatedopi.controllers.dtos.ProfileReadResponseDTO;
+import br.com.karatedopi.controllers.dtos.ProfileUpdateResponseDTO;
 import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.repositories.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ public class ProfileService {
 
 	private final ProfileRepository profileRepository;
 
-	public Page<ProfileDTO> getPagedProfiles(String hometown, Pageable paginacao) {
+	public Page<ProfileReadResponseDTO> getPagedProfiles(String hometown, Pageable paginacao) {
 		Page<Profile> profiles;
 		if (hometown == null || hometown.isEmpty()) {
 			profiles = profileRepository.findAll(paginacao);
@@ -24,11 +26,11 @@ public class ProfileService {
 			profiles = profileRepository.findAllByHometown(hometown, paginacao);
 		}
 
-		return profiles.map(profile -> getProfileDTO(profile));
+		return profiles.map(ProfileReadResponseDTO::getProfileReadResponseDTO);
 	}
 
-	private static ProfileDTO getProfileDTO(Profile profile) {
-		return ProfileDTO.builder()
+	private static ProfileUpdateResponseDTO getProfileUpdateResponseDTO(Profile profile) {
+		return ProfileUpdateResponseDTO.builder()
 				.id(profile.getId())
 				.rg(profile.getRg())
 				.cpf(profile.getCpf())
@@ -45,9 +47,9 @@ public class ProfileService {
 				.build();
 	}
 
-	public ProfileDTO getProfileDTO(Long id) {
-		Profile profileFound = getProfile(id);
-		return getProfileDTO(profileFound);
+	public ProfileReadResponseDTO getProfileReadResponseDTO(Long id) {
+		Profile profile = getProfile(id);
+		return ProfileReadResponseDTO.getProfileReadResponseDTO(profile);
 	}
 
 	private Profile getProfile(Long id) {
@@ -59,28 +61,23 @@ public class ProfileService {
 		return foundProfile;
 	}
 
-	public ProfileDTO updateProfile(Long id, ProfileDTO profileDTO) {
+	public ProfileUpdateResponseDTO updateProfile(Long id, ProfileInputDTO profileInputDTO) {
 		Profile foundProfile = getProfile(id);
-		fillProfileFromProfileDTO(foundProfile, profileDTO);
+		fillProfileFromProfileDTO(foundProfile, profileInputDTO);
 		Profile updatedProfile = profileRepository.save(foundProfile);
-		return getProfileDTO(updatedProfile);
+		return ProfileUpdateResponseDTO.getProfileUpdateResponseDTO(updatedProfile);
 	}
 
-	private void fillProfileFromProfileDTO(Profile foundProfile, ProfileDTO profileDTO) {
-		foundProfile.setHometown(profileDTO.getHometown());
-		foundProfile.setRg(profileDTO.getRg());
-		foundProfile.setMother(profileDTO.getMother());
-		foundProfile.setFather(profileDTO.getFather());
-		foundProfile.setPhoneNumbers(profileDTO.getPhoneNumbers());
-		foundProfile.setFullname(profileDTO.getFullname());
-		foundProfile.setCpf(profileDTO.getCpf());
-		foundProfile.setFirstname(profileDTO.getFirstname());
-		foundProfile.setLastname(profileDTO.getLastname());
-		foundProfile.setBirthday(profileDTO.getBirthday());
-	}
-
-	public void deleteProfile(Long id) {
-		getProfile(id);
-		profileRepository.deleteById(id);
+	private void fillProfileFromProfileDTO(Profile foundProfile, ProfileInputDTO profileInputDTO) {
+		foundProfile.setHometown(profileInputDTO.getHometown());
+		foundProfile.setRg(profileInputDTO.getRg());
+		foundProfile.setMother(profileInputDTO.getMother());
+		foundProfile.setFather(profileInputDTO.getFather());
+		foundProfile.setPhoneNumbers(profileInputDTO.getPhoneNumbers());
+		foundProfile.setFullname(profileInputDTO.getFullname());
+		foundProfile.setCpf(profileInputDTO.getCpf());
+		foundProfile.setFirstname(profileInputDTO.getFirstname());
+		foundProfile.setLastname(profileInputDTO.getLastname());
+		foundProfile.setBirthday(profileInputDTO.getBirthday());
 	}
 }

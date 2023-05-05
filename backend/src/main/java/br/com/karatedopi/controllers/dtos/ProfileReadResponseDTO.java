@@ -1,5 +1,6 @@
 package br.com.karatedopi.controllers.dtos;
 
+import br.com.karatedopi.entities.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileDTO {
+public class ProfileReadResponseDTO {
 
 	private Long id;
 	private String firstname;
@@ -40,4 +41,21 @@ public class ProfileDTO {
 	private String rg;
 	private Set<String> phoneNumbers = new HashSet<>();
 
+	public static ProfileReadResponseDTO getProfileReadResponseDTO(Profile profile) {
+		return ProfileReadResponseDTO.builder()
+				.id(profile.getId())
+				.rg(profile.getRg())
+				.cpf(profile.getCpf())
+				.firstname(profile.getFirstname())
+				.lastname(profile.getLastname())
+				.fullname(profile.getFullname())
+				.father(profile.getFather())
+				.mother(profile.getMother())
+				.phoneNumbers(profile.getPhoneNumbers())
+				.hometown(profile.getHometown())
+				.birthday(profile.getBirthday())
+				.creationDate(profile.getCreatedOn())
+				.lastUpdate(profile.getUpdatedOn())
+				.build();
+	}
 }
