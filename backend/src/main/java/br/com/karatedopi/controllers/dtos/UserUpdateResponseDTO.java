@@ -1,16 +1,14 @@
 package br.com.karatedopi.controllers.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegistrationResponse {
+public class UserUpdateResponseDTO {
 
     private Long id;
 
@@ -20,6 +18,6 @@ public class UserRegistrationResponse {
     @JsonProperty("refresh_token")
     private String refreshToken;
 
-    @JsonProperty("firstAndLastName")
-    private String firstAndLastName;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String email;
 }

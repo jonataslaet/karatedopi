@@ -36,7 +36,7 @@ public class User implements UserDetails {
 	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private Profile profile;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Token> tokens;
 
 	@Column(name = "updated_on")

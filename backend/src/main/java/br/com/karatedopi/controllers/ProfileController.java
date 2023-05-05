@@ -34,10 +34,4 @@ public class ProfileController {
 		ProfileDTO updatedProfile = profileService.updateProfile(id, profileDTO);
 		return ResponseEntity.ok().body(updatedProfile);
 	}
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<ProfileDTO> updateProfile(@PathVariable("id") Long id){
-		profileService.deleteProfile(id);
-		return ResponseEntity.noContent().build();
-	}
 }

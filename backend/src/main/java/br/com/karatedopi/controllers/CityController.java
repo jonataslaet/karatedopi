@@ -21,7 +21,7 @@ public class CityController {
 	private final CityService cityService;
 	
 	@GetMapping
-	public Page<CityDTO> getCities(@RequestParam(required=false) StateAbbreviation stateAbbreviation, @PageableDefault(page = 0, size=10, sort="id", direction = Direction.DESC) Pageable paginacao){
+	public Page<CityDTO> getCities(@RequestParam(required=false) StateAbbreviation stateAbbreviation, @PageableDefault(sort="id", direction = Direction.DESC) Pageable paginacao){
 		return cityService.getCities(stateAbbreviation, paginacao);
 	}
 }

@@ -1,8 +1,6 @@
 package br.com.karatedopi.services;
 
-import br.com.karatedopi.controllers.dtos.RegisterForm;
-import br.com.karatedopi.controllers.dtos.UserDTO;
-import br.com.karatedopi.controllers.dtos.UserRegistrationResponse;
+import br.com.karatedopi.controllers.dtos.*;
 import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.enums.Role;
@@ -13,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +27,18 @@ public class UserService {
 	private final AuthenticationService authenticationService;
 
 	@Transactional(readOnly=true)
-	public Page<UserDTO> findAllPaged(Pageable pageable) {
+	public Page<UserReadResponseDTO> findAllPaged(Pageable pageable) {
 		Page<User> usersPaged = userRepository.findAll(pageable);
-		return usersPaged.map(userDTO -> UserDTO.builder()
-				.email(userDTO.getEmail())
-				.build());
+		return usersPaged.map(UserReadResponseDTO::getByUser);
 	}
 
-	public UserRegistrationResponse register(RegisterForm registerForm) {
-		User user = getUser(registerForm);
+	public UserReadResponseDTO findUser(Long id) {
+		User user = getUserById(id);
+		return UserReadResponseDTO.getByUser(user);
+	}
+
+	public UserCreateResponseDTO createUserAndProfile(RegisterForm registerForm) {
+		User user = getUserByRegisterForm(registerForm);
 		Profile profile = getProfile(registerForm);
 		profile.setUser(user);
 		user.setProfile(profile);
@@ -43,15 +46,32 @@ public class UserService {
 		var jwtToken = jwtService.generateToken(user);
 		var refreshToken = jwtService.generateRefreshToken(user);
 		authenticationService.saveUserToken(savedUser, jwtToken);
-		return UserRegistrationResponse.builder()
+		return UserCreateResponseDTO.getByUserAndTokens(user, jwtToken, refreshToken);
+	}
+
+	public UserUpdateResponseDTO updateUser(Long id, UserInputDTO userInputDTO) {
+		User user = getUserById(id);
+		user.setId(id);
+		user.setEmail(userInputDTO.getEmail());
+		user.setPassword(passwordEncoder.encode(userInputDTO.getPassword()));
+		var savedUser = userRepository.save(user);
+		var jwtToken = jwtService.generateToken(user);
+		var refreshToken = jwtService.generateRefreshToken(user);
+		authenticationService.saveUserToken(savedUser, jwtToken);
+		return UserUpdateResponseDTO.builder()
 				.id(savedUser.getId())
 				.accessToken(jwtToken)
 				.refreshToken(refreshToken)
-				.firstAndLastName(profile.getFirstname() + " " + profile.getLastname())
+				.email(userInputDTO.getEmail())
 				.build();
 	}
 
-	private User getUser(RegisterForm registerForm) {
+	public void deleteUser(Long id) {
+		getUserById(id);
+		userRepository.deleteById(id);
+	}
+
+	private User getUserByRegisterForm(RegisterForm registerForm) {
 		return User.builder()
 				.email(registerForm.getEmail())
 				.password(passwordEncoder.encode(registerForm.getPassword()))
@@ -76,5 +96,13 @@ public class UserService {
 				.build();
 	}
 
+	private User getUserById(Long id) {
+		User foundProfile = userRepository.findById(id).orElse(null);
+		if (Objects.isNull(foundProfile)) {
+//			TODO: Make a custom exception instead of RuntimeException below
+			throw new RuntimeException("Profile not found");
+		}
+		return foundProfile;
+	}
 
 }

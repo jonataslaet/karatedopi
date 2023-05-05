@@ -1,8 +1,6 @@
 package br.com.karatedopi.controllers;
 
-import br.com.karatedopi.controllers.dtos.RegisterForm;
-import br.com.karatedopi.controllers.dtos.UserDTO;
-import br.com.karatedopi.controllers.dtos.UserRegistrationResponse;
+import br.com.karatedopi.controllers.dtos.*;
 import br.com.karatedopi.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,18 +21,36 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
-	public ResponseEntity<Page<UserDTO>> findAllPaged(@PageableDefault(page = 0, size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<UserDTO> usersDTOs = userService.findAllPaged(pageable);
-		return ResponseEntity.ok().body(usersDTOs);
+	public ResponseEntity<Page<UserReadResponseDTO>> findAllUsersPaged(@PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<UserReadResponseDTO> users = userService.findAllPaged(pageable);
+		return ResponseEntity.ok().body(users);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<UserReadResponseDTO> findUser(@PathVariable("id") Long id) {
+		UserReadResponseDTO user = userService.findUser(id);
+		return ResponseEntity.ok().body(user);
 	}
 
 	@PostMapping
-	public ResponseEntity<UserRegistrationResponse> register(
+	public ResponseEntity<UserCreateResponseDTO> createUserAndProfile(
 			@RequestBody RegisterForm registerForm
 	) {
-		UserRegistrationResponse createdUser = userService.register(registerForm);
+		UserCreateResponseDTO createdUser = userService.createUserAndProfile(registerForm);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdUser.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(createdUser);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<UserUpdateResponseDTO> updateUser(@PathVariable("id") Long id, @RequestBody UserInputDTO userInputDTO){
+		UserUpdateResponseDTO updatedUser = userService.updateUser(id, userInputDTO);
+		return ResponseEntity.ok().body(updatedUser);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id){
+		userService.deleteUser(id);
+		return ResponseEntity.noContent().build();
 	}
 }
