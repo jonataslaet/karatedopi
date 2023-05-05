@@ -9,7 +9,6 @@ import { RegistrationService } from 'src/app/services/registration.service';
   styleUrls: ['./create-registration.component.css']
 })
 export class CreateRegistrationComponent implements OnInit {
-
   registrationForm: RegistrationForm = {
     id: null,
     email: '',
@@ -21,7 +20,8 @@ export class CreateRegistrationComponent implements OnInit {
     hometown: '',
     birthday: null,
     cpf: '',
-    rg: ''
+    rg: '',
+    phone: ''
   };
 
   constructor(private registrationService: RegistrationService, 

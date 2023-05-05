@@ -10,7 +10,8 @@ export class RegistrationForm {
       public hometown: string,
       public birthday: Date,
       public cpf: string,
-      public rg: string
+      public rg: string,
+      public phone: string
     ){
   
     }

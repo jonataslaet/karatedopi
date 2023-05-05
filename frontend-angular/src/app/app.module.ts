@@ -14,6 +14,7 @@ import { DeleteDialogProfileComponent } from './components/delete-dialog-profile
 import { MatDialogModule } from '@angular/material/dialog';
 import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
 import { RegistrationService } from './services/registration.service';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 const routes: Routes = [
   {
@@ -50,9 +51,11 @@ const routes: Routes = [
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
-  providers: [RegistrationService, ProfileService],
+  providers: [RegistrationService, ProfileService, provideNgxMask()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
