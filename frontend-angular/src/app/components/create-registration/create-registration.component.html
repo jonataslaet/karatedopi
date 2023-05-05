@@ -17,7 +17,10 @@
         <div>
           <mat-form-field appearance="outline" class="form-element">
             <mat-label>Senha</mat-label>
-            <input matInput [(ngModel)] ="registrationForm.password" />
+            <input matInput [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
           </mat-form-field>
         </div>
         <div>
@@ -53,7 +56,7 @@
         <div>
           <mat-form-field appearance="outline" class="form-element">
             <mat-label>Data de nascimento</mat-label>
-            <input matInput data-format="00/00/0000" mask="d0/M0/0000" placeholder="dd/mm/yyyy" [(ngModel)] ="registrationForm.birthday"/>
+            <input matInput mask="d0/M0/0000" [leadZeroDateTime]="true" placeholder="dd/mm/yyyy" [(ngModel)] ="registrationForm.birthday"/>
           </mat-form-field>
         </div>
         <div>
