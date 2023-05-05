@@ -1,11 +1,13 @@
-import { GetResponseProfiles } from 'src/app/common/get-response-profiles';
-import { Profile } from 'src/app/common/profile';
+import { ProfilesReadResponse } from 'src/app/common/profiles-read-response';
 import { ProfileService } from 'src/app/services/profile.service';
-import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
+import { Component, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
-import {MatSort, Sort} from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogProfileComponent } from '../delete-dialog-profile/delete-dialog-profile.component';
+import { Router } from '@angular/router';
+import { ProfileReadResponse } from 'src/app/common/profile-read-response';
 
 @Component({
   selector: 'app-profile-list',
@@ -13,7 +15,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   styleUrls: ['./profile-list.component.css']
 })
 export class ProfileListComponent implements AfterViewInit {
-  profiles: Profile[] = [];
+  profiles: ProfileReadResponse[] = [];
   dataLength: number;
   pageIndex: number = 0;
   pageSize: number = 3;
@@ -21,13 +23,13 @@ export class ProfileListComponent implements AfterViewInit {
   sortDirection: string = 'desc';
   
   displayedColumns: string[] = [
-    'id', 'firstname', 'lastname', 'father', 'mother', 'hometown', 'birthday', 'cpf', 'rg'
+    'id', 'firstname', 'lastname', 'father', 'mother', 'hometown', 'birthday', 'cpf', 'rg', 'actions'
   ];
-  dataSource: MatTableDataSource<Profile>;
+  dataSource: MatTableDataSource<ProfileReadResponse>;
 
   @ViewChild(MatSort) sort: MatSort;
   
-  constructor(private profileService: ProfileService, private _liveAnnouncer: LiveAnnouncer) {
+  constructor(private profileService: ProfileService, public dialog: MatDialog, private router: Router) {
     this.dataSource = new MatTableDataSource(this.profiles);
   }
 
@@ -43,7 +45,7 @@ export class ProfileListComponent implements AfterViewInit {
       this.dataLength = event.length;
     }
     this.profileService.getProfileListPaginate(this.pageIndex, this.pageSize, this.sortField, this.sortDirection)
-      .subscribe((response: GetResponseProfiles) => {
+      .subscribe((response: ProfilesReadResponse) => {
         this.dataSource = new MatTableDataSource(response.content);
         this.profiles = response.content;
         this.dataLength = response.totalElements;
@@ -63,5 +65,21 @@ export class ProfileListComponent implements AfterViewInit {
     this.sortDirection = sortState.direction;
     this.sortField = sortState.active;
     this.listProfiles(null);
+  }
+
+  openDeleteModal(id: number) {
+    const dialogRef = this.dialog.open(DeleteDialogProfileComponent, {
+      width: '250px',
+      data: { id },
+    });
+ 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.profiles = this.profiles.filter(
+          (_) => _.id !== id
+        );
+        this.listProfiles(null);
+      }
+    });
   }
 }

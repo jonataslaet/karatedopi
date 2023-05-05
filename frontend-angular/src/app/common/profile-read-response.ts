@@ -1,6 +1,6 @@
-export class Profile {
+export class ProfileReadResponse {
 
-    constructor(public id: string,
+    constructor(public id: number,
       public firstname: string,
       public lastname: string,
       public father: string,
