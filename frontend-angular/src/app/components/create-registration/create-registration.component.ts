@@ -9,16 +9,22 @@ import { RegistrationService } from 'src/app/services/registration.service';
   styleUrls: ['./create-registration.component.css']
 })
 export class CreateRegistrationComponent implements OnInit {
-
+  hide = true;
   registrationForm: RegistrationForm = {
     id: null,
     email: '',
     password: '',
-    firstname: '',
-    lastname: '',
+    fullname: '',
     father: '',
     mother: '',
-    hometown: '',
+    zipCode: '',
+    address: '',
+    number: '',
+    neighbourhood: '',
+    city: '',
+    state: '',
+    bloodType: '',
+    phone: '',
     birthday: null,
     cpf: '',
     rg: ''
