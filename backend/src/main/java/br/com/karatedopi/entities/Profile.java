@@ -2,7 +2,6 @@ package br.com.karatedopi.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -20,15 +19,19 @@ public class Profile {
 
 	@Id
 	private Long id;
-	private String firstname;
-	private String lastname;
 	private String fullname;
 	private String father;
 	private String mother;
-	private String hometown;
-	private LocalDate birthday;
+	private String zipCode;
+	private String address;
+	private String number;
+	private String neighbourhood;
+	private String city;
+	private String state;
+	private String bloodType;
 	private String cpf;
 	private String rg;
+	private LocalDate birthday;
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Set<String> phoneNumbers;

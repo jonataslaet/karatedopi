@@ -20,8 +20,6 @@ public class UserReadResponseDTO {
         return UserReadResponseDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .firstname(user.getProfile().getFirstname())
-                .lastname(user.getProfile().getLastname())
                 .build();
     }
 }

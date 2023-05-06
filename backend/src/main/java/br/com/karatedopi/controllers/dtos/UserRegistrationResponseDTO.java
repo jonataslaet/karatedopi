@@ -27,7 +27,6 @@ public class UserRegistrationResponseDTO {
                 .id(user.getId())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .firstAndLastName(user.getProfile().getFirstname() + " " + user.getProfile().getLastname())
                 .build();
     }
 }
