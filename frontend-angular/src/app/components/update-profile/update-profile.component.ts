@@ -12,12 +12,18 @@ import { ProfileService } from 'src/app/services/profile.service';
 export class UpdateProfileComponent implements OnInit {
 
   profileForm: ProfileInput = {
-    id: 0,
-    firstname: '',
-    lastname: '',
+    id: null,
+    fullname: '',
     father: '',
     mother: '',
-    hometown: '',
+    zipCode: '',
+    address: '',
+    number: '',
+    neighbourhood: '',
+    city: '',
+    state: '',
+    bloodType: '',
+    phone: '',
     birthday: null,
     cpf: '',
     rg: ''

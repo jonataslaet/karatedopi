@@ -14,15 +14,20 @@ export class CreateRegistrationComponent implements OnInit {
     id: null,
     email: '',
     password: '',
-    firstname: '',
-    lastname: '',
+    fullname: '',
     father: '',
     mother: '',
-    hometown: '',
+    zipCode: '',
+    address: '',
+    number: '',
+    neighbourhood: '',
+    city: '',
+    state: '',
+    bloodType: '',
+    phone: '',
     birthday: null,
     cpf: '',
-    rg: '',
-    phone: ''
+    rg: ''
   };
 
   constructor(private registrationService: RegistrationService, 

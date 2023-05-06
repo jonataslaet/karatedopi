@@ -2,12 +2,7 @@
     <div>
       <mat-card>
         <h3 style="text-align: center">Criação de novo perfil</h3>
-        <div>
-          <mat-form-field appearance="outline" class="form-element">
-            <mat-label>Telefone</mat-label>
-            <input matInput type='text' mask='(00) 00000-0000' placeholder="(00) 00000-0000" [(ngModel)] ="registrationForm.phone" />
-          </mat-form-field>
-        </div>
+        
         <div>
           <mat-form-field appearance="outline" class="form-element">
             <mat-label>Email</mat-label>
@@ -25,14 +20,8 @@
         </div>
         <div>
           <mat-form-field appearance="outline" class="form-element">
-            <mat-label>Primeiro nome</mat-label>
-            <input matInput [(ngModel)] ="registrationForm.firstname" />
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field appearance="outline" class="form-element">
-            <mat-label>Sobrenome</mat-label>
-            <input matInput [(ngModel)] ="registrationForm.lastname"/>
+            <mat-label>Nome completo</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.fullname"/>
           </mat-form-field>
         </div>
         <div>
@@ -49,8 +38,44 @@
         </div>
         <div>
           <mat-form-field appearance="outline" class="form-element">
-            <mat-label>Cidade natal</mat-label>
-            <input matInput [(ngModel)] ="registrationForm.hometown"/>
+            <mat-label>CEP</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.zipCode"/>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="form-element">
+            <mat-label>Logradouro</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.address"/>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="form-element">
+            <mat-label>Número</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.number"/>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="form-element">
+            <mat-label>Bairro</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.neighbourhood"/>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="form-element">
+            <mat-label>Cidade</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.city"/>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="form-element">
+            <mat-label>Estado</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.state"/>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="form-element">
+            <mat-label>Tipo Sanguíneo</mat-label>
+            <input matInput [(ngModel)] ="registrationForm.bloodType"/>
           </mat-form-field>
         </div>
         <div>
@@ -69,6 +94,12 @@
           <mat-form-field appearance="outline" class="form-element">
             <mat-label>RG</mat-label>
             <input matInput [(ngModel)] ="registrationForm.rg"/>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="form-element">
+            <mat-label>Telefone</mat-label>
+            <input matInput type='text' mask='(00) 00000-0000' placeholder="(00) 00000-0000" [(ngModel)] ="registrationForm.phone" />
           </mat-form-field>
         </div>
         <div>
