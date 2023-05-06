@@ -18,12 +18,18 @@ import java.util.Set;
 public class ProfileInputDTO {
 
 	private Long id;
-	private String firstname;
-	private String lastname;
 	private String fullname;
 	private String father;
 	private String mother;
-	private String hometown;
+	private String zipCode;
+	private String address;
+	private String number;
+	private String neighbourhood;
+	private String city;
+	private String state;
+	private String bloodType;
+	private String cpf;
+	private String rg;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
 	private LocalDate birthday;
@@ -35,9 +41,7 @@ public class ProfileInputDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime lastUpdate = LocalDateTime.now();
-	
-	private String cpf;
-	private String rg;
+
 	private Set<String> phoneNumbers = new HashSet<>();
 
 }

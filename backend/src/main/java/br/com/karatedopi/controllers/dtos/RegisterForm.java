@@ -20,26 +20,34 @@ public class RegisterForm {
 
     private String email;
     private String password;
-    private String firstname;
-    private String lastname;
     private String fullname;
     private String father;
     private String mother;
-    private String hometown;
+    private String zipCode;
+    private String address;
+    private String number;
+    private String neighbourhood;
+    private String city;
+    private String state;
+    private String bloodType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate birthday;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Builder.Default
     private LocalDateTime createdOn = LocalDateTime.now();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Builder.Default
     private LocalDateTime updatedOn = LocalDateTime.now();
 
     private String cpf;
     private String rg;
+
+    @Builder.Default
     private Set<String> phoneNumbers = new HashSet<>();
 
     @PrePersist

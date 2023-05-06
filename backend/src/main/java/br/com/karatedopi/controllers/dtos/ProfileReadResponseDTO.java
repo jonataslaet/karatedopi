@@ -19,41 +19,52 @@ import java.util.Set;
 public class ProfileReadResponseDTO {
 
 	private Long id;
-	private String firstname;
-	private String lastname;
 	private String fullname;
 	private String father;
 	private String mother;
-	private String hometown;
+	private String zipCode;
+	private String address;
+	private String number;
+	private String neighbourhood;
+	private String city;
+	private String state;
+	private String bloodType;
+	private String cpf;
+	private String rg;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
 	private LocalDate birthday;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
 	@JsonProperty(access = Access.READ_ONLY)
+	@Builder.Default
 	private LocalDateTime creationDate = LocalDateTime.now();
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
 	@JsonProperty(access = Access.READ_ONLY)
+	@Builder.Default
 	private LocalDateTime lastUpdate = LocalDateTime.now();
-	
-	private String cpf;
-	private String rg;
+
+	@Builder.Default
 	private Set<String> phoneNumbers = new HashSet<>();
 
 	public static ProfileReadResponseDTO getProfileReadResponseDTO(Profile profile) {
 		return ProfileReadResponseDTO.builder()
 				.id(profile.getId())
-				.rg(profile.getRg())
-				.cpf(profile.getCpf())
-				.firstname(profile.getFirstname())
-				.lastname(profile.getLastname())
 				.fullname(profile.getFullname())
-				.father(profile.getFather())
 				.mother(profile.getMother())
-				.phoneNumbers(profile.getPhoneNumbers())
-				.hometown(profile.getHometown())
+				.father(profile.getFather())
+				.zipCode(profile.getZipCode())
+				.address(profile.getAddress())
+				.number(profile.getNumber())
+				.neighbourhood(profile.getNeighbourhood())
+				.city(profile.getCity())
+				.state(profile.getState())
+				.bloodType(profile.getBloodType())
 				.birthday(profile.getBirthday())
+				.cpf(profile.getCpf())
+				.rg(profile.getRg())
+				.phoneNumbers(profile.getPhoneNumbers())
 				.creationDate(profile.getCreatedOn())
 				.lastUpdate(profile.getUpdatedOn())
 				.build();

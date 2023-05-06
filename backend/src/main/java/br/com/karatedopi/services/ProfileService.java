@@ -29,24 +29,6 @@ public class ProfileService {
 		return profiles.map(ProfileReadResponseDTO::getProfileReadResponseDTO);
 	}
 
-	private static ProfileUpdateResponseDTO getProfileUpdateResponseDTO(Profile profile) {
-		return ProfileUpdateResponseDTO.builder()
-				.id(profile.getId())
-				.rg(profile.getRg())
-				.cpf(profile.getCpf())
-				.firstname(profile.getFirstname())
-				.lastname(profile.getLastname())
-				.fullname(profile.getFullname())
-				.father(profile.getFather())
-				.mother(profile.getMother())
-				.phoneNumbers(profile.getPhoneNumbers())
-				.hometown(profile.getHometown())
-				.birthday(profile.getBirthday())
-				.creationDate(profile.getCreatedOn())
-				.lastUpdate(profile.getUpdatedOn())
-				.build();
-	}
-
 	public ProfileReadResponseDTO getProfileReadResponseDTO(Long id) {
 		Profile profile = getProfile(id);
 		return ProfileReadResponseDTO.getProfileReadResponseDTO(profile);
@@ -69,15 +51,19 @@ public class ProfileService {
 	}
 
 	private void fillProfileFromProfileDTO(Profile foundProfile, ProfileInputDTO profileInputDTO) {
-		foundProfile.setHometown(profileInputDTO.getHometown());
-		foundProfile.setRg(profileInputDTO.getRg());
+		foundProfile.setFullname(profileInputDTO.getFullname());
 		foundProfile.setMother(profileInputDTO.getMother());
 		foundProfile.setFather(profileInputDTO.getFather());
-		foundProfile.setPhoneNumbers(profileInputDTO.getPhoneNumbers());
-		foundProfile.setFullname(profileInputDTO.getFullname());
-		foundProfile.setCpf(profileInputDTO.getCpf());
-		foundProfile.setFirstname(profileInputDTO.getFirstname());
-		foundProfile.setLastname(profileInputDTO.getLastname());
+		foundProfile.setZipCode(profileInputDTO.getZipCode());
+		foundProfile.setAddress(profileInputDTO.getAddress());
+		foundProfile.setNumber(profileInputDTO.getNumber());
+		foundProfile.setNeighbourhood(profileInputDTO.getNeighbourhood());
+		foundProfile.setCity(profileInputDTO.getCity());
+		foundProfile.setState(profileInputDTO.getState());
+		foundProfile.setBloodType(profileInputDTO.getBloodType());
 		foundProfile.setBirthday(profileInputDTO.getBirthday());
+		foundProfile.setCpf(profileInputDTO.getCpf());
+		foundProfile.setRg(profileInputDTO.getRg());
+		foundProfile.setPhoneNumbers(profileInputDTO.getPhoneNumbers());
 	}
 }
