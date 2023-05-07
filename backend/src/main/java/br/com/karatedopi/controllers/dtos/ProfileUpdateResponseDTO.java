@@ -23,7 +23,7 @@ public class ProfileUpdateResponseDTO {
 	private String father;
 	private String mother;
 	private String zipCode;
-	private String address;
+	private String street;
 	private String number;
 	private String neighbourhood;
 	private String city;
@@ -54,7 +54,7 @@ public class ProfileUpdateResponseDTO {
 				.mother(profile.getMother())
 				.father(profile.getFather())
 				.zipCode(profile.getZipCode())
-				.address(profile.getAddress())
+				.street(profile.getStreet())
 				.number(profile.getNumber())
 				.neighbourhood(profile.getNeighbourhood())
 				.city(profile.getCity())
