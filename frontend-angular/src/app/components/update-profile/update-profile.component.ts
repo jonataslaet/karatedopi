@@ -17,7 +17,7 @@ export class UpdateProfileComponent implements OnInit {
     father: '',
     mother: '',
     zipCode: '',
-    address: '',
+    street: '',
     number: '',
     neighbourhood: '',
     city: '',

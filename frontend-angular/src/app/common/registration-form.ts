@@ -8,7 +8,7 @@ export class RegistrationForm {
       public father: string,
       public mother: string,
       public zipCode: string,
-      public address: string,
+      public street: string,
       public number: string,
       public neighbourhood: string,
       public city: string,
