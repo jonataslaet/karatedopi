@@ -9,12 +9,14 @@ import { ProfileListComponent } from './components/profile-list/profile-list.com
 import { RouterModule, Routes } from '@angular/router';
 import { ProfileService } from './services/profile.service';
 import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
 import { RegistrationService } from './services/registration.service';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { CityService } from './services/city-service';
+import { StateService } from './services/state-service';
 
 const routes: Routes = [
   {
@@ -53,9 +55,10 @@ const routes: Routes = [
     FormsModule,
     MatDialogModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    ReactiveFormsModule
   ],
-  providers: [RegistrationService, ProfileService, provideNgxMask()],
+  providers: [RegistrationService, ProfileService, CityService, StateService, provideNgxMask()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
