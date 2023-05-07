@@ -55,7 +55,7 @@ public class ProfileService {
 		foundProfile.setMother(profileInputDTO.getMother());
 		foundProfile.setFather(profileInputDTO.getFather());
 		foundProfile.setZipCode(profileInputDTO.getZipCode());
-		foundProfile.setAddress(profileInputDTO.getAddress());
+		foundProfile.setStreet(profileInputDTO.getStreet());
 		foundProfile.setNumber(profileInputDTO.getNumber());
 		foundProfile.setNeighbourhood(profileInputDTO.getNeighbourhood());
 		foundProfile.setCity(profileInputDTO.getCity());

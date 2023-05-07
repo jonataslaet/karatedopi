@@ -37,7 +37,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("roberto_hugo_rocha@djapan.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64028220")
-				.address("Rua Curitiba")
+				.street("Rua Curitiba")
 				.number("649")
 				.neighbourhood("Santo Antônio")
 				.city("Teresina")
@@ -56,7 +56,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("joaorobertobarros@wizardsjc.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64060640")
-				.address("Rua José Leite Pereira")
+				.street("Rua José Leite Pereira")
 				.number("232")
 				.neighbourhood("Porto do Centro")
 				.city("Teresina")
@@ -75,7 +75,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("edson.davi.dias@mesquita.not.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64046450")
-				.address("Rua Fenelon Castelo Branco")
+				.street("Rua Fenelon Castelo Branco")
 				.number("426")
 				.neighbourhood("São João")
 				.city("Teresina")
@@ -94,7 +94,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("mariothomasmartins@lojaprincezinha.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64013595")
-				.address("Quadra 142")
+				.street("Quadra 142")
 				.number("196")
 				.neighbourhood("Santa Maria da Codipe")
 				.city("Teresina")
@@ -113,7 +113,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("mariothomasmartins@lojaprincezinha.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64013595")
-				.address("Quadra 142")
+				.street("Quadra 142")
 				.number("196")
 				.neighbourhood("Santa Maria da Codipe")
 				.city("Teresina")
@@ -132,7 +132,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("gael.pietro.silva@acmorgado.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64083195")
-				.address("Vila Alto do Muro")
+				.street("Vila Alto do Muro")
 				.number("643")
 				.neighbourhood("Colorado")
 				.city("Teresina")
@@ -151,7 +151,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("kaique-campos85@akadnyx.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64009300")
-				.address("Rua Manoel Bandeira")
+				.street("Rua Manoel Bandeira")
 				.number("500")
 				.neighbourhood("Memorare")
 				.city("Teresina")
@@ -170,7 +170,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("ian.thiago.cardoso@edu.uniso.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64033514")
-				.address("Quadra 02")
+				.street("Quadra 02")
 				.number("523")
 				.neighbourhood("Santo Antônio")
 				.city("Teresina")
@@ -189,7 +189,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("vitor-souza84@tigra.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64049620")
-				.address("Rua Prisco Medeiros")
+				.street("Rua Prisco Medeiros")
 				.number("208")
 				.neighbourhood("Ininga")
 				.city("Teresina")
@@ -208,7 +208,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("manuel_mendes@contabilidadevictoria.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64039040")
-				.address("Rua Franco do Vale")
+				.street("Rua Franco do Vale")
 				.number("477")
 				.neighbourhood("Esplanada")
 				.city("Teresina")
@@ -227,7 +227,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("luis-viana93@lta-am.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64079139")
-				.address("Rua Josefa Evangelista Coelho")
+				.street("Rua Josefa Evangelista Coelho")
 				.number("369")
 				.neighbourhood("Novo Horizonte")
 				.city("Teresina")
@@ -246,7 +246,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.email("anderson_kaue_dacruz@madhause.com.br")
 				.password(passwordEncoder.encode("blendo273"))
 				.zipCode("64053340")
-				.address("Rua Elisaldo Reinaldo")
+				.street("Rua Elisaldo Reinaldo")
 				.number("763")
 				.neighbourhood("Santa Isabel")
 				.city("Teresina")
@@ -261,8 +261,8 @@ public class KaratedopiApplication implements CommandLineRunner {
 		registrationService.createRegistration(registerForm02);
 		registrationService.createRegistration(registerForm03);
 		registrationService.createRegistration(registerForm04);
-		registrationService.createRegistration(registerForm05);
-		registrationService.createRegistration(registerForm06);
+//		registrationService.createRegistration(registerForm05);
+//		registrationService.createRegistration(registerForm06);
 //		registrationService.createRegistration(registerForm07);
 //		registrationService.createRegistration(registerForm08);
 //		registrationService.createRegistration(registerForm09);

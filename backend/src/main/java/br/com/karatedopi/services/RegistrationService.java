@@ -64,7 +64,7 @@ public class RegistrationService {
 				.mother(registerForm.getMother())
 				.father(registerForm.getFather())
 				.zipCode(registerForm.getZipCode())
-				.address(registerForm.getAddress())
+				.street(registerForm.getStreet())
 				.number(registerForm.getNumber())
 				.neighbourhood(registerForm.getNeighbourhood())
 				.city(registerForm.getCity())

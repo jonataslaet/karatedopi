@@ -24,7 +24,7 @@ public class RegisterForm {
     private String father;
     private String mother;
     private String zipCode;
-    private String address;
+    private String street;
     private String number;
     private String neighbourhood;
     private String city;

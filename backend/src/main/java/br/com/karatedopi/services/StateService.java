@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StateService {
 	@Autowired
@@ -17,5 +20,9 @@ public class StateService {
 		Page<State> foundStates = stateRepository.findAll(pagination);
 		return foundStates.map(StateDTO::getStateDTO);
 	}
+
+    public List<StateDTO> getAllCities() {
+		return stateRepository.findAll().stream().map(StateDTO::getStateDTO).collect(Collectors.toList());
+    }
 }
 
