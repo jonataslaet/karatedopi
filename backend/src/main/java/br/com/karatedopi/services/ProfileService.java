@@ -1,8 +1,8 @@
 package br.com.karatedopi.services;
 
-import br.com.karatedopi.controllers.dtos.ProfileInputDTO;
-import br.com.karatedopi.controllers.dtos.ProfileReadResponseDTO;
-import br.com.karatedopi.controllers.dtos.ProfileUpdateResponseDTO;
+import br.com.karatedopi.controllers.dtos.ProfileCreateDTO;
+import br.com.karatedopi.controllers.dtos.ProfileReadDTO;
+import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
 import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.repositories.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,20 +18,24 @@ public class ProfileService {
 
 	private final ProfileRepository profileRepository;
 
-	public Page<ProfileReadResponseDTO> getPagedProfiles(String hometown, Pageable paginacao) {
+	public Page<ProfileReadDTO> getPagedProfiles(String hometown, Pageable paginacao) {
 		Page<Profile> profiles;
-		if (hometown == null || hometown.isEmpty()) {
+		if (isBlank(hometown)) {
 			profiles = profileRepository.findAll(paginacao);
 		} else {
 			profiles = profileRepository.findAllByHometown(hometown, paginacao);
 		}
 
-		return profiles.map(ProfileReadResponseDTO::getProfileReadResponseDTO);
+		return profiles.map(ProfileReadDTO::getProfileReadDTO);
 	}
 
-	public ProfileReadResponseDTO getProfileReadResponseDTO(Long id) {
+	private static boolean isBlank(String hometown) {
+		return hometown == null || hometown.isEmpty();
+	}
+
+	public ProfileReadDTO getProfileReadResponseDTO(Long id) {
 		Profile profile = getProfile(id);
-		return ProfileReadResponseDTO.getProfileReadResponseDTO(profile);
+		return ProfileReadDTO.getProfileReadDTO(profile);
 	}
 
 	private Profile getProfile(Long id) {
@@ -43,27 +47,27 @@ public class ProfileService {
 		return foundProfile;
 	}
 
-	public ProfileUpdateResponseDTO updateProfile(Long id, ProfileInputDTO profileInputDTO) {
+	public ProfileUpdateDTO updateProfile(Long id, ProfileCreateDTO profileCreateDTO) {
 		Profile foundProfile = getProfile(id);
-		fillProfileFromProfileDTO(foundProfile, profileInputDTO);
+		fillProfileFromProfileDTO(foundProfile, profileCreateDTO);
 		Profile updatedProfile = profileRepository.save(foundProfile);
-		return ProfileUpdateResponseDTO.getProfileUpdateResponseDTO(updatedProfile);
+		return ProfileUpdateDTO.getProfileUpdateResponseDTO(updatedProfile);
 	}
 
-	private void fillProfileFromProfileDTO(Profile foundProfile, ProfileInputDTO profileInputDTO) {
-		foundProfile.setFullname(profileInputDTO.getFullname());
-		foundProfile.setMother(profileInputDTO.getMother());
-		foundProfile.setFather(profileInputDTO.getFather());
-		foundProfile.setZipCode(profileInputDTO.getZipCode());
-		foundProfile.setStreet(profileInputDTO.getStreet());
-		foundProfile.setNumber(profileInputDTO.getNumber());
-		foundProfile.setNeighbourhood(profileInputDTO.getNeighbourhood());
-		foundProfile.setCity(profileInputDTO.getCity());
-		foundProfile.setState(profileInputDTO.getState());
-		foundProfile.setBloodType(profileInputDTO.getBloodType());
-		foundProfile.setBirthday(profileInputDTO.getBirthday());
-		foundProfile.setCpf(profileInputDTO.getCpf());
-		foundProfile.setRg(profileInputDTO.getRg());
-		foundProfile.setPhoneNumbers(profileInputDTO.getPhoneNumbers());
+	private void fillProfileFromProfileDTO(Profile foundProfile, ProfileCreateDTO profileCreateDTO) {
+		foundProfile.setFullname(profileCreateDTO.getFullname());
+		foundProfile.setMother(profileCreateDTO.getMother());
+		foundProfile.setFather(profileCreateDTO.getFather());
+		foundProfile.setZipCode(profileCreateDTO.getZipCode());
+		foundProfile.setStreet(profileCreateDTO.getStreet());
+		foundProfile.setNumber(profileCreateDTO.getNumber());
+		foundProfile.setNeighbourhood(profileCreateDTO.getNeighbourhood());
+		foundProfile.setCity(profileCreateDTO.getCity());
+		foundProfile.setState(profileCreateDTO.getState());
+		foundProfile.setBloodType(profileCreateDTO.getBloodType());
+		foundProfile.setBirthday(profileCreateDTO.getBirthday());
+		foundProfile.setCpf(profileCreateDTO.getCpf());
+		foundProfile.setRg(profileCreateDTO.getRg());
+		foundProfile.setPhoneNumbers(profileCreateDTO.getPhoneNumbers());
 	}
 }

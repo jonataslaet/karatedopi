@@ -1,12 +1,7 @@
-/*
-	Codigo SQL para registro de estado e municipio do Brasil para PostgreSQL
-	
-	FONTES:
-	https://gist.github.com/JFRode/628138543780a05448d969ffc013f7d0
-	https://gist.github.com/letanure/3012978 
-	(Acessados em 09/05/2021)
-	Adaptado por Jonatas Laet (github.com/jonataslaet)
-*/
+INSERT INTO tb_role (authority) VALUES ('ROLE_ROOT');
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
+INSERT INTO tb_role (authority) VALUES ('ROLE_MODERATOR');
+INSERT INTO tb_role (authority) VALUES ('ROLE_USER');
 
 INSERT INTO state (name, state_abbreviation) VALUES ('Acre', 'AC');
 INSERT INTO state (name, state_abbreviation) VALUES ('Alagoas', 'AL');

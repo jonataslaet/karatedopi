@@ -1,8 +1,8 @@
 package br.com.karatedopi.controllers;
 
-import br.com.karatedopi.controllers.dtos.ProfileInputDTO;
-import br.com.karatedopi.controllers.dtos.ProfileReadResponseDTO;
-import br.com.karatedopi.controllers.dtos.ProfileUpdateResponseDTO;
+import br.com.karatedopi.controllers.dtos.ProfileCreateDTO;
+import br.com.karatedopi.controllers.dtos.ProfileReadDTO;
+import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
 import br.com.karatedopi.services.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,20 +20,22 @@ public class ProfileController {
 	private final ProfileService profileService;
 	
 	@GetMapping
-	public ResponseEntity<Page<ProfileReadResponseDTO>> getPagedProfiles(@RequestParam(required = false) String uf, @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-		Page<ProfileReadResponseDTO> profiles = profileService.getPagedProfiles(uf, pageable);
+	public ResponseEntity<Page<ProfileReadDTO>> getPagedProfiles(
+			@RequestParam(required = false) String state,
+			@PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
+		Page<ProfileReadDTO> profiles = profileService.getPagedProfiles(state, pageable);
 		return ResponseEntity.ok().body(profiles);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ProfileReadResponseDTO> getProfileReadResponse(@PathVariable("id") Long id){
-		ProfileReadResponseDTO profile = profileService.getProfileReadResponseDTO(id);
+	public ResponseEntity<ProfileReadDTO> getProfileReadResponse(@PathVariable("id") Long id){
+		ProfileReadDTO profile = profileService.getProfileReadResponseDTO(id);
 		return ResponseEntity.ok().body(profile);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ProfileUpdateResponseDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileInputDTO profileInputDTO){
-		ProfileUpdateResponseDTO updatedProfile = profileService.updateProfile(id, profileInputDTO);
+	public ResponseEntity<ProfileUpdateDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileCreateDTO profileCreateDTO){
+		ProfileUpdateDTO updatedProfile = profileService.updateProfile(id, profileCreateDTO);
 		return ResponseEntity.ok().body(updatedProfile);
 	}
 }

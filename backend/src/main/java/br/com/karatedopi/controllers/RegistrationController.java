@@ -1,7 +1,7 @@
 package br.com.karatedopi.controllers;
 
-import br.com.karatedopi.controllers.dtos.RegisterForm;
-import br.com.karatedopi.controllers.dtos.UserRegistrationResponseDTO;
+import br.com.karatedopi.controllers.dtos.RegisterDTO;
+import br.com.karatedopi.controllers.dtos.RegisterCreateDTO;
 import br.com.karatedopi.services.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +18,10 @@ public class RegistrationController {
 	private final RegistrationService registrationService;
 
 	@PostMapping
-	public ResponseEntity<UserRegistrationResponseDTO> createRegistration(
-			@RequestBody RegisterForm registerForm
+	public ResponseEntity<RegisterDTO> createRegistration(
+			@RequestBody RegisterCreateDTO registerDTO
 	) {
-		UserRegistrationResponseDTO createdUser = registrationService.createRegistration(registerForm);
+		RegisterDTO createdUser = registrationService.createRegistration(registerDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdUser.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(createdUser);

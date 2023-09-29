@@ -1,6 +1,6 @@
 package br.com.karatedopi;
 
-import br.com.karatedopi.controllers.dtos.RegisterForm;
+import br.com.karatedopi.controllers.dtos.RegisterDTO;
 import br.com.karatedopi.services.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -27,7 +27,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
 
-		RegisterForm registerForm01 = RegisterForm.builder()
+		RegisterDTO registerDTO01 = RegisterDTO.builder()
 				.fullname("Roberto Hugo Raul Rocha")
 				.cpf("72619735300")
 				.rg("422434875")
@@ -46,7 +46,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("O+")
 				.build();
 
-		RegisterForm registerForm02 = RegisterForm.builder()
+		RegisterDTO registerDTO02 = RegisterDTO.builder()
 				.fullname("João Roberto Márcio Barros")
 				.cpf("00391725386")
 				.rg("219316624")
@@ -65,7 +65,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("O+")
 				.build();
 
-		RegisterForm registerForm03 = RegisterForm.builder()
+		RegisterDTO registerDTO03 = RegisterDTO.builder()
 				.fullname("Edson Davi Dias")
 				.cpf("57858207300")
 				.rg("346208063")
@@ -84,7 +84,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("A+")
 				.build();
 
-		RegisterForm registerForm04 = RegisterForm.builder()
+		RegisterDTO registerDTO04 = RegisterDTO.builder()
 				.fullname("Mário Thomas Martins")
 				.cpf("32570538353")
 				.rg("110150727")
@@ -103,7 +103,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("O-")
 				.build();
 
-		RegisterForm registerForm05 = RegisterForm.builder()
+		RegisterDTO registerDTO05 = RegisterDTO.builder()
 				.fullname("Daniel Davi Danilo dos Santos")
 				.cpf("52046461320")
 				.rg("488446375")
@@ -122,7 +122,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("O-")
 				.build();
 
-		RegisterForm registerForm06 = RegisterForm.builder()
+		RegisterDTO registerDTO06 = RegisterDTO.builder()
 				.fullname("Gael Pietro Silva")
 				.cpf("43638039323")
 				.rg("454583953")
@@ -141,7 +141,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("B-")
 				.build();
 
-		RegisterForm registerForm07 = RegisterForm.builder()
+		RegisterDTO registerDTO07 = RegisterDTO.builder()
 				.fullname("Kaique Marcos Carlos Eduardo Campos")
 				.cpf("35545525343")
 				.rg("334601125")
@@ -160,7 +160,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("AB-")
 				.build();
 
-		RegisterForm registerForm08 = RegisterForm.builder()
+		RegisterDTO registerDTO08 = RegisterDTO.builder()
 				.fullname("Ian Thiago Joaquim Cardoso")
 				.cpf("28890759313")
 				.rg("181259473")
@@ -179,7 +179,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("O-")
 				.build();
 
-		RegisterForm registerForm09 = RegisterForm.builder()
+		RegisterDTO registerDTO09 = RegisterDTO.builder()
 				.fullname("Vitor Levi Souza")
 				.cpf("54453394322")
 				.rg("450789421")
@@ -198,7 +198,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("B+")
 				.build();
 
-		RegisterForm registerForm10 = RegisterForm.builder()
+		RegisterDTO registerDTO10 = RegisterDTO.builder()
 				.fullname("Manuel Ian Mendes")
 				.cpf("19115370321")
 				.rg("394176376")
@@ -217,7 +217,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("AB-")
 				.build();
 
-		RegisterForm registerForm11 = RegisterForm.builder()
+		RegisterDTO registerDTO11 = RegisterDTO.builder()
 				.fullname("Luís Diego Viana")
 				.cpf("92037162383")
 				.rg("109191146")
@@ -236,7 +236,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 				.bloodType("O-")
 				.build();
 
-		RegisterForm registerForm12 = RegisterForm.builder()
+		RegisterDTO registerDTO12 = RegisterDTO.builder()
 				.fullname("Anderson Kauê da Cruz")
 				.cpf("59273696341")
 				.rg("276699373")
@@ -257,10 +257,10 @@ public class KaratedopiApplication implements CommandLineRunner {
 
 
 
-		registrationService.createRegistration(registerForm01);
-		registrationService.createRegistration(registerForm02);
-		registrationService.createRegistration(registerForm03);
-		registrationService.createRegistration(registerForm04);
+		registrationService.createRegistration(registerDTO01);
+		registrationService.createRegistration(registerDTO02);
+		registrationService.createRegistration(registerDTO03);
+		registrationService.createRegistration(registerDTO04);
 //		registrationService.createRegistration(registerForm05);
 //		registrationService.createRegistration(registerForm06);
 //		registrationService.createRegistration(registerForm07);

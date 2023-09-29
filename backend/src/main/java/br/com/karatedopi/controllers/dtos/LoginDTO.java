@@ -7,8 +7,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginForm {
+public class LoginDTO {
 
 	private String email;
-	String password;
+	private String password;
 }

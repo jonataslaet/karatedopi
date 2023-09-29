@@ -1,39 +1,39 @@
 package br.com.karatedopi.services;
 
-import br.com.karatedopi.controllers.dtos.RegisterForm;
-import br.com.karatedopi.controllers.dtos.UserRegistrationResponseDTO;
+import br.com.karatedopi.controllers.dtos.RegisterDTO;
+import br.com.karatedopi.controllers.dtos.RegisterCreateDTO;
 import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
-import br.com.karatedopi.entities.enums.Role;
+import br.com.karatedopi.repositories.RoleRepository;
 import br.com.karatedopi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
+	private static final Long ROLE_USER_ID = 4L;
 
 	private final PasswordEncoder passwordEncoder;
 
-	private final JwtService jwtService;
-
 	private final UserRepository userRepository;
 
-	private final AuthenticationService authenticationService;
+	private final RoleRepository roleRepository;
 
-	public UserRegistrationResponseDTO createRegistration(RegisterForm registerForm) {
-		User user = getUserByRegisterForm(registerForm);
-		Profile profile = getProfile(registerForm);
+	public RegisterDTO createRegistration(RegisterDTO registerDTO) {
+		User user = getUser(registerDTO);
+		Profile profile = getProfile(registerDTO);
 		profile.setUser(user);
 		user.setProfile(profile);
-		var savedUser = userRepository.save(user);
-		var jwtToken = jwtService.generateToken(user);
-		var refreshToken = jwtService.generateRefreshToken(user);
-		authenticationService.saveUserToken(savedUser, jwtToken);
-		return UserRegistrationResponseDTO.getByUserAndTokens(user, jwtToken, refreshToken);
+		User savedUser = userRepository.save(user);
+		registerDTO.setId(savedUser.getId());
+		return registerDTO;
 	}
 
 	public void deleteRegistrationByUserId(Long userId) {
@@ -50,32 +50,34 @@ public class RegistrationService {
 		return foundProfile;
 	}
 
-	private User getUserByRegisterForm(RegisterForm registerForm) {
-		return User.builder()
-				.email(registerForm.getEmail())
-				.password(passwordEncoder.encode(registerForm.getPassword()))
-				.role(Role.USER)
+	private User getUser(RegisterDTO registerDTO) {
+		User user = User.builder()
+				.email(registerDTO.getEmail())
+				.password(passwordEncoder.encode(registerDTO.getPassword()))
+				.roles(new HashSet<>())
 				.build();
+		roleRepository.findById(ROLE_USER_ID).ifPresent(role -> user.getRoles().add(role));
+		return user;
 	}
 
-	private static Profile getProfile(RegisterForm registerForm) {
+	private static Profile getProfile(RegisterDTO registerDTO) {
 		return Profile.builder()
-				.fullname(registerForm.getFullname())
-				.mother(registerForm.getMother())
-				.father(registerForm.getFather())
-				.zipCode(registerForm.getZipCode())
-				.street(registerForm.getStreet())
-				.number(registerForm.getNumber())
-				.neighbourhood(registerForm.getNeighbourhood())
-				.city(registerForm.getCity())
-				.state(registerForm.getState())
-				.bloodType(registerForm.getBloodType())
-				.birthday(registerForm.getBirthday())
-				.cpf(registerForm.getCpf())
-				.rg(registerForm.getRg())
-				.phoneNumbers(registerForm.getPhoneNumbers())
-				.createdOn(registerForm.getCreatedOn())
-				.updatedOn(registerForm.getUpdatedOn())
+				.fullname(registerDTO.getFullname())
+				.mother(registerDTO.getMother())
+				.father(registerDTO.getFather())
+				.zipCode(registerDTO.getZipCode())
+				.street(registerDTO.getStreet())
+				.number(registerDTO.getNumber())
+				.neighbourhood(registerDTO.getNeighbourhood())
+				.city(registerDTO.getCity())
+				.state(registerDTO.getState())
+				.bloodType(registerDTO.getBloodType())
+				.birthday(registerDTO.getBirthday())
+				.cpf(registerDTO.getCpf())
+				.rg(registerDTO.getRg())
+				.phoneNumbers(registerDTO.getPhoneNumbers())
+				.createdOn(registerDTO.getCreatedOn())
+				.updatedOn(registerDTO.getUpdatedOn())
 				.build();
 	}
 

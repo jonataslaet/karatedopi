@@ -16,8 +16,9 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterForm {
+public class RegisterDTO {
 
+    private Long id;
     private String email;
     private String password;
     private String fullname;

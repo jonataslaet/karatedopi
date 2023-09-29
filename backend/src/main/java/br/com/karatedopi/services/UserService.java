@@ -1,66 +1,36 @@
 package br.com.karatedopi.services;
 
-import br.com.karatedopi.controllers.dtos.UserInputDTO;
-import br.com.karatedopi.controllers.dtos.UserReadResponseDTO;
-import br.com.karatedopi.controllers.dtos.UserUpdateResponseDTO;
+import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
+import br.com.karatedopi.entities.UserDetailsProjection;
 import br.com.karatedopi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
-	private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-	private final JwtService jwtService;
-
-	private final UserRepository userRepository;
-
-	private final AuthenticationService authenticationService;
-
-	@Transactional(readOnly=true)
-	public Page<UserReadResponseDTO> findAllPaged(Pageable pageable) {
-		Page<User> usersPaged = userRepository.findAll(pageable);
-		return usersPaged.map(UserReadResponseDTO::getByUser);
-	}
-
-	public UserReadResponseDTO findUser(Long id) {
-		User user = getUserById(id);
-		return UserReadResponseDTO.getByUser(user);
-	}
-
-	public UserUpdateResponseDTO updateUser(Long id, UserInputDTO userInputDTO) {
-		User user = getUserById(id);
-		user.setId(id);
-		user.setEmail(userInputDTO.getEmail());
-		user.setPassword(passwordEncoder.encode(userInputDTO.getPassword()));
-		var savedUser = userRepository.save(user);
-		var jwtToken = jwtService.generateToken(user);
-		var refreshToken = jwtService.generateRefreshToken(user);
-		authenticationService.saveUserToken(savedUser, jwtToken);
-		return UserUpdateResponseDTO.builder()
-				.id(savedUser.getId())
-				.accessToken(jwtToken)
-				.refreshToken(refreshToken)
-				.email(userInputDTO.getEmail())
-				.build();
-	}
-
-	private User getUserById(Long id) {
-		User foundProfile = userRepository.findById(id).orElse(null);
-		if (Objects.isNull(foundProfile)) {
-//			TODO: Make a custom exception instead of RuntimeException below
-			throw new RuntimeException("Profile not found");
-		}
-		return foundProfile;
-	}
-
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        List<UserDetailsProjection> userDetailsProjections =
+                userRepository.searchUserAndRolesByEmail(email);
+        if (userDetailsProjections.isEmpty()) {
+            throw new UsernameNotFoundException("User not found for email = " + email);
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(userDetailsProjections.get(0).getPassword());
+        for (UserDetailsProjection userDetailsProjection :
+                userDetailsProjections) {
+            user.addRole(new Role(userDetailsProjection.getRoleId(), userDetailsProjection.getAuthority()));
+        }
+        return user;
+    }
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileUpdateResponseDTO {
+public class ProfileUpdateDTO {
 
 	private Long id;
 	private String fullname;
@@ -48,8 +48,8 @@ public class ProfileUpdateResponseDTO {
 	@Builder.Default
 	private Set<String> phoneNumbers = new HashSet<>();
 
-	public static ProfileUpdateResponseDTO getProfileUpdateResponseDTO(Profile profile) {
-		return ProfileUpdateResponseDTO.builder()
+	public static ProfileUpdateDTO getProfileUpdateResponseDTO(Profile profile) {
+		return ProfileUpdateDTO.builder()
 				.fullname(profile.getFullname())
 				.mother(profile.getMother())
 				.father(profile.getFather())

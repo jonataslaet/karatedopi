@@ -1,6 +1,5 @@
 package br.com.karatedopi.entities;
 
-import br.com.karatedopi.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,12 +7,12 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "tb_user")
 public class User implements UserDetails {
 
 	@Id
@@ -30,20 +29,24 @@ public class User implements UserDetails {
 	private String email;
 	private String password;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+	@ManyToMany
+	@JoinTable(name = "tb_user_role",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 
 	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private Profile profile;
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<Token> tokens;
 
 	@Column(name = "updated_on")
 	private LocalDateTime updatedOn;
 
 	@Column(name = "created_on")
 	private LocalDateTime createdOn;
+
+	public void addRole(Role role) {
+		this.roles.add(role);
+	}
 
 	@PrePersist
 	public void prePersist() {
@@ -57,7 +60,7 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.name()));
+		return roles;
 	}
 
 	@Override
