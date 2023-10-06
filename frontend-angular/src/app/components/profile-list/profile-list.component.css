@@ -1,16 +1,40 @@
+.mat-elevation-z8 {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 table {
-    width: 80%;
-}
-
-.mat-form-field {
-    font-size: 14px;
     width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-td, th {
-    width: 25%;
+th {
+    background-color: #f5f5f5;
+    text-align: left;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
 }
 
-.profile-list-container {
-    padding: 20px;
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.mat-paginator {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.mat-no-data-row {
+    font-style: italic;
+    color: #888;
 }

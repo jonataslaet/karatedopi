@@ -1,13 +1,13 @@
-import { ProfilesReadResponse } from 'src/app/common/profiles-read-response';
-import { ProfileService } from 'src/app/services/profile.service';
-import { Component, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialogProfileComponent } from '../delete-dialog-profile/delete-dialog-profile.component';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ProfileReadResponse } from 'src/app/common/profile-read-response';
+import { ProfilesReadResponse } from 'src/app/common/profiles-read-response';
+import { ProfileService } from 'src/app/services/profile.service';
+import { DeleteDialogProfileComponent } from '../delete-dialog-profile/delete-dialog-profile.component';
 
 @Component({
   selector: 'app-profile-list',
@@ -23,7 +23,7 @@ export class ProfileListComponent implements AfterViewInit {
   sortDirection: string = 'desc';
   
   displayedColumns: string[] = [
-    'id', 'fullname', 'zipCode', 'neighbourhood', 'city', 'state', 'bloodType', 'birthday', 'cpf', 'rg', 'actions'
+    'fullname', 'zipCode', 'neighbourhood', 'city', 'state', 'bloodType', 'birthday', 'cpf', 'rg', 'actions'
   ];
   dataSource: MatTableDataSource<ProfileReadResponse>;
 
