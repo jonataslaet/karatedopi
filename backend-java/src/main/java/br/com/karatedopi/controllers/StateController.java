@@ -22,7 +22,7 @@ public class StateController {
 	private final StateService stateService;
 
 	@GetMapping
-	public ResponseEntity<Page<StateDTO>> getStates(@PageableDefault(page = 0, size=10, sort="name", direction = Sort.Direction.DESC) Pageable pagination){
+	public ResponseEntity<Page<StateDTO>> getStates(@PageableDefault(sort="name", direction = Sort.Direction.DESC) Pageable pagination){
 		Page<StateDTO> states = stateService.getStates(pagination);
 		return ResponseEntity.ok().body(states);
 	}

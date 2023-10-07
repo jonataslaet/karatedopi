@@ -2,7 +2,11 @@ package br.com.karatedopi.controllers.dtos;
 
 import br.com.karatedopi.entities.State;
 import br.com.karatedopi.entities.enums.StateAbbreviation;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Setter

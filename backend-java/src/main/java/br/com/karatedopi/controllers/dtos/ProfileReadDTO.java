@@ -1,6 +1,5 @@
 package br.com.karatedopi.controllers.dtos;
 
-import br.com.karatedopi.entities.Address;
 import br.com.karatedopi.entities.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
