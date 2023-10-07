@@ -1,21 +1,22 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material-module';
-import { ProfileListComponent } from './components/profile-list/profile-list.component';
-import { RouterModule, Routes } from '@angular/router';
-import { ProfileService } from './services/profile.service';
-import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
-import { MatDialogModule } from '@angular/material/dialog';
 import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
-import { RegistrationService } from './services/registration.service';
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
+import { ProfileListComponent } from './components/profile-list/profile-list.component';
+import { TournamentsListComponent } from './components/tournaments-list/tournaments-list.component';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
+import { MaterialModule } from './material-module';
 import { CityService } from './services/city-service';
+import { ProfileService } from './services/profile.service';
+import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 
 const routes: Routes = [
@@ -43,7 +44,8 @@ const routes: Routes = [
     ProfileListComponent,
     UpdateProfileComponent,
     DeleteDialogProfileComponent,
-    CreateRegistrationComponent
+    CreateRegistrationComponent,
+    TournamentsListComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
