@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long>{
 
-	@Query("SELECT prof FROM Profile prof WHERE (LOWER(prof.city) like LOWER(CONCAT('%', :hometown, '%'))) " +
-			"or (LOWER(prof.state) like LOWER(CONCAT('%', :hometown, '%')))")
+	@Query("SELECT prof FROM Profile prof WHERE (LOWER(prof.address.city.name) like LOWER(CONCAT('%', :hometown, '%'))) " +
+			"or (LOWER(prof.address.city.state.name) like LOWER(CONCAT('%', :hometown, '%')))")
 	Page<Profile> findAllByHometown(String hometown, Pageable pagination);
 
 }

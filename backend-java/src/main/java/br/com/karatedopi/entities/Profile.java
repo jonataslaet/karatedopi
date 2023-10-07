@@ -22,12 +22,10 @@ public class Profile {
 	private String fullname;
 	private String father;
 	private String mother;
-	private String zipCode;
-	private String street;
-	private String number;
-	private String neighbourhood;
-	private String city;
-	private String state;
+
+	@ManyToOne
+	private Address address;
+
 	private String bloodType;
 	private String cpf;
 	private String rg;

@@ -21,13 +21,8 @@ public class ProfileUpdateDTO {
 	private Long id;
 	private String fullname;
 	private String father;
+	private AddressDTO address;
 	private String mother;
-	private String zipCode;
-	private String street;
-	private String number;
-	private String neighbourhood;
-	private String city;
-	private String state;
 	private String bloodType;
 	private String cpf;
 	private String rg;
@@ -53,12 +48,7 @@ public class ProfileUpdateDTO {
 				.fullname(profile.getFullname())
 				.mother(profile.getMother())
 				.father(profile.getFather())
-				.zipCode(profile.getZipCode())
-				.street(profile.getStreet())
-				.number(profile.getNumber())
-				.neighbourhood(profile.getNeighbourhood())
-				.city(profile.getCity())
-				.state(profile.getState())
+				.address(AddressDTO.getAddressDTO(profile.getAddress()))
 				.bloodType(profile.getBloodType())
 				.birthday(profile.getBirthday())
 				.cpf(profile.getCpf())

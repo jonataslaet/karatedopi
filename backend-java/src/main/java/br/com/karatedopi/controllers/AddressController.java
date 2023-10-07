@@ -1,7 +1,9 @@
 package br.com.karatedopi.controllers;
 
+import br.com.karatedopi.controllers.dtos.AddressDTO;
 import br.com.karatedopi.controllers.dtos.CityDTO;
 import br.com.karatedopi.entities.enums.StateAbbreviation;
+import br.com.karatedopi.services.AddressService;
 import br.com.karatedopi.services.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,21 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/cities")
+@RequestMapping(value="/addresses")
 @RequiredArgsConstructor
-public class CityController {
+public class AddressController {
 
-	private final CityService cityService;
+	private final AddressService addressService;
 	
 	@GetMapping
-	public ResponseEntity<Page<CityDTO>> getPagedCities(@RequestParam(required=false) StateAbbreviation stateAbbreviation, @PageableDefault(sort="id", direction = Direction.DESC) Pageable paginacao){
-		Page<CityDTO> pagedCities = cityService.getPagedCities(stateAbbreviation, paginacao);
-		return ResponseEntity.ok().body(pagedCities);
-	}
-
-	@GetMapping("/all")
-	public ResponseEntity<List<CityDTO>> getAllCitiesByState(@RequestParam(required=false) StateAbbreviation stateAbbreviation){
-		List<CityDTO> cities = cityService.getAllCitiesDTOByState(stateAbbreviation);
-		return ResponseEntity.ok().body(cities);
+	public ResponseEntity<Page<AddressDTO>> getPagedAddresses(
+		@RequestParam(required = false) String city,
+		@RequestParam(required = false) String state,
+		@PageableDefault(sort="street", direction = Direction.ASC) Pageable pageable
+	){
+		Page<AddressDTO> pagedAddresses = addressService.getPagedAddresses(city, state, pageable);
+		return ResponseEntity.ok().body(pagedAddresses);
 	}
 }

@@ -1,5 +1,6 @@
 package br.com.karatedopi.controllers.dtos;
 
+import br.com.karatedopi.entities.Address;
 import br.com.karatedopi.entities.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,12 +27,7 @@ public class ProfileReadDTO {
 	private String fullname;
 	private String father;
 	private String mother;
-	private String zipCode;
-	private String street;
-	private String number;
-	private String neighbourhood;
-	private String city;
-	private String state;
+	private AddressDTO address;
 	private String bloodType;
 	private String cpf;
 	private String rg;
@@ -58,12 +54,7 @@ public class ProfileReadDTO {
 				.fullname(profile.getFullname())
 				.mother(profile.getMother())
 				.father(profile.getFather())
-				.zipCode(profile.getZipCode())
-				.street(profile.getStreet())
-				.number(profile.getNumber())
-				.neighbourhood(profile.getNeighbourhood())
-				.city(profile.getCity())
-				.state(profile.getState())
+				.address(AddressDTO.getAddressDTO(profile.getAddress()))
 				.bloodType(profile.getBloodType())
 				.birthday(profile.getBirthday())
 				.cpf(profile.getCpf())

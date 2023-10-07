@@ -58,12 +58,6 @@ public class ProfileService {
 		foundProfile.setFullname(profileCreateDTO.getFullname());
 		foundProfile.setMother(profileCreateDTO.getMother());
 		foundProfile.setFather(profileCreateDTO.getFather());
-		foundProfile.setZipCode(profileCreateDTO.getZipCode());
-		foundProfile.setStreet(profileCreateDTO.getStreet());
-		foundProfile.setNumber(profileCreateDTO.getNumber());
-		foundProfile.setNeighbourhood(profileCreateDTO.getNeighbourhood());
-		foundProfile.setCity(profileCreateDTO.getCity());
-		foundProfile.setState(profileCreateDTO.getState());
 		foundProfile.setBloodType(profileCreateDTO.getBloodType());
 		foundProfile.setBirthday(profileCreateDTO.getBirthday());
 		foundProfile.setCpf(profileCreateDTO.getCpf());

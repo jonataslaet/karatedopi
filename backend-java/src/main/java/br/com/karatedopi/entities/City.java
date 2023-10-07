@@ -3,6 +3,8 @@ package br.com.karatedopi.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -19,5 +21,8 @@ public class City {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private State state;
+
+	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+	private Set<Address> addresses;
 
 }
