@@ -31,6 +31,9 @@ const routes: Routes = [
     path: 'profiles', component: ProfileListComponent
   },
   {
+    path: 'tournaments', component: TournamentsListComponent
+  },
+  {
     path: '', redirectTo: '/profiles', pathMatch: 'full'
   },
   {
