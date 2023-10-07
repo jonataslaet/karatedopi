@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { City } from 'src/app/common/city';
 import { RegistrationForm } from 'src/app/common/registration-form';
 import { State } from 'src/app/common/state';
-import { StatesReadResponse } from 'src/app/common/states-read-response';
 import { CityService } from 'src/app/services/city-service';
 import { RegistrationService } from 'src/app/services/registration.service';
 import { StateService } from 'src/app/services/state-service';
@@ -107,11 +106,20 @@ export class CreateRegistrationComponent implements OnInit {
       this.registrationFormGroup.markAllAsTouched();
       return;
     }
-
+    this.registrationForm.birthday = this.formatDate(new Date(this.registrationForm.birthday));
     this.registrationService.createRegistration(this.registrationForm).subscribe(() => {
       this.router.navigate(['/']);
     });
     
+  }
+
+  formatDate(date: Date): Date {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+  
+    const formattedDateStr = `${year}-${month}-${day}`;
+    return new Date(formattedDateStr);
   }
 
   cancel(): void{
