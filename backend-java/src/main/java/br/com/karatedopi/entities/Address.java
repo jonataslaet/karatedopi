@@ -24,7 +24,7 @@ public class Address {
 	private String zipCode;
 	private String neighbourhood;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private City city;
 
 	@OneToMany(mappedBy = "address")

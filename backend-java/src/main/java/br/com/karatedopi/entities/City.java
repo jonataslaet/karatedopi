@@ -19,7 +19,7 @@ public class City {
 	private Long id;
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private State state;
 
 	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL)

@@ -38,5 +38,9 @@ public class CityService {
 		if (Objects.isNull(allCitiesByState) || allCitiesByState.isEmpty()) throw new ResourceNotFoundException("No city was found for this state");
 		return allCitiesByState;
 	}
+
+    public City getCityByCityNameAndStateName(String city, String state) {
+		return cityRepository.findCityByCityNameAndStateName(city, state).orElseThrow(() -> new ResourceNotFoundException("No city was found for this state"));
+	}
 }
 

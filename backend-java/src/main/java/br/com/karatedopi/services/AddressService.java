@@ -24,5 +24,9 @@ public class AddressService {
 		Page<Address> addresses = addressRepository.findAddressesByCityName(city.getName(), pagination);
 		return addresses.map(AddressDTO::getAddressDTO);
 	}
+
+    public Address save(Address address) {
+		return addressRepository.save(address);
+    }
 }
 
