@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileInput } from 'src/app/common/profile-input';
@@ -16,12 +15,7 @@ export class UpdateProfileComponent implements OnInit {
     fullname: '',
     father: '',
     mother: '',
-    zipCode: '',
-    street: '',
-    number: '',
-    neighbourhood: '',
-    city: '',
-    state: '',
+    address: null,
     bloodType: '',
     phone: '',
     birthday: null,

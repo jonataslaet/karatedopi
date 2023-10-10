@@ -126,7 +126,13 @@ export class CreateRegistrationComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  getCities(formGroupName: string) {
+  selectCityAndState(formGroupName: string) {
+    const formGroup = this.registrationFormGroup.get(formGroupName);
+    this.registrationForm.city = formGroup?.value.city.name as string;
+    this.registrationForm.state = formGroup?.value.state.name as string;    
+  }
+
+  fillCities(formGroupName: string) {
     const formGroup = this.registrationFormGroup.get(formGroupName);
     console.log('form = ' + formGroupName);
     const stateCode = formGroup?.value.state.stateAbbreviation as string;

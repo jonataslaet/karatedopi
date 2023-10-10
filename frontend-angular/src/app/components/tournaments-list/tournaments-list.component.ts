@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -13,10 +13,8 @@ import { TournamentService } from './../../services/tournament.service';
   templateUrl: './tournaments-list.component.html',
   styleUrls: ['./tournaments-list.component.css']
 })
-export class TournamentsListComponent {
-  tournaments: TournamentReadResponse[] = [
-    // new TournamentReadResponse(1, 'Torneio X II', 'Teresina', 'Em andamento', 3, new Date(2, 3, 4), '23:22'),
-  ];
+export class TournamentsListComponent implements AfterViewInit {
+  tournaments: TournamentReadResponse[] = [];
   dataLength: number;
   pageIndex: number = 0;
   pageSize: number = 3;
@@ -31,7 +29,7 @@ export class TournamentsListComponent {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private tournamentService: TournamentService, public dialog: MatDialog, private router: Router) {
-    // this.dataSource = new MatTableDataSource(this.tournaments);
+    this.dataSource = new MatTableDataSource(this.tournaments);
   }
 
   ngAfterViewInit() {
@@ -69,19 +67,4 @@ export class TournamentsListComponent {
     this.listTournaments(null);
   }
 
-  // openDeleteModal(id: number) {
-  //   const dialogRef = this.dialog.open(DeleteDialogProfileComponent, {
-  //     width: '250px',
-  //     data: { id },
-  //   });
- 
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       this.profiles = this.profiles.filter(
-  //         (_) => _.id !== id
-  //       );
-  //       this.listTournaments(null);
-  //     }
-  //   });
-  // }
 }

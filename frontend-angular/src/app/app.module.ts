@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EnumTranslationPipe } from './common/enum-translation-pipe';
 import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
 import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
 import { ProfileListComponent } from './components/profile-list/profile-list.component';
@@ -18,6 +19,7 @@ import { CityService } from './services/city-service';
 import { ProfileService } from './services/profile.service';
 import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
+import { TournamentService } from './services/tournament.service';
 
 const routes: Routes = [
   {
@@ -49,6 +51,7 @@ const routes: Routes = [
     DeleteDialogProfileComponent,
     CreateRegistrationComponent,
     TournamentsListComponent,
+    EnumTranslationPipe
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -63,7 +66,8 @@ const routes: Routes = [
     NgxMaskPipe,
     ReactiveFormsModule
   ],
-  providers: [RegistrationService, ProfileService, CityService, StateService, provideNgxMask()],
+  exports: [EnumTranslationPipe],
+  providers: [TournamentService, RegistrationService, ProfileService, CityService, StateService, provideNgxMask()],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

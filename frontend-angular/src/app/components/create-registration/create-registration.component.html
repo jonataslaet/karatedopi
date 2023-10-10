@@ -101,7 +101,7 @@
       <div>
         <mat-form-field appearance="outline" class="form-element">
           <mat-label for="city">Cidade</mat-label>
-          <mat-select formControlName="city" id="city">
+          <mat-select (selectionChange)="selectCityAndState('address')" formControlName="city" id="city">
             <mat-option  *ngFor="let city of addressCities" [value]="city">
               {{ city.name }}
             </mat-option>
@@ -111,7 +111,7 @@
       <div>
         <mat-form-field appearance="outline" class="form-element">
           <mat-label for="state">Estado</mat-label>
-          <mat-select (selectionChange)="getCities('address')" formControlName="state" id="state">
+          <mat-select (selectionChange)="fillCities('address')" formControlName="state" id="state">
             <mat-option  *ngFor="let state of states" [value]="state">
               {{ state.name }}
             </mat-option>
