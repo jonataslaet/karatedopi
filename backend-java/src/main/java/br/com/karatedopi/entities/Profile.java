@@ -38,6 +38,9 @@ public class Profile {
 	@MapsId
 	private User user;
 
+	@ManyToOne
+	private Tournament tournament;
+
 	@Column(name = "updated_on")
 	private LocalDateTime updatedOn;
 

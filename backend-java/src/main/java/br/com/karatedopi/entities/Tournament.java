@@ -31,7 +31,7 @@ public class Tournament {
 	@OneToOne
 	private Address address;
 
-	@OneToMany
+	@OneToMany(mappedBy = "tournament", fetch = FetchType.EAGER)
 	@Builder.Default
 	private List<Profile> participants = new ArrayList<>();
 }
