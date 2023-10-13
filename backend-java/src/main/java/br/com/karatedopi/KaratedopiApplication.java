@@ -289,7 +289,7 @@ public class KaratedopiApplication implements CommandLineRunner {
 //				.bloodType("B-")
 //				.build();
 
-		tournamentService.save(tournamentDTO01);
+		tournamentService.createTournament(tournamentDTO01);
 
 		registrationService.createRegistration(registerDTO01);
 		registrationService.createRegistration(registerDTO02);

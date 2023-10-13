@@ -1,5 +1,6 @@
 package br.com.karatedopi.controllers;
 
+import br.com.karatedopi.controllers.dtos.TournamentCreateDTO;
 import br.com.karatedopi.controllers.dtos.TournamentDTO;
 import br.com.karatedopi.services.TournamentService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value="/tournaments")
@@ -27,5 +33,15 @@ public class TournamentController {
 	){
 		Page<TournamentDTO> pagedTournaments = tournamentService.findAllTournaments(status, pageable);
 		return ResponseEntity.ok().body(pagedTournaments);
+	}
+
+	@PostMapping
+	public ResponseEntity<TournamentDTO> createTournament(
+			@RequestBody TournamentCreateDTO registerDTO
+	) {
+		TournamentDTO createdTournament = tournamentService.createTournament(registerDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTournament.getId())
+				.toUri();
+		return ResponseEntity.created(uri).body(createdTournament);
 	}
 }

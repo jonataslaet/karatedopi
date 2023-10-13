@@ -18,7 +18,7 @@ public class TournamentDTO {
 	private TournamentStatus status;
 	private AddressDTO address;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime eventDateTime;
 
 	@Builder.Default

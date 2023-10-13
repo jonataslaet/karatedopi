@@ -35,13 +35,13 @@ public class TournamentService {
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public TournamentDTO save(TournamentDTO tournamentDTO01) {
-		Address address = getAddress(tournamentDTO01);
+	public TournamentDTO createTournament(TournamentDTO tournamentDTO) {
+		Address address = getAddress(tournamentDTO);
 		Address savedAddress = addressRepository.save(address);
 		Tournament tournament = Tournament.builder()
-				.eventDate(tournamentDTO01.getEventDateTime())
-				.name(tournamentDTO01.getName())
-				.status(tournamentDTO01.getStatus())
+				.eventDate(tournamentDTO.getEventDateTime())
+				.name(tournamentDTO.getName())
+				.status(tournamentDTO.getStatus())
 				.address(savedAddress)
 				.build();
 		Tournament savedTournament = tournamentRepository.save(tournament);
