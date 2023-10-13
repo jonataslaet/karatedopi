@@ -37,8 +37,7 @@ public class TournamentService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public TournamentDTO createTournament(TournamentDTO tournamentDTO) {
-		Address address = getAddress(tournamentDTO);
-		Address savedAddress = addressRepository.save(address);
+		Address savedAddress = saveTournamentAddress(tournamentDTO);
 		Tournament tournament = Tournament.builder()
 				.eventDate(tournamentDTO.getEventDateTime())
 				.name(tournamentDTO.getName())
@@ -79,6 +78,33 @@ public class TournamentService {
 	private Tournament findTournamentById(Long id) {
 		return tournamentRepository.findById(id).orElseThrow(() ->
 			new ResourceNotFoundException("No tournament with id " + id + " was found"));
+	}
+
+	public TournamentDTO updateTournament(Long id, TournamentDTO tournamentDTO) {
+		Tournament tournament = findTournamentById(id);
+		if (isDifferentAddresses(tournament.getAddress(), getAddress(tournamentDTO))) {
+			Address savedAddress = saveTournamentAddress(tournamentDTO);
+			tournament.setAddress(savedAddress);
+		}
+		tournament.setName(tournamentDTO.getName());
+		tournament.setStatus(tournamentDTO.getStatus());
+		tournament.setEventDate(tournamentDTO.getEventDateTime());
+		Tournament savedTournament = tournamentRepository.save(tournament);
+		return TournamentDTO.getTournamentDTO(savedTournament);
+	}
+
+	private Address saveTournamentAddress(TournamentDTO tournamentDTO) {
+		Address address = getAddress(tournamentDTO);
+		return addressRepository.save(address);
+	}
+
+	private Boolean isDifferentAddresses(Address address1, Address address2) {
+		return !address1.getStreet().equalsIgnoreCase(address2.getStreet()) ||
+				!address1.getNumber().equalsIgnoreCase(address2.getNumber()) ||
+				!address1.getZipCode().equalsIgnoreCase(address2.getZipCode()) ||
+				!address1.getNeighbourhood().equalsIgnoreCase(address2.getNeighbourhood()) ||
+				!address1.getCity().getName().equalsIgnoreCase(address2.getCity().getName()) ||
+				!address1.getCity().getState().getName().equalsIgnoreCase(address2.getCity().getState().getName());
 	}
 }
 
