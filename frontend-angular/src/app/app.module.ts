@@ -20,6 +20,7 @@ import { ProfileService } from './services/profile.service';
 import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 import { TournamentService } from './services/tournament.service';
+import { HeaderComponent } from './components/header/header.component';
 
 const routes: Routes = [
   {
@@ -51,7 +52,8 @@ const routes: Routes = [
     DeleteDialogProfileComponent,
     CreateRegistrationComponent,
     TournamentsListComponent,
-    EnumTranslationPipe
+    EnumTranslationPipe,
+    HeaderComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

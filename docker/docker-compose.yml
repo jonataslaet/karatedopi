@@ -3,20 +3,20 @@ services:
   # ====================================================================================================================
   # KARATEDOPI SERVER
   # ====================================================================================================================
-  karatedopi-container-dev:
-    image: jonataslaet/karatedopi
-    mem_limit: 500m
-    ports:
-      - '8080:8080'
-    networks:
-      - dev-network
-    depends_on:
-      - postgres-server
-    environment:
-      - APP_PROFILE=dev
-      - DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
-      - DB_USERNAME=jonataslaet
-      - DB_PASSWORD=blendo273
+  # karatedopi-container-dev:
+  #   image: jonataslaet/karatedopi
+  #   mem_limit: 500m
+  #   ports:
+  #     - '8080:8080'
+  #   networks:
+  #     - dev-network
+  #   depends_on:
+  #     - postgres-server
+  #   environment:
+  #     - APP_PROFILE=dev
+  #     - DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
+  #     - DB_USERNAME=jonataslaet
+  #     - DB_PASSWORD=blendo273
   # ====================================================================================================================
   # POSTGRES SERVER
   # ====================================================================================================================
