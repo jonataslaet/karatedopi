@@ -5,6 +5,7 @@ import br.com.karatedopi.entities.*;
 import br.com.karatedopi.repositories.AddressRepository;
 import br.com.karatedopi.repositories.RoleRepository;
 import br.com.karatedopi.repositories.UserRepository;
+import br.com.karatedopi.services.exceptions.AlreadyInUseException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,7 @@ public class RegistrationService {
 	private final AddressRepository addressRepository;
 
 	public RegisterDTO createRegistration(RegisterDTO registerDTO) {
+		validateNonExistingEmail(registerDTO.getEmail());
 		User user = getUser(registerDTO);
 		Profile profile = getProfile(registerDTO);
 		profile.setUser(user);
@@ -41,6 +43,12 @@ public class RegistrationService {
 		return registerDTO;
 	}
 
+	private void validateNonExistingEmail(String email) {
+		if (userRepository.countUsersByEmail(email) > 0) {
+			throw new AlreadyInUseException("Email already exists");
+		}
+	}
+
 	public void deleteRegistrationByUserId(Long userId) {
 		getUserById(userId);
 		userRepository.deleteById(userId);
@@ -49,8 +57,7 @@ public class RegistrationService {
 	private User getUserById(Long id) {
 		User foundProfile = userRepository.findById(id).orElse(null);
 		if (Objects.isNull(foundProfile)) {
-//			TODO: Make a custom exception instead of RuntimeException below
-			throw new RuntimeException("User not found");
+			throw new ResourceNotFoundException("User not found for id = " + id);
 		}
 		return foundProfile;
 	}

@@ -1,13 +1,18 @@
 package br.com.karatedopi.services;
 
+import br.com.karatedopi.controllers.dtos.AuthenticationResponse;
+import br.com.karatedopi.controllers.dtos.CredentialsDTO;
 import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.UserDetailsProjection;
 import br.com.karatedopi.repositories.UserRepository;
+import br.com.karatedopi.services.exceptions.InvalidAuthenticationException;
+import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,12 +22,13 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         List<UserDetailsProjection> userDetailsProjections =
                 userRepository.searchUserAndRolesByEmail(email);
         if (userDetailsProjections.isEmpty()) {
-            throw new UsernameNotFoundException("User not found for email = " + email);
+            throw new ResourceNotFoundException("User not found for email = " + email);
         }
         User user = new User();
         user.setEmail(email);

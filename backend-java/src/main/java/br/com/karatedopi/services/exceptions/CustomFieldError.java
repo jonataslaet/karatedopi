@@ -1,4 +1,4 @@
-package br.com.karatedopi.controllers.dtos;
+package br.com.karatedopi.services.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDTO {
-
-	private String email;
-	private String password;
+public class CustomFieldError {
+    private String name;
+    private String message;
 }
