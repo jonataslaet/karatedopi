@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { EnumTranslationPipe } from './common/enum-translation-pipe';
 import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
 import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
+import { HeaderComponent } from './components/header/header.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 import { ProfileListComponent } from './components/profile-list/profile-list.component';
 import { TournamentsListComponent } from './components/tournaments-list/tournaments-list.component';
 import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
@@ -20,7 +22,6 @@ import { ProfileService } from './services/profile.service';
 import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 import { TournamentService } from './services/tournament.service';
-import { HeaderComponent } from './components/header/header.component';
 
 const routes: Routes = [
   {
@@ -37,10 +38,13 @@ const routes: Routes = [
     path: 'tournaments', component: TournamentsListComponent
   },
   {
-    path: '', redirectTo: '/profiles', pathMatch: 'full'
+    path: 'login', component: LoginFormComponent
   },
   {
-    path: '**', redirectTo: '/profiles', pathMatch: 'full'
+    path: '', redirectTo: '/login', pathMatch: 'full'
+  },
+  {
+    path: '**', redirectTo: '/login', pathMatch: 'full'
   }
 ];
 
@@ -53,7 +57,8 @@ const routes: Routes = [
     CreateRegistrationComponent,
     TournamentsListComponent,
     EnumTranslationPipe,
-    HeaderComponent
+    HeaderComponent,
+    LoginFormComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
