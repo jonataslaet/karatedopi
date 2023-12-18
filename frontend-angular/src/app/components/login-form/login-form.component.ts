@@ -19,6 +19,7 @@ export class LoginFormComponent {
     lastname: '',
     email: '',
     accessToken: '',
+    roles: []
   };
 
   constructor(
