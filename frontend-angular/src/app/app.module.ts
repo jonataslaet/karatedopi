@@ -23,6 +23,7 @@ import { ProfileService } from './services/profile.service';
 import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 import { TournamentService } from './services/tournament.service';
+import { HomeComponent } from './components/home/home.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TournamentService } from './services/tournament.service';
     TournamentsListComponent,
     EnumTranslationPipe,
     HeaderComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    HomeComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

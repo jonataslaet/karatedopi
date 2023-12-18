@@ -46,13 +46,9 @@ export class LoginFormComponent {
         if (this.authenticationResponse.accessToken) {
           this.loginService.setAuthToken(this.authenticationResponse.accessToken);
           this.authenticationService.currentUserSignal.set(this.authenticationResponse);
-          this.navigateTo('/tournaments');
+          this.navigateTo('/home');
         }
       });
-  }
-
-  navigateToRegistration() {
-    this.router.navigate(['/registration']);
   }
 
   navigateTo(endpoint: string) {
