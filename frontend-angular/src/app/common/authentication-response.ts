@@ -1,3 +1,3 @@
 export class AuthenticationResponse {
-  constructor(public email: string, public accessToken: string) {}
+  constructor(public firstname: string, public lastname: string, public email: string, public accessToken: string) {}
 }

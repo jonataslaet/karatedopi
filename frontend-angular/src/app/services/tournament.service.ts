@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TournamentsReadResponse } from '../common/tournaments-read-response';
@@ -9,7 +8,7 @@ import { RequestService } from './request.service';
 })
 export class TournamentService {
 
-  constructor(private requestService: RequestService, private httpClient: HttpClient) { }
+  constructor(private requestService: RequestService) { }
 
   getTournamentListPaginate(thePage: number, thePageSize: number, theField: string, theDirection: string): Observable<TournamentsReadResponse> {
     const endpoint = `/tournaments?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;

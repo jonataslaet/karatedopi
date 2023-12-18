@@ -1,22 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthenticationResponse } from '../common/authentication-response';
-import { CredentialsDTO } from '../common/credentials-dto';
 import { RequestService } from './request.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthenticationService {
-  constructor(private requestService: RequestService) {}
 
-  authenticate(
-    credentials: CredentialsDTO
-  ): Observable<AuthenticationResponse> {
-    return this.requestService.request('POST', '/login', credentials);
-  }
+  currentUserSignal = signal<AuthenticationResponse | undefined | null>(undefined);
 
-  setAuthToken(token: string) {
-    this.requestService.setAuthToken(token);
+  constructor(private requestService: RequestService) { }
+
+  getAuthenticatedUser(): Observable<AuthenticationResponse> {
+    return this.requestService.request('GET', '/user');
   }
 }

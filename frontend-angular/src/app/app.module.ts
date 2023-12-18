@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { routes } from './common/app.routes';
 import { EnumTranslationPipe } from './common/enum-translation-pipe';
 import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
 import { DeleteDialogProfileComponent } from './components/delete-dialog-profile/delete-dialog-profile.component';
@@ -23,30 +24,6 @@ import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 import { TournamentService } from './services/tournament.service';
 
-const routes: Routes = [
-  {
-    path:'registration',
-    component: CreateRegistrationComponent
-  },
-  {
-    path:'profile/update/:id', component: UpdateProfileComponent
-  },
-  {
-    path: 'profiles', component: ProfileListComponent
-  },
-  {
-    path: 'tournaments', component: TournamentsListComponent
-  },
-  {
-    path: 'login', component: LoginFormComponent
-  },
-  {
-    path: '', redirectTo: '/login', pathMatch: 'full'
-  },
-  {
-    path: '**', redirectTo: '/login', pathMatch: 'full'
-  }
-];
 
 @NgModule({
   declarations: [
