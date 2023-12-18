@@ -1,6 +1,5 @@
 package br.com.karatedopi.controllers.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponse {
 
     private String email;
-
-    @JsonProperty("access_token")
+    private String firstname;
+    private String lastname;
     private String accessToken;
+
 }

@@ -26,7 +26,7 @@ public class SecurityConfiguration {
     
     private final String[] PUBLIC_ENDPOINTS = {"/hello"};
     private final String[] POST_PUBLIC_ENDPOINTS = {"/login", "/registration"};
-    private final String[] GET_PUBLIC_ENDPOINTS = {"/cities**"};
+    private final String[] GET_PUBLIC_ENDPOINTS = {"/cities**", "/states/all"};
 
     @Bean
     @Profile("test")

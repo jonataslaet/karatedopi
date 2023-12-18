@@ -22,7 +22,6 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         List<UserDetailsProjection> userDetailsProjections =
@@ -31,10 +30,10 @@ public class UserService implements UserDetailsService {
             throw new ResourceNotFoundException("User not found for email = " + email);
         }
         User user = new User();
-        user.setEmail(email);
+        user.setId(userDetailsProjections.get(0).getId());
+        user.setEmail(userDetailsProjections.get(0).getUsername());
         user.setPassword(userDetailsProjections.get(0).getPassword());
-        for (UserDetailsProjection userDetailsProjection :
-                userDetailsProjections) {
+        for (UserDetailsProjection userDetailsProjection: userDetailsProjections) {
             user.addRole(new Role(userDetailsProjection.getRoleId(), userDetailsProjection.getAuthority()));
         }
         return user;
