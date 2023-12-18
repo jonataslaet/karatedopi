@@ -78,7 +78,7 @@ public class TokenConfiguration {
         return header != null;
     }
 
-    private void setTokenAutentication(String[] fulltoken) {
+    private void setTokenAuthentication(String[] fulltoken) {
         SecurityContextHolder.getContext().setAuthentication(this.validateToken(fulltoken[1]));
     }
 
@@ -88,7 +88,7 @@ public class TokenConfiguration {
             String[] fulltoken = header.split(" ");
             if (isBearerToken(fulltoken)) {
                 try {
-                    setTokenAutentication(fulltoken);
+                    setTokenAuthentication(fulltoken);
                 } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();
                     throw e;

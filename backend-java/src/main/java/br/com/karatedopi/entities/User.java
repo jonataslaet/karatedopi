@@ -29,10 +29,11 @@ public class User implements UserDetails {
 	private String email;
 	private String password;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@Builder.Default
 	private Set<Role> roles = new HashSet<>();
 
 	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
