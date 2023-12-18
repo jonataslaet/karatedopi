@@ -4,6 +4,7 @@ import br.com.karatedopi.configurations.TokenConfiguration;
 import br.com.karatedopi.controllers.dtos.AuthenticationResponse;
 import br.com.karatedopi.controllers.dtos.CredentialsDTO;
 import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.repositories.ProfileRepository;
 import br.com.karatedopi.repositories.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,7 @@ public class AuthService {
                     .lastname(getLastname(profile.getFullname()))
                     .email(credentialsDTO.email())
                     .accessToken(tokenConfiguration.createToken(user))
+                    .authorities(user.getRoles().stream().map(Role::getAuthority).collect(Collectors.toSet()))
                     .build();
         }
         throw new InvalidAuthenticationException("Email or password are invalid");
