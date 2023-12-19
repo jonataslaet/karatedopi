@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationResponse } from 'src/app/common/authentication-response';
@@ -12,7 +12,7 @@ import { KaratedopiValidators } from 'src/app/validators/karatedopi-validators';
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css'],
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
 
   authenticationResponse: AuthenticationResponse = {
     firstname: '',
@@ -28,6 +28,19 @@ export class LoginFormComponent {
     private router: Router,
     private authenticationService: AuthenticationService
   ) {}
+
+  ngOnInit(): void {
+    this.authenticationService.getAuthenticatedUser()
+      .subscribe({
+        next: (response: AuthenticationResponse) => {
+          this.authenticationService.currentUserSignal.set(response);
+          this.navigateTo('/home');
+        },
+        error: () => {
+          this.navigateTo('/login');
+        }
+      });
+  }
 
   formGroup = this.formBuiilder.nonNullable.group({
     email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),

@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
           this.authenticationService.currentUserSignal.set(response);
         },
         error: () => {
-          this.authenticationService.currentUserSignal.set(null);
+          this.logout();
         }
       });
   }
