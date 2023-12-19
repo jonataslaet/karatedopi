@@ -5,6 +5,7 @@ import br.com.karatedopi.controllers.dtos.ProfileReadDTO;
 import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
 import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.repositories.ProfileRepository;
+import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,8 +42,7 @@ public class ProfileService {
 	private Profile getProfile(Long id) {
 		Profile foundProfile = profileRepository.findById(id).orElse(null);
 		if (Objects.isNull(foundProfile)) {
-//			TODO: Make a custom exception instead of RuntimeException below
-			throw new RuntimeException("Profile not found");
+			throw new ResourceNotFoundException("Profile not found id = " + id);
 		}
 		return foundProfile;
 	}

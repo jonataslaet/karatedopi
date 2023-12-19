@@ -1,5 +1,6 @@
 package br.com.karatedopi.entities;
 
+import br.com.karatedopi.entities.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,11 @@ public class User implements UserDetails {
 	private Long id;
 	private String email;
 	private String password;
+	private String firstname;
+	private String lastname;
+
+	@Enumerated(EnumType.STRING)
+	private UserStatus status;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role",

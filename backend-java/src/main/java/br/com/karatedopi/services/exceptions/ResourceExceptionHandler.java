@@ -49,4 +49,28 @@ public class ResourceExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
     }
+
+    @ExceptionHandler(AlreadyInUseException.class)
+    public ResponseEntity<ValidationError> alreadyInUseException(AlreadyInUseException ex, HttpServletRequest httpServletRequest) {
+        ValidationError validationError = new ValidationError();
+        validationError.setTimestamp(Instant.now());
+        validationError.setStatus(HttpStatus.BAD_REQUEST.value());
+        validationError.setError("Resource already in use");
+        validationError.setMessage(ex.getMessage());
+        validationError.setPath(httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
+    }
+
+    @ExceptionHandler(NoSuchFieldException.class)
+    public ResponseEntity<ValidationError> noSuchFieldException(NoSuchFieldException ex, HttpServletRequest httpServletRequest) {
+        ValidationError validationError = new ValidationError();
+        validationError.setTimestamp(Instant.now());
+        validationError.setStatus(HttpStatus.BAD_REQUEST.value());
+        validationError.setError("Field not found");
+        validationError.setMessage(ex.getMessage());
+        validationError.setPath(httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
+    }
 }

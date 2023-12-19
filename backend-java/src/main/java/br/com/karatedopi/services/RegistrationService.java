@@ -2,6 +2,7 @@ package br.com.karatedopi.services;
 
 import br.com.karatedopi.controllers.dtos.RegisterDTO;
 import br.com.karatedopi.entities.*;
+import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.AddressRepository;
 import br.com.karatedopi.repositories.RoleRepository;
 import br.com.karatedopi.repositories.UserRepository;
@@ -12,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -20,19 +20,17 @@ public class RegistrationService {
 	private static final Long ROLE_USER_ID = 4L;
 
 	private final PasswordEncoder passwordEncoder;
-
 	private final UserRepository userRepository;
-
 	private final RoleRepository roleRepository;
-
 	private final StateService stateService;
-
 	private final AddressRepository addressRepository;
 
 	public RegisterDTO createRegistration(RegisterDTO registerDTO) {
 		validateNonExistingEmail(registerDTO.getEmail());
 		User user = getUser(registerDTO);
 		Profile profile = getProfile(registerDTO);
+		user.setFirstname(getFirstname(profile.getFullname()));
+		user.setLastname(getLastname(profile.getFullname()));
 		profile.setUser(user);
 		user.setProfile(profile);
 		Address address = profile.getAddress();
@@ -50,22 +48,21 @@ public class RegistrationService {
 	}
 
 	public void deleteRegistrationByUserId(Long userId) {
-		getUserById(userId);
+		validUserExistence(userId);
 		userRepository.deleteById(userId);
 	}
 
-	private User getUserById(Long id) {
-		User foundProfile = userRepository.findById(id).orElse(null);
-		if (Objects.isNull(foundProfile)) {
+	private void validUserExistence(Long id) {
+		if (userRepository.existsById(id)) {
 			throw new ResourceNotFoundException("User not found for id = " + id);
 		}
-		return foundProfile;
 	}
 
 	private User getUser(RegisterDTO registerDTO) {
 		User user = User.builder()
 				.email(registerDTO.getEmail())
 				.password(passwordEncoder.encode(registerDTO.getPassword()))
+				.status(UserStatus.PENDING_EVALUATION)
 				.roles(new HashSet<>())
 				.build();
 		roleRepository.findById(ROLE_USER_ID).ifPresent(role -> user.getRoles().add(role));
@@ -105,4 +102,27 @@ public class RegistrationService {
 			cityName.equalsIgnoreCase(city.getName())).findFirst().orElseThrow(() ->
 				new ResourceNotFoundException("No city was found for this state"));
 	}
+
+	private String getFirstname(String fullname) {
+		String name = getPiecesOfFullname(fullname)[0];
+		return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+	}
+
+	private String getLastname(String fullname) {
+		String[] piecesOfTheFullname = getPiecesOfFullname(fullname);
+		String name = piecesOfTheFullname[piecesOfTheFullname.length - 1];
+		return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+	}
+
+	private String[] getPiecesOfFullname(String fullname) {
+		if (isInvalidFullname(fullname)) {
+			return new String[0];
+		};
+		return fullname.split(" ");
+	}
+
+	private static boolean isInvalidFullname(String fullname) {
+		return fullname == null || fullname.trim().isEmpty();
+	}
+
 }
