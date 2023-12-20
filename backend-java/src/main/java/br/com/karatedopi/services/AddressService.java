@@ -17,7 +17,7 @@ public class AddressService {
 	private final AddressRepository addressRepository;
 
 	private final StateService stateService;
-	
+
 	public Page<AddressDTO> getPagedAddresses(String cityName, String stateName, Pageable pagination) {
 		State state = stateService.findStateByName(stateName);
 		City city = state.getCityByName(cityName);
@@ -25,8 +25,5 @@ public class AddressService {
 		return addresses.map(AddressDTO::getAddressDTO);
 	}
 
-    public Address save(Address address) {
-		return addressRepository.save(address);
-    }
 }
 
