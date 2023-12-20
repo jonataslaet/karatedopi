@@ -16,8 +16,8 @@ export class RequestService {
         body?: any,
         options?: any
     ): Observable<any> {
-        endpoint = endpoint.replace(/\//g, '');
-        const url = `${this.baseUrl}/${endpoint}`;
+        endpoint = endpoint.replace(/\/+(\w)/g, '/$1');
+        const url = `${this.baseUrl}${endpoint}`;
         if (this.getAuthToken() !== null) {
             if (!options) {
                 options = {};
@@ -38,6 +38,9 @@ export class RequestService {
             };
             return this.httpClient.post(url, body, options);
         case 'PUT':
+            if (this.isEmptyOrNull(options)) {
+                return this.httpClient.put(url, body);
+            };
             return this.httpClient.put(url, body, options);
         case 'DELETE':
             return this.httpClient.delete(url, options);

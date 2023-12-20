@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { RegistrationForm } from '../common/registration-form';
+import { RequestService } from './request.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistrationService {
 
-  private baseUrl = 'http://localhost:8080/registration';
-
-  constructor(private httpClient: HttpClient) { }
+  constructor(private requestService: RequestService) { }
 
   createRegistration(payload: RegistrationForm){
-    const creationUrl = `${this.baseUrl}`;
-    return this.httpClient.post<RegistrationForm>(creationUrl, payload);
+    return this.requestService.request('POST', '/registration');
   }
 
   deleteRegistrationByUserId(id: number) {
-    return this.httpClient.delete(`${this.baseUrl}/${id}`);
+    const endpoint = `/registration/${id}`;
+    return this.requestService.request('DELETE', endpoint);
   }
 }

@@ -22,6 +22,8 @@ import { ProfileService } from './services/profile.service';
 import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 import { TournamentService } from './services/tournament.service';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { EvaluateDialogUserComponent } from './components/evaluate-dialog-user/evaluate-dialog-user.component';
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import { TournamentService } from './services/tournament.service';
     EnumTranslationPipe,
     HeaderComponent,
     LoginFormComponent,
-    HomeComponent
+    HomeComponent,
+    UserListComponent,
+    EvaluateDialogUserComponent
   ],
   imports: [
     HttpClientModule,

@@ -6,6 +6,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { ProfileListComponent } from './components/profile-list/profile-list.component';
 import { TournamentsListComponent } from './components/tournaments-list/tournaments-list.component';
 import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 const routes: Routes = [{
   path: 'home',
@@ -30,6 +31,10 @@ const routes: Routes = [{
 {
   path: 'login',
   component: LoginFormComponent,
+},
+{
+  path: 'users',
+  component: UserListComponent,
 },
 {
   path: '',

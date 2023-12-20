@@ -4,6 +4,7 @@
     </a></span>
 
     <div *ngIf="currentUserSignal()">
+        <span><a [routerLink]="['/users']" class="menu-item">Usuários</a></span>
         <span><a [routerLink]="['/profiles']" class="menu-item">Fichas</a></span>
         <span><a [routerLink]="['/tournaments']" class="menu-item">Torneios</a></span>
         <span class="menu-item" style="flex-grow: 1; text-align: right;">
