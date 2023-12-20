@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,7 +29,6 @@ import java.util.Objects;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final ProfileService profileService;
     private final RoleService roleService;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -39,6 +39,8 @@ public class UserService implements UserDetailsService {
         }
         User user = new User();
         user.setId(userDetailsProjections.get(0).getId());
+        user.setFirstname(userDetailsProjections.get(0).getFirstname());
+        user.setLastname(userDetailsProjections.get(0).getLastname());
         user.setEmail(userDetailsProjections.get(0).getUsername());
         user.setPassword(userDetailsProjections.get(0).getPassword());
         for (UserDetailsProjection userDetailsProjection: userDetailsProjections) {
@@ -72,8 +74,20 @@ public class UserService implements UserDetailsService {
     }
 
     private void fillEvaluation(User foundUser, UserEvaluationDTO userEvaluationDTO) {
-        foundUser.getRoles().add(roleService.getRoleByName(userEvaluationDTO.authority()));
+        Role evaluationRole = roleService.getRoleByName(userEvaluationDTO.authority());
+        removeBiggerAuthoritiesThanInEvaluationRole(foundUser, evaluationRole);
+        foundUser.getRoles().add(evaluationRole);
         foundUser.setStatus(UserStatus.getByValue(userEvaluationDTO.status()));
+    }
+
+    private void removeBiggerAuthoritiesThanInEvaluationRole(User foundUser, Role evaluationRole) {
+        Iterator<Role> iterator = foundUser.getRoles().iterator();
+        while (iterator.hasNext()) {
+            Role role = iterator.next();
+            if (role.getId() < evaluationRole.getId()) {
+                iterator.remove();
+            }
+        }
     }
 
     private User getUser(Long id) {

@@ -11,6 +11,7 @@ import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 
@@ -25,6 +26,7 @@ public class RegistrationService {
 	private final StateService stateService;
 	private final AddressRepository addressRepository;
 
+	@Transactional
 	public RegisterDTO createRegistration(RegisterDTO registerDTO) {
 		validateNonExistingEmail(registerDTO.getEmail());
 		User user = getUser(registerDTO);
@@ -47,13 +49,14 @@ public class RegistrationService {
 		}
 	}
 
+	@Transactional
 	public void deleteRegistrationByUserId(Long userId) {
 		validUserExistence(userId);
 		userRepository.deleteById(userId);
 	}
 
 	private void validUserExistence(Long id) {
-		if (userRepository.existsById(id)) {
+		if (!userRepository.existsById(id)) {
 			throw new ResourceNotFoundException("User not found for id = " + id);
 		}
 	}
