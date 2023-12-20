@@ -1,3 +1,33 @@
+DROP TABLE IF EXISTS profile_phone_numbers;
+DROP TABLE IF EXISTS profile;
+DROP TABLE IF EXISTS tournament;
+DROP TABLE IF EXISTS address;
+DROP TABLE IF EXISTS city;
+DROP TABLE IF EXISTS state;
+DROP TABLE IF EXISTS tb_user_role;
+DROP TABLE IF EXISTS tb_user;
+DROP TABLE IF EXISTS tb_role;
+
+CREATE TABLE tb_role (id bigserial, authority varchar(255) NOT NULL, CONSTRAINT tb_role_pkey PRIMARY KEY (id));
+CREATE TABLE tb_user (created_on timestamp(6) NOT NULL, id bigserial, updated_on timestamp(6) NULL, email varchar(255) NOT NULL, firstname varchar(255) NOT NULL, lastname varchar(255) NOT NULL, "password" varchar(255) NOT NULL, status varchar(255) NOT NULL, CONSTRAINT tb_user_pkey PRIMARY KEY (id));
+CREATE TABLE tb_user_role (role_id bigserial, user_id bigserial);
+CREATE TABLE state (id bigserial, name varchar(255) NOT NULL, state_abbreviation varchar(255) NOT NULL, CONSTRAINT state_pkey PRIMARY KEY (id));
+CREATE TABLE city (id bigserial, state_id int8 NOT NULL, name varchar(255) NULL, CONSTRAINT city_pkey PRIMARY KEY (id));
+CREATE TABLE address (city_id bigserial, id bigserial, neighbourhood varchar(255) NOT NULL, number varchar(255) NOT NULL, street varchar(255) NOT NULL, zip_code varchar(255) NULL, CONSTRAINT address_pkey PRIMARY KEY (id));
+CREATE TABLE tournament (address_id bigserial, event_date timestamp(6) NOT NULL, id bigserial, name varchar(255) NOT NULL, status varchar(255) NOT NULL, CONSTRAINT tournament_pkey PRIMARY KEY (id));
+CREATE TABLE profile (birthday date NOT NULL, address_id bigserial, created_on timestamp(6) NOT NULL, tournament_id int8 NULL, updated_on timestamp(6) NULL, user_id bigserial, blood_type varchar(255) NOT NULL, cpf varchar(255) NOT NULL, father varchar(255) NOT NULL, fullname varchar(255) NOT NULL, mother varchar(255) NOT NULL, rg varchar(255) NOT NULL, CONSTRAINT profile_pkey PRIMARY KEY (user_id));
+CREATE TABLE profile_phone_numbers (profile_user_id bigserial, phone_numbers varchar(255) NULL, CONSTRAINT profile_phone_numbers_pkey PRIMARY KEY (profile_user_id, phone_numbers));
+
+ALTER TABLE tb_user_role ADD CONSTRAINT fk_tb_user_role_user_id FOREIGN KEY (user_id) REFERENCES tb_user(id);
+ALTER TABLE tb_user_role ADD CONSTRAINT fk_tb_user_role_role_id FOREIGN KEY (role_id) REFERENCES tb_role(id);
+ALTER TABLE city ADD CONSTRAINT fk_city_state_id FOREIGN KEY (state_id) REFERENCES state(id);
+ALTER TABLE address ADD CONSTRAINT fk_address_city_id FOREIGN KEY (city_id) REFERENCES city(id);
+ALTER TABLE tournament ADD CONSTRAINT fk_tournament_address_id FOREIGN KEY (address_id) REFERENCES address(id);
+ALTER TABLE profile ADD CONSTRAINT fk_profile_address_id FOREIGN KEY (address_id) REFERENCES address(id);
+ALTER TABLE profile ADD CONSTRAINT fk_profile_tournament_id FOREIGN KEY (tournament_id) REFERENCES tournament(id);
+ALTER TABLE profile ADD CONSTRAINT fk_profile_user_id FOREIGN KEY (user_id) REFERENCES tb_user(id);
+ALTER TABLE profile_phone_numbers ADD CONSTRAINT fk_profile_phone_numbers_profile_user_id FOREIGN KEY (profile_user_id) REFERENCES profile(user_id);
+
 INSERT INTO tb_role (authority) VALUES ('ROLE_ROOT');
 INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
 INSERT INTO tb_role (authority) VALUES ('ROLE_MODERATOR');
@@ -5591,3 +5621,15 @@ INSERT INTO city (name, state_id) VALUES ('Cristais Paulista', 26);
 INSERT INTO city (name, state_id) VALUES ('Cruzália', 26);
 INSERT INTO city (name, state_id) VALUES ('Cruzeiro', 26);
 INSERT INTO city (name, state_id) VALUES ('Cubatão', 26);
+
+INSERT INTO address (city_id, neighbourhood, number, street, zip_code) VALUES(3179, 'Monte Castelo', 'S/N', 'Rua Antônio Cavour de Miranda', '64017310');
+insert into address (city_id, neighbourhood, number, street, zip_code) values (3179, 'Santo Antônio', '649', 'Rua Curitiba', '64028220');
+INSERT INTO tournament (address_id, event_date, name, status) VALUES(1, NOW(), 'I Torneio de Karatê', 'OPENED');
+insert into tb_user (created_on, email, firstname, lastname, password, status) values (NOW(), 'blendolove@hotmail.com', 'Laet', 'Jonatas', '$2a$10$qNOtpf.WH7.uxNGYyRKCMug9Zh9ovh/Mqf49DIVnE88pDbj700ufy', 'ACTIVE');
+insert into profile (address_id, birthday, blood_type, cpf, created_on, father, fullname, mother, rg, user_id) values (2, '1993-09-06', 'O+', '41925146308', NOW(), 'Paulo Miguel Calebe Assis', 'Jonatas Blendo dos Santos Laet', 'Hadassa Daiane Eduarda', '494937221', 1);
+insert into tb_user_role (user_id, role_id) values (1, 1);
+insert into tb_user_role (user_id, role_id) values (1, 2);
+insert into tb_user_role (user_id, role_id) values (1, 3);
+insert into tb_user_role (user_id, role_id) values (1, 4);
+insert into profile_phone_numbers (profile_user_id, phone_numbers) values (1, '86988536019');
+insert into profile_phone_numbers (profile_user_id, phone_numbers) values (1, '8637668508');
