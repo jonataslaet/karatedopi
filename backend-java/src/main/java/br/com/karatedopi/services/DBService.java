@@ -8,7 +8,6 @@ import br.com.karatedopi.entities.City;
 import br.com.karatedopi.entities.enums.StateAbbreviation;
 import br.com.karatedopi.entities.enums.TournamentStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,7 +24,7 @@ public class DBService {
     private final CityService cityService;
 
     public boolean mockDatabase() {
-        List<City> piauiCities = cityService.getAllCitiesByState(StateAbbreviation.PI);
+        List<City> piauiCities = cityService.getAllCitiesByStateNameOrAbbreviation(StateAbbreviation.PI.getName());
         City cityTeresina = piauiCities.stream().filter(city ->
                 city.getName().equalsIgnoreCase("Teresina")).findFirst().orElse(null);
 

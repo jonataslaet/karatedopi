@@ -9,13 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CityService {
 
 	private final CityRepository cityRepository;
@@ -29,18 +30,20 @@ public class CityService {
 		return cities.map(CityDTO::getCityDTO);
 	}
 
-	public List<CityDTO> getAllCitiesDTOByState(StateAbbreviation stateAbbreviation) {
-		return this.getAllCitiesByState(stateAbbreviation).stream().map(CityDTO::getCityDTO).collect(Collectors.toList());
-	}
-
-	public List<City> getAllCitiesByState(StateAbbreviation stateAbbreviation) {
-		List<City> allCitiesByState = cityRepository.findAllCitiesByStateAbbreviation(stateAbbreviation.getName());
+	public List<City> getAllCitiesByStateNameOrAbbreviation(String stateName) {
+		List<City> allCitiesByState = cityRepository.findAllCitiesByStateNameOrAbbreviation(stateName);
 		if (Objects.isNull(allCitiesByState) || allCitiesByState.isEmpty()) throw new ResourceNotFoundException("No city was found for this state");
 		return allCitiesByState;
 	}
 
     public City getCityByCityNameAndStateName(String city, String state) {
 		return cityRepository.findCityByCityNameAndStateName(city, state).orElseThrow(() -> new ResourceNotFoundException("No city was found for this state"));
+	}
+
+	public List<City> getAllCitiesByCityName(String cityName) {
+		List<City> allCitiesByName = cityRepository.findAllCitiesByName(cityName);
+		if (Objects.isNull(allCitiesByName) || allCitiesByName.isEmpty()) throw new ResourceNotFoundException("No city was found for this state");
+		return allCitiesByName;
 	}
 }
 

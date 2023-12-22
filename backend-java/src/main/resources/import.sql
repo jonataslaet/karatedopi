@@ -5624,9 +5624,9 @@ INSERT INTO city (name, state_id) VALUES ('Cubatão', 26);
 
 INSERT INTO address (city_id, neighbourhood, number, street, zip_code) VALUES(3179, 'Monte Castelo', 'S/N', 'Rua Antônio Cavour de Miranda', '64017310');
 insert into address (city_id, neighbourhood, number, street, zip_code) values (3179, 'Santo Antônio', '649', 'Rua Curitiba', '64028220');
-INSERT INTO tournament (address_id, event_date, name, status) VALUES(1, NOW(), 'I Torneio de Karatê', 'OPENED');
-insert into tb_user (created_on, email, firstname, lastname, password, status) values (NOW(), 'blendolove@hotmail.com', 'Laet', 'Jonatas', '$2a$10$qNOtpf.WH7.uxNGYyRKCMug9Zh9ovh/Mqf49DIVnE88pDbj700ufy', 'ACTIVE');
-insert into profile (address_id, birthday, blood_type, cpf, created_on, father, fullname, mother, rg, user_id) values (2, '1993-09-06', 'O+', '41925146308', NOW(), 'Paulo Miguel Calebe Assis', 'Jonatas Blendo dos Santos Laet', 'Hadassa Daiane Eduarda', '494937221', 1);
+INSERT INTO tournament (address_id, event_date, name, status) VALUES(1, TO_TIMESTAMP('2023-12-25 15:30:00', 'YYYY-MM-DD HH24:MI:SS')::timestamp(6), 'I Torneio de Karatê', 'OPENED');
+insert into tb_user (created_on, email, firstname, lastname, password, status) values (CURRENT_TIMESTAMP(6), 'blendolove@hotmail.com', 'Jonatas', 'Laet', '$2a$10$qNOtpf.WH7.uxNGYyRKCMug9Zh9ovh/Mqf49DIVnE88pDbj700ufy', 'ACTIVE');
+insert into profile (address_id, birthday, blood_type, cpf, created_on, father, fullname, mother, rg, user_id) values (2, '1993-09-06', 'O+', '41925146308', CURRENT_TIMESTAMP(6), 'Paulo Miguel Calebe Assis', 'Jonatas Blendo dos Santos Laet', 'Hadassa Daiane Eduarda', '494937221', 1);
 insert into tb_user_role (user_id, role_id) values (1, 1);
 insert into tb_user_role (user_id, role_id) values (1, 2);
 insert into tb_user_role (user_id, role_id) values (1, 3);

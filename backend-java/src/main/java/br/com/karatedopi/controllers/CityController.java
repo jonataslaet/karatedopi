@@ -29,9 +29,4 @@ public class CityController {
 		return ResponseEntity.ok().body(pagedCities);
 	}
 
-	@GetMapping("/all")
-	public ResponseEntity<List<CityDTO>> getAllCitiesByState(@RequestParam(required=false) StateAbbreviation stateAbbreviation){
-		List<CityDTO> cities = cityService.getAllCitiesDTOByState(stateAbbreviation);
-		return ResponseEntity.ok().body(cities);
-	}
 }

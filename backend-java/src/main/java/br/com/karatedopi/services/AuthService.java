@@ -31,6 +31,7 @@ public class AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("Unknown user"));
         if (isMatchedPassword(credentialsDTO, user.getPassword())) {
             return AuthenticationResponse.builder()
+                    .id(user.getId())
                     .firstname(user.getFirstname())
                     .lastname(user.getLastname())
                     .email(credentialsDTO.email())
@@ -45,10 +46,12 @@ public class AuthService {
         User user = authenticated();
         if (Objects.isNull(user)) return null;
         return AuthenticationResponse.builder()
+                .id(user.getId())
                 .firstname(user.getFirstname())
                 .lastname(user.getLastname())
                 .email(user.getEmail())
                 .accessToken(tokenConfiguration.getCurrentToken(httpServletRequest))
+                .authorities(user.getRoles().stream().map(Role::getAuthority).collect(Collectors.toSet()))
                 .build();
     }
 

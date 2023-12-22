@@ -10,9 +10,10 @@ import br.com.karatedopi.entities.State;
 import java.util.Optional;
 
 @Repository
-public interface StateRepository extends JpaRepository<State, Long>{
+public interface StateRepository extends JpaRepository<State, Long> {
 
-    @Query("SELECT DISTINCT state FROM State state WHERE LOWER(state.name) LIKE LOWER(CONCAT('%',:stateName,'%'))")
+    @Query("SELECT DISTINCT state FROM State state WHERE LOWER(state.name) LIKE LOWER(CONCAT('%',:stateName,'%')) " +
+            "OR LOWER(state.stateAbbreviation) LIKE LOWER(CONCAT('%',:stateName,'%'))")
     Optional<State> findStateByName(String stateName);
 
 }
