@@ -69,7 +69,6 @@ export class CreateRegistrationComponent implements OnInit {
     private cityService: CityService, private stateService: StateService) {}
 
   ngOnInit(): void {
-    console.log('entrou em ngOnInit');
     this.stateService.getStates()
     .subscribe({
       next: (response: State[]) => {
@@ -129,18 +128,15 @@ export class CreateRegistrationComponent implements OnInit {
   selectCityAndState(formGroupName: string) {
     const formGroup = this.registrationFormGroup.get(formGroupName);
     this.registrationForm.city = formGroup?.value.city.name as string;
-    this.registrationForm.state = formGroup?.value.state.name as string;    
+    this.registrationForm.state = formGroup?.value.state.name as string;
   }
 
   fillCities(formGroupName: string) {
     const formGroup = this.registrationFormGroup.get(formGroupName);
-    console.log('form = ' + formGroupName);
     const stateCode = formGroup?.value.state.stateAbbreviation as string;
-    console.log('stateCode = ' + stateCode);
     this.cityService.getCities(stateCode)
     .subscribe({
       next: (response: City[]) => {
-        console.log(response);
         this.addressCities = response
       },
       error: err => {

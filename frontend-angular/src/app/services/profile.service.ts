@@ -31,9 +31,7 @@ export class ProfileService {
   }
    
   updateProfile(payload: ProfileInput): Observable<ProfileUpdateResponse> {
-    console.log('d = ' + payload.birthday);
     const updateUrl = `${this.baseUrl}/${payload.id}`;
-    console.log(payload.id);
     return this.httpClient.put<ProfileUpdateResponse>(updateUrl, payload);
   }
   
