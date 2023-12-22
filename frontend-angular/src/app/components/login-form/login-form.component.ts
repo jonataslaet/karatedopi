@@ -15,11 +15,12 @@ import { KaratedopiValidators } from 'src/app/validators/karatedopi-validators';
 export class LoginFormComponent implements OnInit {
 
   authenticationResponse: AuthenticationResponse = {
+    id: null,
     firstname: '',
     lastname: '',
     email: '',
     accessToken: '',
-    roles: []
+    authorities: []
   };
 
   constructor(
@@ -34,10 +35,10 @@ export class LoginFormComponent implements OnInit {
       .subscribe({
         next: (response: AuthenticationResponse) => {
           this.authenticationService.currentUserSignal.set(response);
-          this.navigateTo('/home');
+          this.router.navigate(['/home']);
         },
         error: () => {
-          this.navigateTo('/login');
+          this.router.navigate(['/login']);
         }
       });
   }
@@ -59,12 +60,8 @@ export class LoginFormComponent implements OnInit {
         if (this.authenticationResponse.accessToken) {
           this.loginService.setAuthToken(this.authenticationResponse.accessToken);
           this.authenticationService.currentUserSignal.set(this.authenticationResponse);
-          this.navigateTo('/home');
+          this.router.navigate(['/home']);
         }
       });
-  }
-
-  navigateTo(endpoint: string) {
-    this.router.navigate([endpoint]);
   }
 }

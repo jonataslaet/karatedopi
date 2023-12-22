@@ -1,11 +1,12 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { AuthenticationResponse } from 'src/app/common/authentication-response';
 import { ProfileReadResponse } from 'src/app/common/profile-read-response';
 import { ProfilesReadResponse } from 'src/app/common/profiles-read-response';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { DeleteDialogProfileComponent } from '../delete-dialog-profile/delete-dialog-profile.component';
 
@@ -14,7 +15,7 @@ import { DeleteDialogProfileComponent } from '../delete-dialog-profile/delete-di
   templateUrl: './profile-list.component.html',
   styleUrls: ['./profile-list.component.css']
 })
-export class ProfileListComponent implements AfterViewInit {
+export class ProfileListComponent implements AfterViewInit, OnInit {
   profiles: ProfileReadResponse[] = [];
   dataLength: number;
   pageIndex: number = 0;
@@ -29,8 +30,20 @@ export class ProfileListComponent implements AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
   
-  constructor(private profileService: ProfileService, public dialog: MatDialog, private router: Router) {
+  constructor(private profileService: ProfileService, public dialog: MatDialog, private authenticationService: AuthenticationService) {
     this.dataSource = new MatTableDataSource(this.profiles);
+  }
+
+  ngOnInit(): void {
+    console.log(localStorage.getItem('auth_token'));
+    this.authenticationService.getAuthenticatedUser().subscribe({
+      next: (response: AuthenticationResponse) => {
+        this.authenticationService.currentUserSignal.set(response);
+      },
+      error: () => {
+        this.authenticationService.startFromLogin();
+      },
+    });
   }
 
   ngAfterViewInit() {

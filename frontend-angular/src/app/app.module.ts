@@ -25,6 +25,7 @@ import { ProfileService } from './services/profile.service';
 import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 import { TournamentService } from './services/tournament.service';
+import { AddressListComponent } from './components/address-list/address-list.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { TournamentService } from './services/tournament.service';
     LoginFormComponent,
     HomeComponent,
     UserListComponent,
-    EvaluateDialogUserComponent
+    EvaluateDialogUserComponent,
+    AddressListComponent
   ],
   imports: [
     HttpClientModule,

@@ -3,34 +3,35 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AddressReadResponse } from 'src/app/common/address-read-response';
+import { AddressesReadResponse } from 'src/app/common/addresses-read-response';
 import { AuthenticationResponse } from 'src/app/common/authentication-response';
-import { TournamentReadResponse } from 'src/app/common/tournament-read-response';
-import { TournamentsReadResponse } from 'src/app/common/tournaments-read-response';
+import { AddressService } from 'src/app/services/address.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { TournamentService } from './../../services/tournament.service';
 
 @Component({
-  selector: 'app-tournaments-list',
-  templateUrl: './tournaments-list.component.html',
-  styleUrls: ['./tournaments-list.component.css']
+  selector: 'app-address-list',
+  templateUrl: './address-list.component.html',
+  styleUrls: ['./address-list.component.css']
 })
-export class TournamentsListComponent implements AfterViewInit, OnInit {
-  tournaments: TournamentReadResponse[] = [];
+export class AddressListComponent implements AfterViewInit, OnInit {
+  addresses: AddressReadResponse[] = [];
   dataLength: number;
   pageIndex: number = 0;
   pageSize: number = 3;
   sortField: string = 'id';
   sortDirection: string = 'desc';
-
+  
   displayedColumns: string[] = [
-    'name', 'location', 'status', 'numberOfParticipants', 'eventDate', 'eventTime'
+    'street', 'number', 'zipCode', 'neighbourhood', 'city', 'state'
   ];
-  dataSource: MatTableDataSource<TournamentReadResponse>;
+  dataSource: MatTableDataSource<AddressReadResponse>;
 
   @ViewChild(MatSort) sort: MatSort;
-
-  constructor(private tournamentService: TournamentService, public dialog: MatDialog, private authenticationService: AuthenticationService) {
-    this.dataSource = new MatTableDataSource(this.tournaments);
+  
+  constructor(private addressService: AddressService, 
+    public dialog: MatDialog, private authenticationService: AuthenticationService) {
+    this.dataSource = new MatTableDataSource(this.addresses);
   }
 
   ngOnInit(): void {
@@ -47,20 +48,19 @@ export class TournamentsListComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
-    this.listTournaments(null);
+    this.listAddresses(null);
   }
 
-  listTournaments(event?:PageEvent) {
+  listAddresses(event?:PageEvent) {
     if (event != null) {
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
       this.dataLength = event.length;
     }
-
-    this.tournamentService.getTournamentListPaginate(this.pageIndex, this.pageSize, this.sortField, this.sortDirection)
-      .subscribe((response: TournamentsReadResponse) => {
+    this.addressService.getAddressListPaginate(this.pageIndex, this.pageSize, this.sortField, this.sortDirection)
+      .subscribe((response: AddressesReadResponse) => {
         this.dataSource = new MatTableDataSource(response.content);
-        this.tournaments = response.content;
+        this.addresses = response.content;
         this.dataLength = response.totalElements;
         this.pageIndex = response.pageable.pageNumber;
         this.pageSize = response.pageable.pageSize;
@@ -77,7 +77,6 @@ export class TournamentsListComponent implements AfterViewInit, OnInit {
   onSortChange(sortState: Sort) {
     this.sortDirection = sortState.direction;
     this.sortField = sortState.active;
-    this.listTournaments(null);
+    this.listAddresses(null);
   }
-
 }
