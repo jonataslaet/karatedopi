@@ -4,7 +4,7 @@
     </div>
 
     <div *ngIf="currentUserSignal()" style="display: flex; align-items: center;">
-        <div *ngFor="let menu of menusByRole"><a [routerLink]="[menu.path]" class="menu-item">{{ menu.text }}</a></div>
+        <div *ngFor="let menu of currentMenusByRole()"><a [routerLink]="[menu.path]" class="menu-item">{{ menu.text }}</a></div>
         <div style="flex-grow: 1; text-align: right;">
             <button (click)="logout()" class="menu-item" style="text-align: right;">Sair</button>
         </div>

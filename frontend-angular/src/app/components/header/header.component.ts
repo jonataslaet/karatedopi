@@ -11,7 +11,15 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  menusByRole: MenuItem[] = [];
+
+  authenticationResponse: AuthenticationResponse = {
+    id: null,
+    firstname: '',
+    lastname: '',
+    email: '',
+    accessToken: '',
+    authorities: [],
+  };
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -21,14 +29,15 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.authenticationService.getAuthenticatedUser().subscribe({
       next: (response: AuthenticationResponse) => {
-        if (this.menusByRole.length == 0) {
-          endpoints.menus.forEach((menu: MenuItem) => {
-            if (this.checkAuthority(menu, response.authorities)) {
-              this.menusByRole.push(menu);
-            }
-          });
-        }
         this.authenticationService.currentUserSignal.set(response);
+        let menusByRole: MenuItem[] = [];
+        endpoints.menus.forEach((menu: MenuItem) => {
+          if (this.checkAuthority(menu, response.authorities)) {
+            menusByRole.push(menu);
+          }
+        });
+        this.authenticationService.currentMenusByRole.set(menusByRole);
+        this.authenticationService.currentUserSignal.set(this.authenticationResponse);
       },
       error: () => {
         this.logout();
@@ -37,10 +46,14 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.menusByRole = [];
     localStorage.setItem('auth_token', '');
     this.authenticationService.currentUserSignal.set(null);
+    this.authenticationService.currentMenusByRole.set(null);
     this.router.navigate(['/login']);
+  }
+
+  currentMenusByRole() {
+    return this.authenticationService.currentMenusByRole();
   }
 
   currentUserSignal() {
