@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationResponse } from 'src/app/common/authentication-response';
 import { TournamentReadResponse } from 'src/app/common/tournament-read-response';
 import { TournamentsReadResponse } from 'src/app/common/tournaments-read-response';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -14,7 +13,7 @@ import { TournamentService } from './../../services/tournament.service';
   templateUrl: './tournaments-list.component.html',
   styleUrls: ['./tournaments-list.component.css']
 })
-export class TournamentsListComponent implements AfterViewInit, OnInit {
+export class TournamentsListComponent implements AfterViewInit {
   tournaments: TournamentReadResponse[] = [];
   dataLength: number;
   pageIndex: number = 0;
@@ -31,18 +30,6 @@ export class TournamentsListComponent implements AfterViewInit, OnInit {
 
   constructor(private tournamentService: TournamentService, public dialog: MatDialog, private authenticationService: AuthenticationService) {
     this.dataSource = new MatTableDataSource(this.tournaments);
-  }
-
-  ngOnInit(): void {
-    console.log(localStorage.getItem('auth_token'));
-    this.authenticationService.getAuthenticatedUser().subscribe({
-      next: (response: AuthenticationResponse) => {
-        this.authenticationService.currentUserSignal.set(response);
-      },
-      error: () => {
-        this.authenticationService.startFromLogin();
-      },
-    });
   }
 
   ngAfterViewInit() {

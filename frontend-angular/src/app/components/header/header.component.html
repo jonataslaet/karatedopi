@@ -1,22 +1,19 @@
 <mat-toolbar color="primary">
-    <span><a [routerLink]="['/home']" class="menu-item">
-        Karatê-DÔ Tradicional do Piauí
-    </a></span>
-
-    <div *ngIf="currentUserSignal()">
-        <span><a [routerLink]="['/users']" class="menu-item">Usuários</a></span>
-        <span><a [routerLink]="['/profiles']" class="menu-item">Fichas</a></span>
-        <span><a [routerLink]="['/tournaments']" class="menu-item">Torneios</a></span>
-        <span><a [routerLink]="['/addresses']" class="menu-item">Endereços</a></span>
-        <span class="menu-item" style="flex-grow: 1; text-align: right;">
-            <button (click)="logout()" class="menu-item" style="text-align: right;">Sair</button>
-        </span>
+    <div style="display: flex; align-items: center;">
+        <div><a [routerLink]="['/home']" class="menu-item">Karatê-DÔ Tradicional do Piauí</a></div>
     </div>
 
-    <div *ngIf="currentUserSignal() === null">
-        <span><a [routerLink]="['/registration']" class="menu-item">Cadastrar</a></span>
-        <span class="menu-item" style="flex-grow: 1; text-align: right;">
+    <div *ngIf="currentUserSignal()" style="display: flex; align-items: center;">
+        <div *ngFor="let menu of menusByRole"><a [routerLink]="[menu.path]" class="menu-item">{{ menu.text }}</a></div>
+        <div style="flex-grow: 1; text-align: right;">
+            <button (click)="logout()" class="menu-item" style="text-align: right;">Sair</button>
+        </div>
+    </div>
+
+    <div *ngIf="currentUserSignal() === null" style="display: flex; align-items: center;">
+        <div *ngFor="let menu of menusByRole"><a [routerLink]="[menu.path]" class="menu-item">{{ menu.text }}</a></div>
+        <div style="flex-grow: 1; text-align: right;">
             <a [routerLink]="['/login']" class="menu-item" style="text-align: right;">Entrar</a>
-        </span>
+        </div>
     </div>
 </mat-toolbar>

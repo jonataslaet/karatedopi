@@ -7,15 +7,18 @@ import { ProfileListComponent } from '../components/profile-list/profile-list.co
 import { TournamentsListComponent } from '../components/tournaments-list/tournaments-list.component';
 import { UpdateProfileComponent } from '../components/update-profile/update-profile.component';
 import { UserListComponent } from '../components/user-list/user-list.component';
+import { AuthenticationGuard } from '../services/authentication-guard';
 
 export const routes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'addresses',
         component: AddressListComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'registration',
@@ -24,22 +27,26 @@ export const routes: Routes = [
     {
         path: 'profile/update/:id',
         component: UpdateProfileComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'profiles',
         component: ProfileListComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'tournaments',
         component: TournamentsListComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'login',
-        component: LoginFormComponent,
+        component: LoginFormComponent
     },
     {
         path: 'users',
         component: UserListComponent,
+        canActivate: [AuthenticationGuard]
     },
     {
         path: '',

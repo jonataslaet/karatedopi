@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(localStorage.getItem('auth_token'));
     this.authenticationService.getAuthenticatedUser().subscribe({
       next: (response: AuthenticationResponse) => {
         this.authenticationResponse = response;

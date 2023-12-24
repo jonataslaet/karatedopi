@@ -66,4 +66,8 @@ export class RequestService {
     isEmptyOrNull(options: any) {
         return !options || options == null || Object.keys(options).length <= 0;
     }
+
+    get isLoggedIn(): boolean {
+        return this.getAuthToken() !== null;
+    }
 }

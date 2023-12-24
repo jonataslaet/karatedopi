@@ -1,11 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddressReadResponse } from 'src/app/common/address-read-response';
 import { AddressesReadResponse } from 'src/app/common/addresses-read-response';
-import { AuthenticationResponse } from 'src/app/common/authentication-response';
 import { AddressService } from 'src/app/services/address.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -14,7 +13,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   templateUrl: './address-list.component.html',
   styleUrls: ['./address-list.component.css']
 })
-export class AddressListComponent implements AfterViewInit, OnInit {
+export class AddressListComponent implements AfterViewInit {
   addresses: AddressReadResponse[] = [];
   dataLength: number;
   pageIndex: number = 0;
@@ -32,18 +31,6 @@ export class AddressListComponent implements AfterViewInit, OnInit {
   constructor(private addressService: AddressService, 
     public dialog: MatDialog, private authenticationService: AuthenticationService) {
     this.dataSource = new MatTableDataSource(this.addresses);
-  }
-
-  ngOnInit(): void {
-    console.log(localStorage.getItem('auth_token'));
-    this.authenticationService.getAuthenticatedUser().subscribe({
-      next: (response: AuthenticationResponse) => {
-        this.authenticationService.currentUserSignal.set(response);
-      },
-      error: () => {
-        this.authenticationService.startFromLogin();
-      },
-    });
   }
 
   ngAfterViewInit() {

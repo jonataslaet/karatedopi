@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationResponse } from 'src/app/common/authentication-response';
 import { ProfileReadResponse } from 'src/app/common/profile-read-response';
 import { ProfilesReadResponse } from 'src/app/common/profiles-read-response';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -15,7 +14,7 @@ import { DeleteDialogProfileComponent } from '../delete-dialog-profile/delete-di
   templateUrl: './profile-list.component.html',
   styleUrls: ['./profile-list.component.css']
 })
-export class ProfileListComponent implements AfterViewInit, OnInit {
+export class ProfileListComponent implements AfterViewInit {
   profiles: ProfileReadResponse[] = [];
   dataLength: number;
   pageIndex: number = 0;
@@ -32,18 +31,6 @@ export class ProfileListComponent implements AfterViewInit, OnInit {
   
   constructor(private profileService: ProfileService, public dialog: MatDialog, private authenticationService: AuthenticationService) {
     this.dataSource = new MatTableDataSource(this.profiles);
-  }
-
-  ngOnInit(): void {
-    console.log(localStorage.getItem('auth_token'));
-    this.authenticationService.getAuthenticatedUser().subscribe({
-      next: (response: AuthenticationResponse) => {
-        this.authenticationService.currentUserSignal.set(response);
-      },
-      error: () => {
-        this.authenticationService.startFromLogin();
-      },
-    });
   }
 
   ngAfterViewInit() {

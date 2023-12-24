@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationResponse } from 'src/app/common/authentication-response';
 import { ProfileInput } from 'src/app/common/profile-input';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -32,15 +31,6 @@ export class UpdateProfileComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    console.log(localStorage.getItem('auth_token'));
-    this.authenticationService.getAuthenticatedUser().subscribe({
-      next: (response: AuthenticationResponse) => {
-        this.authenticationService.currentUserSignal.set(response);
-      },
-      error: () => {
-        this.authenticationService.startFromLogin();
-      },
-    });
     this.activatedRoute.paramMap.subscribe((param) => {
       var id = Number(param.get('id'));
       this.getProfileById(id);
