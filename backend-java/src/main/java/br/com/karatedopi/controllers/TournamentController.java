@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,7 @@ public class TournamentController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN')")
 	public ResponseEntity<TournamentDTO> createTournament(
 			@RequestBody TournamentCreateDTO registerDTO
 	) {
@@ -49,6 +51,7 @@ public class TournamentController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN')")
 	public ResponseEntity<Void> deleteTournament(@PathVariable("id") Long id){
 		tournamentService.deleteTournamentById(id);
 		return ResponseEntity.noContent().build();
@@ -61,6 +64,7 @@ public class TournamentController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN')")
 	public ResponseEntity<TournamentDTO> updateTournament(@PathVariable("id") Long id,
    		@RequestBody TournamentDTO tournamentDTO) {
 		TournamentDTO updatedTournament = tournamentService.updateTournament(id, tournamentDTO);
