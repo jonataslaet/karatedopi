@@ -36,12 +36,14 @@ public class ProfileController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
 	public ResponseEntity<ProfileReadDTO> getProfileReadResponse(@PathVariable("id") Long id){
 		ProfileReadDTO profile = profileService.getProfileReadResponseDTO(id);
 		return ResponseEntity.ok().body(profile);
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
 	public ResponseEntity<ProfileUpdateDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileCreateDTO profileCreateDTO){
 		ProfileUpdateDTO updatedProfile = profileService.updateProfile(id, profileCreateDTO);
 		return ResponseEntity.ok().body(updatedProfile);

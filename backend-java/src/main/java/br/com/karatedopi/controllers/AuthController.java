@@ -5,6 +5,7 @@ import br.com.karatedopi.controllers.dtos.CredentialsDTO;
 import br.com.karatedopi.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,7 @@ public class AuthController {
     }
 
     @GetMapping("/user")
+    @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
     public ResponseEntity<AuthenticationResponse> current() {
         AuthenticationResponse authenticationResponse = authService.current();
         return ResponseEntity.ok(authenticationResponse);

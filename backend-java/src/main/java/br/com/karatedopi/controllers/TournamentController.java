@@ -31,6 +31,7 @@ public class TournamentController {
 	private final TournamentService tournamentService;
 	
 	@GetMapping
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
 	public ResponseEntity<Page<TournamentDTO>> getPagedTournaments(
 		@RequestParam(required = false) String status,
 		@PageableDefault(sort="eventDate", direction = Direction.DESC) Pageable pageable
@@ -58,6 +59,7 @@ public class TournamentController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
 	public ResponseEntity<TournamentDTO> getTournament(@PathVariable("id") Long id){
 		TournamentDTO gotTournament = tournamentService.getTournamentById(id);
 		return ResponseEntity.ok().body(gotTournament);

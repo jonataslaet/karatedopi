@@ -5,6 +5,7 @@ import br.com.karatedopi.controllers.dtos.HomeDTO;
 import br.com.karatedopi.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ public class HomeController {
     private final AuthService authService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
 	public ResponseEntity<HomeDTO> getHome() {
         AuthenticationResponse authenticationResponse = authService.current();
         HomeDTO homeDTO = HomeDTO.builder()

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,12 +23,14 @@ public class StateController {
 	private final StateService stateService;
 
 	@GetMapping
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
 	public ResponseEntity<Page<StateDTO>> getStates(@PageableDefault(sort="name", direction = Sort.Direction.DESC) Pageable pagination){
 		Page<StateDTO> states = stateService.getStates(pagination);
 		return ResponseEntity.ok().body(states);
 	}
 
 	@GetMapping("/all")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
 	public ResponseEntity<List<StateDTO>> getAllStates(){
 		List<StateDTO> cities = stateService.getAllCities();
 		return ResponseEntity.ok().body(cities);
