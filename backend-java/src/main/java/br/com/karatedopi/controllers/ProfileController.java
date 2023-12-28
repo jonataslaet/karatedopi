@@ -27,7 +27,7 @@ public class ProfileController {
 	private final ProfileService profileService;
 	
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROLE_MODERATOR')")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
 	public ResponseEntity<Page<ProfileReadDTO>> getPagedProfiles(
 			@RequestParam(required = false) String state,
 			@PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
@@ -36,14 +36,14 @@ public class ProfileController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
 	public ResponseEntity<ProfileReadDTO> getProfileReadResponse(@PathVariable("id") Long id){
 		ProfileReadDTO profile = profileService.getProfileReadResponseDTO(id);
 		return ResponseEntity.ok().body(profile);
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
 	public ResponseEntity<ProfileUpdateDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileCreateDTO profileCreateDTO){
 		ProfileUpdateDTO updatedProfile = profileService.updateProfile(id, profileCreateDTO);
 		return ResponseEntity.ok().body(updatedProfile);

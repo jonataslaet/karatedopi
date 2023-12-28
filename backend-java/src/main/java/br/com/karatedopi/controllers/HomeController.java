@@ -17,7 +17,7 @@ public class HomeController {
     private final AuthService authService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN', 'ROOT_MODERATOR', 'ROOT_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
 	public ResponseEntity<HomeDTO> getHome() {
         AuthenticationResponse authenticationResponse = authService.current();
         HomeDTO homeDTO = HomeDTO.builder()

@@ -34,7 +34,7 @@ public class RegistrationController {
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROOT_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN')")
 	public ResponseEntity<Void> deleteRegistration(@PathVariable("id") Long userId){
 		registrationService.deleteRegistrationByUserId(userId);
 		return ResponseEntity.noContent().build();
