@@ -22,9 +22,18 @@ public enum UserStatus {
 		return name;
 	}
 
-	public static UserStatus getByValue(String value) {
+	public static UserStatus getValueByName(String name) {
 		for (UserStatus status : values()) {
-			if (status.getName().equalsIgnoreCase(value)) {
+			if (status.getName().equalsIgnoreCase(name)) {
+				return status;
+			}
+		}
+		throw new ResourceNotFoundException("No enum constant with name " + name);
+	}
+
+	public static UserStatus getValueByValue(String value) {
+		for (UserStatus status : values()) {
+			if (status.toString().equalsIgnoreCase(value)) {
 				return status;
 			}
 		}

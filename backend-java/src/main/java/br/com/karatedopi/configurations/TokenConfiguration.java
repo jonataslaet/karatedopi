@@ -47,6 +47,7 @@ public class TokenConfiguration {
                 .withExpiresAt(limitDate)
                 .withClaim("id", user.getId())
                 .withClaim("email", user.getEmail())
+                .withClaim("status", user.getStatus().toString())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 

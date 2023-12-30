@@ -1,6 +1,5 @@
 package br.com.karatedopi.controllers.dtos;
 
-import br.com.karatedopi.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

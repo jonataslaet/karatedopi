@@ -9,9 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -46,7 +48,10 @@ public class Tournament {
 	@OneToOne
 	private Address address;
 
-	@OneToMany(mappedBy = "tournament", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tb_tournament_participant",
+			joinColumns = @JoinColumn(name = "tournament_id"),
+			inverseJoinColumns = @JoinColumn(name = "participant_id"))
 	@Builder.Default
 	private List<Profile> participants = new ArrayList<>();
 }

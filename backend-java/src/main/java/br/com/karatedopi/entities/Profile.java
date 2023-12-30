@@ -2,6 +2,8 @@ package br.com.karatedopi.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -9,6 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.MapsId;
@@ -52,8 +55,8 @@ public class Profile {
 	@MapsId
 	private User user;
 
-	@ManyToOne
-	private Tournament tournament;
+	@ManyToMany(mappedBy = "participants")
+	private List<Tournament> tournaments = new ArrayList<>();
 
 	@Column(name = "updated_on")
 	private LocalDateTime updatedOn;

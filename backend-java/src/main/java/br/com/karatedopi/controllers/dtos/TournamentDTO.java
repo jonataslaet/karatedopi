@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,7 +25,7 @@ public class TournamentDTO {
 	private LocalDateTime eventDateTime;
 
 	@Builder.Default
-	private Integer numberOfParticipants = 0;
+	private List<TournamentParticipantDTO> participants = new ArrayList<>();
 
 	public static TournamentDTO getTournamentDTO(Tournament tournament) {
 		return TournamentDTO.builder()
@@ -31,7 +34,11 @@ public class TournamentDTO {
 				.status(tournament.getStatus())
 				.address(AddressDTO.getAddressDTO(tournament.getAddress()))
 				.eventDateTime(tournament.getEventDate())
-				.numberOfParticipants(tournament.getParticipants().size())
+				.participants(
+					tournament.getParticipants().stream()
+						.map(TournamentParticipantDTO::getTournamentParticipantDTO)
+						.collect(Collectors.toList())
+				)
 				.build();
 	}
 }

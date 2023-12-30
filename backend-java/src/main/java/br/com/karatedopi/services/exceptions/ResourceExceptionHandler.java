@@ -55,7 +55,7 @@ public class ResourceExceptionHandler {
     public ResponseEntity<ValidationError> invalidAuthenticationException(InvalidAuthenticationException ex, HttpServletRequest httpServletRequest) {
         ValidationError validationError = new ValidationError();
         validationError.setTimestamp(Instant.now());
-        validationError.setStatus(HttpStatus.BAD_REQUEST.value());
+        validationError.setStatus(HttpStatus.UNAUTHORIZED.value());
         validationError.setError("Authentication Error");
         validationError.setMessage(ex.getMessage());
         validationError.setPath(httpServletRequest.getRequestURI());

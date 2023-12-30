@@ -4,10 +4,16 @@ import br.com.karatedopi.controllers.dtos.TournamentDTO;
 import br.com.karatedopi.entities.Address;
 import br.com.karatedopi.entities.City;
 import br.com.karatedopi.entities.Tournament;
+import br.com.karatedopi.entities.User;
+import br.com.karatedopi.entities.Profile;
+
 import br.com.karatedopi.repositories.AddressRepository;
+import br.com.karatedopi.repositories.ProfileRepository;
 import br.com.karatedopi.repositories.TournamentRepository;
+import br.com.karatedopi.services.exceptions.InvalidAuthenticationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,17 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class TournamentService {
 
-	@Autowired
-	TournamentRepository tournamentRepository;
-
-	@Autowired
-	CityService cityService;
-
-	@Autowired
-	AddressRepository addressRepository;
-
+	private final TournamentRepository tournamentRepository;
+	private final CityService cityService;
+	private final AddressRepository addressRepository;
+	private final ProfileRepository profileRepository;
+	
 	public Page<TournamentDTO> findAllTournaments(String status, Pageable pagination) {
 		if (Objects.isNull(status) || status.isEmpty()){
 			return tournamentRepository.findAllTournaments(pagination).map(TournamentDTO::getTournamentDTO);
@@ -105,6 +108,19 @@ public class TournamentService {
 				!address1.getNeighbourhood().equalsIgnoreCase(address2.getNeighbourhood()) ||
 				!address1.getCity().getName().equalsIgnoreCase(address2.getCity().getName()) ||
 				!address1.getCity().getState().getName().equalsIgnoreCase(address2.getCity().getState().getName());
+	}
+
+	public TournamentDTO participateInTournament(Long id) {
+		User user = AuthService.authenticated();
+		if (Objects.isNull(user)) {
+			throw new InvalidAuthenticationException("The user needs to be authenticated for performing this operation");
+		}
+		Profile profile = profileRepository.findById(user.getId()).orElseThrow(() ->
+				new ResourceNotFoundException("No profile found"));
+		Tournament foundTournament = findTournamentById(id);
+		foundTournament.getParticipants().add(profile);
+		Tournament savedTournament = tournamentRepository.save(foundTournament);
+		return TournamentDTO.getTournamentDTO(savedTournament);
 	}
 }
 

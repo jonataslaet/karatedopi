@@ -117,11 +117,11 @@ public class DBService {
                 .bloodType("O-")
                 .build();
 
-        tournamentService.createTournament(tournamentDTO01);
         registrationService.createRegistration(registerDTO01);
         registrationService.createRegistration(registerDTO02);
         registrationService.createRegistration(registerDTO03);
         registrationService.createRegistration(registerDTO04);
+        tournamentService.createTournament(tournamentDTO01);
 
         return true;
     }

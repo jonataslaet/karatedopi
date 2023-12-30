@@ -43,6 +43,7 @@ public class UserService implements UserDetailsService {
         user.setLastname(userDetailsProjections.get(0).getLastname());
         user.setEmail(userDetailsProjections.get(0).getUsername());
         user.setPassword(userDetailsProjections.get(0).getPassword());
+        user.setStatus(UserStatus.getValueByValue(userDetailsProjections.get(0).getStatus()));
         for (UserDetailsProjection userDetailsProjection: userDetailsProjections) {
             user.addRole(new Role(userDetailsProjection.getRoleId(), userDetailsProjection.getAuthority()));
         }
@@ -77,7 +78,7 @@ public class UserService implements UserDetailsService {
         Role evaluationRole = roleService.getRoleByName(userEvaluationDTO.authority());
         removeBiggerAuthoritiesThanInEvaluationRole(foundUser, evaluationRole);
         foundUser.getRoles().add(evaluationRole);
-        foundUser.setStatus(UserStatus.getByValue(userEvaluationDTO.status()));
+        foundUser.setStatus(UserStatus.getValueByName(userEvaluationDTO.status()));
     }
 
     private void removeBiggerAuthoritiesThanInEvaluationRole(User foundUser, Role evaluationRole) {
