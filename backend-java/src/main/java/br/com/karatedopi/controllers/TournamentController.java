@@ -2,6 +2,7 @@ package br.com.karatedopi.controllers;
 
 import br.com.karatedopi.controllers.dtos.TournamentCreateDTO;
 import br.com.karatedopi.controllers.dtos.TournamentDTO;
+import br.com.karatedopi.controllers.dtos.TournamentParticipantDTO;
 import br.com.karatedopi.services.TournamentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/tournaments")
@@ -77,7 +79,14 @@ public class TournamentController {
 	@PatchMapping("/{id}/participations")
 	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
 	public ResponseEntity<TournamentDTO> participateInTournament(@PathVariable("id") Long id){
-		TournamentDTO updatedUser = tournamentService.participateInTournament(id);
+		TournamentDTO updatedUser = tournamentService.updateParticipationInTournament(id);
 		return ResponseEntity.ok().body(updatedUser);
+	}
+
+	@GetMapping("/{id}/participations")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
+	public ResponseEntity<List<TournamentParticipantDTO>> findParticipants(@PathVariable("id") Long id){
+		List<TournamentParticipantDTO> participants = tournamentService.findParticipants(id);
+		return ResponseEntity.ok().body(participants);
 	}
 }

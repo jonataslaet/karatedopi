@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -39,7 +40,8 @@ public class ProfileService {
 		return ProfileReadDTO.getProfileReadDTO(profile);
 	}
 
-	private Profile getProfile(Long id) {
+	@Transactional(readOnly = true)
+	public Profile getProfile(Long id) {
 		Profile foundProfile = profileRepository.findById(id).orElse(null);
 		if (Objects.isNull(foundProfile)) {
 			throw new ResourceNotFoundException("Profile not found id = " + id);

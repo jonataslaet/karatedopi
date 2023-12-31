@@ -3,6 +3,7 @@ package br.com.karatedopi.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +57,7 @@ public class Profile {
 	private User user;
 
 	@ManyToMany(mappedBy = "participants")
-	private List<Tournament> tournaments = new ArrayList<>();
+	private Set<Tournament> tournaments = new HashSet<>();
 
 	@Column(name = "updated_on")
 	private LocalDateTime updatedOn;

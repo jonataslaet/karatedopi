@@ -1,17 +1,19 @@
 package br.com.karatedopi.services;
 
 import br.com.karatedopi.controllers.dtos.TournamentDTO;
+import br.com.karatedopi.controllers.dtos.TournamentParticipantDTO;
 import br.com.karatedopi.entities.Address;
 import br.com.karatedopi.entities.City;
 import br.com.karatedopi.entities.Tournament;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.Profile;
 
+import br.com.karatedopi.entities.enums.TournamentStatus;
 import br.com.karatedopi.repositories.AddressRepository;
-import br.com.karatedopi.repositories.ProfileRepository;
 import br.com.karatedopi.repositories.TournamentRepository;
 import br.com.karatedopi.services.exceptions.InvalidAuthenticationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
+import br.com.karatedopi.services.exceptions.TournamentParticipationException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -29,8 +33,8 @@ public class TournamentService {
 	private final TournamentRepository tournamentRepository;
 	private final CityService cityService;
 	private final AddressRepository addressRepository;
-	private final ProfileRepository profileRepository;
-	
+	private final ProfileService profileService;
+
 	public Page<TournamentDTO> findAllTournaments(String status, Pageable pagination) {
 		if (Objects.isNull(status) || status.isEmpty()){
 			return tournamentRepository.findAllTournaments(pagination).map(TournamentDTO::getTournamentDTO);
@@ -110,17 +114,61 @@ public class TournamentService {
 				!address1.getCity().getState().getName().equalsIgnoreCase(address2.getCity().getState().getName());
 	}
 
-	public TournamentDTO participateInTournament(Long id) {
+	@Transactional
+	public TournamentDTO updateParticipationInTournament(Long id) {
+		Profile authenticatedProfile = getAuthenticatedProfile();
+		Tournament foundTournament = findTournamentById(id);
+		isValidParticipation(foundTournament, authenticatedProfile);
+		toggleParticipant(foundTournament, authenticatedProfile);
+		Tournament savedTournament = tournamentRepository.save(foundTournament);
+		return TournamentDTO.getTournamentDTO(savedTournament);
+	}
+
+	public void toggleParticipant(Tournament tournament, Profile profile) {
+		if (tournament.getParticipants().contains(profile)) {
+			removeParticipant(tournament, profile);
+		} else {
+			addParticipant(tournament, profile);
+		}
+	}
+
+	private void addParticipant(Tournament tournament, Profile profile) {
+		tournament.getParticipants().add(profile);
+	}
+
+	private void removeParticipant(Tournament tournament, Profile profile) {
+		tournament.getParticipants().remove(profile);
+	}
+
+	private Profile getAuthenticatedProfile() {
 		User user = AuthService.authenticated();
 		if (Objects.isNull(user)) {
 			throw new InvalidAuthenticationException("The user needs to be authenticated for performing this operation");
 		}
-		Profile profile = profileRepository.findById(user.getId()).orElseThrow(() ->
-				new ResourceNotFoundException("No profile found"));
+		return profileService.getProfile(user.getId());
+	}
+
+	private void isValidParticipation(Tournament foundTournament, Profile profile) {
+		if (profile.getFullname().isBlank()) {
+			throw new TournamentParticipationException("You need to fix your personal informations.");
+		}
+		if (foundTournament.getStatus().equals(TournamentStatus.SUSPENDED)) {
+			throw new TournamentParticipationException("This tournament is temporarialy suspended.");
+		}
+		if (foundTournament.getStatus().equals(TournamentStatus.FINISHED)) {
+			throw new TournamentParticipationException("This tournament is finished.");
+		}
+		if (!foundTournament.getStatus().equals(TournamentStatus.OPENED)) {
+			throw new TournamentParticipationException("This tournament is not open for registrations.");
+		}
+	}
+
+	public List<TournamentParticipantDTO> findParticipants(Long id) {
+		List<TournamentParticipantDTO> participantDTOs = new ArrayList<>();
 		Tournament foundTournament = findTournamentById(id);
-		foundTournament.getParticipants().add(profile);
-		Tournament savedTournament = tournamentRepository.save(foundTournament);
-		return TournamentDTO.getTournamentDTO(savedTournament);
+		foundTournament.getParticipants().forEach(participant ->
+				participantDTOs.add(TournamentParticipantDTO.getTournamentParticipantDTO(participant)));
+		return participantDTOs;
 	}
 }
 

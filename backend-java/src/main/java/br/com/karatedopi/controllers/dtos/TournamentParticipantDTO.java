@@ -15,12 +15,13 @@ import java.time.Period;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TournamentParticipantDTO {
-
+	private Long id;
 	private String fullname;
 	private Integer age;
 
 	public static TournamentParticipantDTO getTournamentParticipantDTO(Profile profile) {
 		return TournamentParticipantDTO.builder()
+				.id(profile.getId())
 				.fullname(profile.getFullname())
 				.age(Utils.getAgeByBirthday(profile.getBirthday()))
 				.build();

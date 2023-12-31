@@ -23,7 +23,9 @@ import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -53,5 +55,5 @@ public class Tournament {
 			joinColumns = @JoinColumn(name = "tournament_id"),
 			inverseJoinColumns = @JoinColumn(name = "participant_id"))
 	@Builder.Default
-	private List<Profile> participants = new ArrayList<>();
+	private Set<Profile> participants = new HashSet<>();
 }

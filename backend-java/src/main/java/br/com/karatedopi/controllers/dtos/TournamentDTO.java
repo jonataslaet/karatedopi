@@ -7,7 +7,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -25,7 +27,7 @@ public class TournamentDTO {
 	private LocalDateTime eventDateTime;
 
 	@Builder.Default
-	private List<TournamentParticipantDTO> participants = new ArrayList<>();
+	private Set<TournamentParticipantDTO> participants = new HashSet<>();
 
 	public static TournamentDTO getTournamentDTO(Tournament tournament) {
 		return TournamentDTO.builder()
@@ -37,7 +39,7 @@ public class TournamentDTO {
 				.participants(
 					tournament.getParticipants().stream()
 						.map(TournamentParticipantDTO::getTournamentParticipantDTO)
-						.collect(Collectors.toList())
+						.collect(Collectors.toSet())
 				)
 				.build();
 	}
