@@ -3,10 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { UserReadResponse } from 'src/app/common/user-read-response';
 import { UsersReadResponse } from 'src/app/common/users-read-response';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { EvaluateDialogUserComponent } from '../evaluate-dialog-user/evaluate-dialog-user.component';
 
@@ -30,8 +28,7 @@ export class UserListComponent implements AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
   
-  constructor(private userService: UserService, public dialog: MatDialog,
-    private authenticationService: AuthenticationService, private router: Router) {
+  constructor(private userService: UserService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource(this.users);
   }
 

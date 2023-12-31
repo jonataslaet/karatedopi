@@ -21,7 +21,7 @@ export const endpoints = {
         {
             path: '/tournaments',
             text: 'Torneios',
-            authorities: ['ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR']
+            authorities: ['ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER']
         },
         {
             path: '/users',

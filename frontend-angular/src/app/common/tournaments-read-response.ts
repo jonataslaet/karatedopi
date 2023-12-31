@@ -1,7 +1,7 @@
-import { TournamentReadResponse } from './tournament-read-response';
+import { TournamentItem } from './tournament-item';
 
 export interface TournamentsReadResponse {
-  content: TournamentReadResponse[],
+  content: TournamentItem[],
   totalElements: number,
   totalPages: number,
   pageable: {

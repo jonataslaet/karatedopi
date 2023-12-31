@@ -3,18 +3,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TournamentReadResponse } from 'src/app/common/tournament-read-response';
+import { jwtDecode } from 'jwt-decode';
+import { TournamentItem } from 'src/app/common/tournament-item';
+import { TournamentParticipant } from 'src/app/common/tournament-participant';
 import { TournamentsReadResponse } from 'src/app/common/tournaments-read-response';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ParticipateDialogTournamentComponent } from '../participate-dialog-tournament/participate-dialog-tournament.component';
 import { TournamentService } from './../../services/tournament.service';
 
 @Component({
   selector: 'app-tournaments-list',
   templateUrl: './tournaments-list.component.html',
-  styleUrls: ['./tournaments-list.component.css']
+  styleUrls: ['./tournaments-list.component.css'],
 })
 export class TournamentsListComponent implements AfterViewInit {
-  tournaments: TournamentReadResponse[] = [];
+  tournaments: TournamentItem[] = [];
   dataLength: number;
   pageIndex: number = 0;
   pageSize: number = 3;
@@ -22,13 +24,22 @@ export class TournamentsListComponent implements AfterViewInit {
   sortDirection: string = 'desc';
 
   displayedColumns: string[] = [
-    'name', 'location', 'status', 'numberOfParticipants', 'eventDate', 'eventTime'
+    'name',
+    'location',
+    'status',
+    'numberOfParticipants',
+    'eventDate',
+    'eventTime',
+    'actions',
   ];
-  dataSource: MatTableDataSource<TournamentReadResponse>;
+  dataSource: MatTableDataSource<TournamentItem>;
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private tournamentService: TournamentService, public dialog: MatDialog, private authenticationService: AuthenticationService) {
+  constructor(
+    private tournamentService: TournamentService,
+    public dialog: MatDialog
+  ) {
     this.dataSource = new MatTableDataSource(this.tournaments);
   }
 
@@ -37,14 +48,20 @@ export class TournamentsListComponent implements AfterViewInit {
     this.listTournaments(null);
   }
 
-  listTournaments(event?:PageEvent) {
+  listTournaments(event?: PageEvent) {
     if (event != null) {
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
       this.dataLength = event.length;
     }
 
-    this.tournamentService.getTournamentListPaginate(this.pageIndex, this.pageSize, this.sortField, this.sortDirection)
+    this.tournamentService
+      .getTournamentListPaginate(
+        this.pageIndex,
+        this.pageSize,
+        this.sortField,
+        this.sortDirection
+      )
       .subscribe((response: TournamentsReadResponse) => {
         this.dataSource = new MatTableDataSource(response.content);
         this.tournaments = response.content;
@@ -67,4 +84,27 @@ export class TournamentsListComponent implements AfterViewInit {
     this.listTournaments(null);
   }
 
+  openParticipationInTournament(id: number) {
+    const dialogRef = this.dialog.open(ParticipateDialogTournamentComponent, {
+      width: '250px',
+      data: { id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.tournaments = this.tournaments.filter((_) => _.id !== id);
+        this.listTournaments(null);
+      }
+    });
+  }
+
+  isLoggedUserParticipating(participants: TournamentParticipant[]): boolean {
+    const token = localStorage.getItem('auth_token') ?? '';
+    if (token && token !== null && token.length > 7) {
+      const isParticipant = participants.some(
+        (participant) => participant.id === jwtDecode(token)['id']);
+      return isParticipant;
+    }
+    return false;
+  }
 }
