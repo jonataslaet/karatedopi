@@ -120,7 +120,7 @@ public class RegistrationService {
 	private String[] getPiecesOfFullname(String fullname) {
 		if (isInvalidFullname(fullname)) {
 			return new String[0];
-		};
+		}
 		return fullname.split(" ");
 	}
 
