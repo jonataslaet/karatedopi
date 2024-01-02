@@ -20,12 +20,12 @@ public class ProfileService {
 
 	private final ProfileRepository profileRepository;
 
-	public Page<ProfileReadDTO> getPagedProfiles(String hometown, Pageable paginacao) {
+	public Page<ProfileReadDTO> getPagedProfiles(String hometown, Pageable pageable) {
 		Page<Profile> profiles;
 		if (isBlank(hometown)) {
-			profiles = profileRepository.findAll(paginacao);
+			profiles = profileRepository.findAll(pageable);
 		} else {
-			profiles = profileRepository.findAllByHometown(hometown, paginacao);
+			profiles = profileRepository.findAllByHometown(hometown, pageable);
 		}
 
 		return profiles.map(ProfileReadDTO::getProfileReadDTO);

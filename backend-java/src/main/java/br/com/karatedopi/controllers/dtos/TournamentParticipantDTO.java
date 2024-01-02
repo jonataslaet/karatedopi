@@ -1,13 +1,12 @@
 package br.com.karatedopi.controllers.dtos;
 
-import br.com.karatedopi.entities.City;
 import br.com.karatedopi.entities.Profile;
-import br.com.karatedopi.entities.Tournament;
 import br.com.karatedopi.utils.Utils;
-import lombok.*;
-
-import java.time.LocalDate;
-import java.time.Period;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Setter
