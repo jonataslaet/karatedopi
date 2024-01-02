@@ -40,16 +40,13 @@ export class HeaderComponent implements OnInit {
         this.authenticationService.currentUserSignal.set(this.authenticationResponse);
       },
       error: () => {
-        this.logout();
+        this.authenticationService.startFromLogin();
       },
     });
   }
 
   logout(): void {
-    localStorage.setItem('auth_token', '');
-    this.authenticationService.currentUserSignal.set(null);
-    this.authenticationService.currentMenusByRole.set(null);
-    this.router.navigate(['/login']);
+    this.authenticationService.startFromLogin();
   }
 
   currentMenusByRole() {
@@ -61,9 +58,6 @@ export class HeaderComponent implements OnInit {
   }
 
   checkAuthority(menu: MenuItem, authorities: string[]): boolean {
-    if (menu.authorities.some((authority) => authorities.includes(authority))) {
-      return true;
-    }
-    return false;
+    return menu.authorities.some((authority) => authorities.includes(authority));
   }
 }

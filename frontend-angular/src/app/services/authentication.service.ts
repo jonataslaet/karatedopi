@@ -7,14 +7,16 @@ import { MenuItem } from '../common/menu-item';
 import { RequestService } from './request.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthenticationService {
-
-  currentUserSignal = signal<AuthenticationResponse | undefined | null>(undefined);
+  
+  currentUserSignal = signal<AuthenticationResponse | undefined | null>(
+    undefined
+  );
   currentMenusByRole = signal<MenuItem[] | undefined | null>(undefined);
 
-  constructor(private requestService: RequestService, private router: Router) { }
+  constructor(private requestService: RequestService, private router: Router) {}
 
   authenticate(
     credentials: CredentialsDTO
@@ -26,9 +28,18 @@ export class AuthenticationService {
     return this.requestService.request('GET', '/user');
   }
 
+  get isLoggedIn(): boolean {
+    return this.requestService.isLoggedIn;
+  }
+
+  get authenticatedToken(): string {
+    return this.requestService.getAuthToken();
+  }
+
   startFromLogin(): void {
-    localStorage.setItem('auth_token', '');
+    this.requestService.setAuthToken(null);
     this.currentUserSignal.set(null);
+    this.currentMenusByRole.set(null);
     this.router.navigate(['/login']);
   }
 

@@ -8,6 +8,7 @@ import { TournamentsListComponent } from '../components/tournaments-list/tournam
 import { UpdateProfileComponent } from '../components/update-profile/update-profile.component';
 import { UserListComponent } from '../components/user-list/user-list.component';
 import { AuthenticationGuard } from '../services/authentication-guard';
+import { LoginGuard } from '../services/login-guard';
 
 export const routes: Routes = [
     {
@@ -41,7 +42,8 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginFormComponent
+        component: LoginFormComponent,
+        canActivate: [LoginGuard]
     },
     {
         path: 'users',
