@@ -1,5 +1,6 @@
 package br.com.karatedopi.configurations;
 
+import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.services.UserService;
 import com.auth0.jwt.JWT;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
@@ -48,6 +50,7 @@ public class TokenConfiguration {
                 .withClaim("id", user.getId())
                 .withClaim("email", user.getEmail())
                 .withClaim("status", user.getStatus().toString())
+                .withClaim("authorities", user.getRoles().stream().map(Role::getAuthority).collect(Collectors.toList()))
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
