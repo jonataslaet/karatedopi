@@ -1,5 +1,6 @@
 package br.com.karatedopi.services.exceptions;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,17 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<StandardError> handleTokenExpiredException(TokenExpiredException ex) {
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(HttpStatus.FORBIDDEN.value());
+        standardError.setError("Token has expired");
+        standardError.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -60,7 +72,7 @@ public class ResourceExceptionHandler {
         validationError.setMessage(ex.getMessage());
         validationError.setPath(httpServletRequest.getRequestURI());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(validationError);
     }
 
     @ExceptionHandler(AlreadyInUseException.class)
