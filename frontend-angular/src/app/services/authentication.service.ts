@@ -46,4 +46,8 @@ export class AuthenticationService {
   setAuthToken(token: string) {
     this.requestService.setAuthToken(token);
   }
+
+  getAuthToken(): string {
+    return this.requestService.getAuthToken();
+  }
 }

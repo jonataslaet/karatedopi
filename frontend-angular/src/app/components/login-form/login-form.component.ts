@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthenticationResponse } from 'src/app/common/authentication-response';
 import { CredentialsDTO } from 'src/app/common/credentials-dto';
@@ -25,7 +26,8 @@ export class LoginFormComponent {
   constructor(
     private formBuiilder: FormBuilder,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private snackBar: MatSnackBar
   ) {}
 
   formGroup = this.formBuiilder.nonNullable.group({
@@ -53,7 +55,8 @@ export class LoginFormComponent {
           email: '',
           accessToken: '',
           authorities: []
-        }
+        };
+        this.snackBar.open('Login ou Senha incorretos.','❌');
         this.authenticationService.startFromLogin();
       },
     });

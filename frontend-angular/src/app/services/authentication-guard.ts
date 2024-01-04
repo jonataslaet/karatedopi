@@ -1,5 +1,7 @@
 import { inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { jwtDecode } from 'jwt-decode';
 import { endpoints } from '../common/app.endpoints';
 import { MenuItem } from '../common/menu-item';
@@ -10,6 +12,17 @@ export const AuthenticationGuard: CanActivateFn = (
 ) => {
   const currentEndpoint = `/${route.url[0].path}`;
   const authenticationService = inject(AuthenticationService);
+  const snackBar = inject(MatSnackBar);
+
+  const jwtHelper = inject(JwtHelperService);
+  if (jwtHelper.isTokenExpired(authenticationService.getAuthToken())) {
+    snackBar.open(
+      'Sua sessão expirou. Por favor, faça login novamente.',
+      '❌'
+    );
+    authenticationService.startFromLogin();
+  }
+
   let isAllowedByRole: boolean = false;
   if (authenticationService.isLoggedIn) {
     const menusByRole: MenuItem[] = [];
@@ -20,8 +33,12 @@ export const AuthenticationGuard: CanActivateFn = (
     });
     authenticationService.currentMenusByRole.set(menusByRole);
     isAllowedByRole = authenticationService.currentMenusByRole() ?
-      authenticationService.currentMenusByRole().some(item => item.path === currentEndpoint) : false;
-    return isAllowedByRole ? true: inject(Router).navigate(['/home']);
+    authenticationService.currentMenusByRole().some(item => item.path === currentEndpoint) : false;
+    if (isAllowedByRole) {
+      return true;
+    }
+    snackBar.open('Acesso negado.','❌');
+    inject(Router).navigate(['/home']);
   }
 
   return authenticationService.isLoggedIn ? true : inject(Router).navigate(['/login']);

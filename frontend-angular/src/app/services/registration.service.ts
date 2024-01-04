@@ -10,7 +10,7 @@ export class RegistrationService {
   constructor(private requestService: RequestService) { }
 
   createRegistration(payload: RegistrationForm){
-    return this.requestService.request('POST', '/registration');
+    return this.requestService.request('POST', '/registration', payload);
   }
 
   deleteRegistrationByUserId(id: number) {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { City } from 'src/app/common/city';
 import { RegistrationForm } from 'src/app/common/registration-form';
@@ -64,7 +65,7 @@ export class CreateRegistrationComponent implements OnInit {
   });
 
   constructor(
-    private formBuilder: FormBuilder, private registrationService: RegistrationService, 
+    private snackBar: MatSnackBar, private registrationService: RegistrationService, 
     private router: Router, private activatedRoute: ActivatedRoute, 
     private cityService: CityService, private stateService: StateService) {}
 
@@ -100,25 +101,29 @@ export class CreateRegistrationComponent implements OnInit {
   get addressState() { return this.registrationFormGroup.get('address.state');}
   
   createRegistration() {
-
     if (this.registrationFormGroup.invalid) {
       this.registrationFormGroup.markAllAsTouched();
       return;
     }
-    this.registrationForm.birthday = this.formatDate(new Date(this.registrationForm.birthday));
+    this.registrationForm.birthday = this.getDateFormat(this.personalBirthday.value);
     this.registrationService.createRegistration(this.registrationForm).subscribe(() => {
-      this.router.navigate(['/']);
+      this.snackBar.open('Cadastro efetuado com sucesso.','✅');
+      this.router.navigate(['/login']);
     });
-    
   }
 
-  formatDate(date: Date): Date {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-  
-    const formattedDateStr = `${year}-${month}-${day}`;
-    return new Date(formattedDateStr);
+  getDateFormat(birthday: string): Date | null {
+    if (/^\d{8}$/.test(birthday)) {
+        const dia = parseInt(birthday.substring(0, 2), 10);
+        const mes = parseInt(birthday.substring(2, 4), 10) - 1;
+        const ano = parseInt(birthday.substring(4, 8), 10);
+        const data = new Date(ano, mes, dia);
+
+        if (!isNaN(data.getTime())) {
+            return data;
+        }
+    }
+    return null;
   }
 
   cancel(): void{

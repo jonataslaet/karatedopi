@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AddressReadResponse } from 'src/app/common/address-read-response';
 import { AddressesReadResponse } from 'src/app/common/addresses-read-response';
 import { AddressService } from 'src/app/services/address.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-address-list',
@@ -28,8 +27,8 @@ export class AddressListComponent implements AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
   
-  constructor(private addressService: AddressService, 
-    public dialog: MatDialog, private authenticationService: AuthenticationService) {
+  constructor(private addressService: AddressService,
+    public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource(this.addresses);
   }
 
