@@ -1,41 +1,26 @@
 package br.com.karatedopi.services.exceptions;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(TokenExpiredException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<StandardError> handleTokenExpiredException(TokenExpiredException ex) {
+    @ExceptionHandler(ResourceStorageException.class)
+    public ResponseEntity<StandardError> handleResourceStorageException(ResourceStorageException ex) {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
-        standardError.setStatus(HttpStatus.FORBIDDEN.value());
-        standardError.setError("Token has expired");
+        standardError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        standardError.setError("Internal Server Error");
         standardError.setMessage(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<StandardError> handleAccessDeniedException(AccessDeniedException ex) {
-        StandardError standardError = new StandardError();
-        standardError.setTimestamp(Instant.now());
-        standardError.setStatus(HttpStatus.FORBIDDEN.value());
-        standardError.setError("Access Denied");
-        standardError.setMessage(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(standardError);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

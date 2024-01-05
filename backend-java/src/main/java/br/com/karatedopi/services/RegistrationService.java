@@ -1,11 +1,12 @@
 package br.com.karatedopi.services;
 
 import br.com.karatedopi.controllers.dtos.RegisterDTO;
-import br.com.karatedopi.entities.*;
+import br.com.karatedopi.entities.User;
+import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.City;
+import br.com.karatedopi.entities.State;
+import br.com.karatedopi.entities.Address;
 import br.com.karatedopi.entities.enums.UserStatus;
-import br.com.karatedopi.repositories.AddressRepository;
-import br.com.karatedopi.repositories.RoleRepository;
-import br.com.karatedopi.repositories.UserRepository;
 import br.com.karatedopi.services.exceptions.AlreadyInUseException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,12 @@ import java.util.HashSet;
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
-	private static final Long ROLE_USER_ID = 4L;
 
 	private final PasswordEncoder passwordEncoder;
-	private final UserRepository userRepository;
-	private final RoleRepository roleRepository;
+	private final UserService userService;
+	private final RoleService roleService;
 	private final StateService stateService;
-	private final AddressRepository addressRepository;
+	private final AddressService addressService;
 
 	@Transactional
 	public RegisterDTO createRegistration(RegisterDTO registerDTO) {
@@ -37,28 +37,21 @@ public class RegistrationService {
 		user.setProfile(profile);
 		Address address = profile.getAddress();
 		address.getResidents().add(profile);
-		addressRepository.save(address);
-		User savedUser = userRepository.save(user);
+		addressService.saveAddress(address);
+		User savedUser = userService.saveUser(user);
 		registerDTO.setId(savedUser.getId());
 		return registerDTO;
 	}
 
 	private void validateNonExistingEmail(String email) {
-		if (userRepository.countUsersByEmail(email) > 0) {
+		if (userService.userExistsByEmail(email)) {
 			throw new AlreadyInUseException("Email already exists");
 		}
 	}
 
 	@Transactional
 	public void deleteRegistrationByUserId(Long userId) {
-		validUserExistence(userId);
-		userRepository.deleteById(userId);
-	}
-
-	private void validUserExistence(Long id) {
-		if (!userRepository.existsById(id)) {
-			throw new ResourceNotFoundException("User not found for id = " + id);
-		}
+		userService.deleteUserById(userId);
 	}
 
 	private User getUser(RegisterDTO registerDTO) {
@@ -68,7 +61,7 @@ public class RegistrationService {
 				.status(UserStatus.PENDING_EVALUATION)
 				.roles(new HashSet<>())
 				.build();
-		roleRepository.findById(ROLE_USER_ID).ifPresent(role -> user.getRoles().add(role));
+		user.getRoles().add(roleService.getRoleUser());
 		return user;
 	}
 

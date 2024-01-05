@@ -22,7 +22,7 @@ public class StateService {
 		return foundStates.map(StateDTO::getStateDTO);
 	}
 
-    public List<StateDTO> getAllCities() {
+    public List<StateDTO> getAllStates() {
 		return stateRepository.findAll().stream().map(StateDTO::getStateDTO).collect(Collectors.toList());
     }
 

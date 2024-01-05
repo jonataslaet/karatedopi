@@ -6,6 +6,7 @@ import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
 import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.repositories.ProfileRepository;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
+import br.com.karatedopi.services.exceptions.ResourceStorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,11 +50,16 @@ public class ProfileService {
 		return foundProfile;
 	}
 
+	@Transactional
 	public ProfileUpdateDTO updateProfile(Long id, ProfileCreateDTO profileCreateDTO) {
 		Profile foundProfile = getProfile(id);
-		fillProfileFromProfileDTO(foundProfile, profileCreateDTO);
-		Profile updatedProfile = profileRepository.save(foundProfile);
-		return ProfileUpdateDTO.getProfileUpdateResponseDTO(updatedProfile);
+		try {
+			fillProfileFromProfileDTO(foundProfile, profileCreateDTO);
+			Profile updatedProfile = profileRepository.save(foundProfile);
+			return ProfileUpdateDTO.getProfileUpdateResponseDTO(updatedProfile);
+		} catch (Exception e) {
+			throw new ResourceStorageException("Unknown problem by saving profile");
+		}
 	}
 
 	private void fillProfileFromProfileDTO(Profile foundProfile, ProfileCreateDTO profileCreateDTO) {

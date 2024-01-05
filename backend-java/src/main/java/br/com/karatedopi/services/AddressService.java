@@ -5,6 +5,7 @@ import br.com.karatedopi.entities.Address;
 import br.com.karatedopi.entities.City;
 import br.com.karatedopi.entities.State;
 import br.com.karatedopi.repositories.AddressRepository;
+import br.com.karatedopi.services.exceptions.ResourceStorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,15 @@ public class AddressService {
 
 		Page<Address> addresses = addressRepository.findAll(pagination);
 		return addresses.map(AddressDTO::getAddressDTO);
+	}
+
+	@Transactional
+	public Address saveAddress(Address address) {
+		try {
+			return addressRepository.save(address);
+		} catch (Exception e) {
+			throw new ResourceStorageException("Unknown problem by saving address");
+		}
 	}
 
 }

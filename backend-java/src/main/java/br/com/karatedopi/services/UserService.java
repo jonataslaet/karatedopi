@@ -9,6 +9,7 @@ import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.UserRepository;
 import br.com.karatedopi.services.exceptions.NoSuchFieldException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
+import br.com.karatedopi.services.exceptions.ResourceStorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -67,10 +69,11 @@ public class UserService implements UserDetailsService {
         });
     }
 
+    @Transactional
     public UserReadDTO evaluateUser(Long id, UserEvaluationDTO userEvaluationDTO) {
         User foundUser = getUser(id);
         fillEvaluation(foundUser, userEvaluationDTO);
-        User updatedUser = userRepository.save(foundUser);
+        User updatedUser = this.saveUser(foundUser);
         return UserReadDTO.getUserReadDTO(updatedUser);
     }
 
@@ -91,11 +94,31 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Transactional(readOnly = true)
     private User getUser(Long id) {
         User foundUser = userRepository.findById(id).orElse(null);
         if (Objects.isNull(foundUser)) {
             throw new ResourceNotFoundException("User not found id = " + id);
         }
         return foundUser;
+    }
+
+    @Transactional
+    public User saveUser(User user) {
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new ResourceStorageException("Unknown problem by saving user");
+        }
+    }
+
+    public Boolean userExistsByEmail(String email) {
+        return userRepository.countUsersByEmail(email) > 0;
+    }
+
+    @Transactional
+    public void deleteUserById(Long userId) {
+        User user = this.getUser(userId);
+        userRepository.deleteById(user.getId());
     }
 }

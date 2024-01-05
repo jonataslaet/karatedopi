@@ -13,6 +13,7 @@ import br.com.karatedopi.repositories.AddressRepository;
 import br.com.karatedopi.repositories.TournamentRepository;
 import br.com.karatedopi.services.exceptions.InvalidAuthenticationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
+import br.com.karatedopi.services.exceptions.ResourceStorageException;
 import br.com.karatedopi.services.exceptions.TournamentParticipationException;
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +33,7 @@ public class TournamentService {
 
 	private final TournamentRepository tournamentRepository;
 	private final CityService cityService;
-	private final AddressRepository addressRepository;
+	private final AddressService addressService;
 	private final ProfileService profileService;
 
 	public Page<TournamentDTO> findAllTournaments(String status, Pageable pagination) {
@@ -51,9 +52,14 @@ public class TournamentService {
 				.status(tournamentDTO.getStatus())
 				.address(savedAddress)
 				.build();
-		Tournament savedTournament = tournamentRepository.save(tournament);
-		savedTournament.setAddress(savedAddress);
-		return TournamentDTO.getTournamentDTO(savedTournament);
+		try {
+			Tournament savedTournament = tournamentRepository.save(tournament);
+			savedTournament.setAddress(savedAddress);
+			return TournamentDTO.getTournamentDTO(savedTournament);
+		}
+		catch (Exception e) {
+			throw new ResourceStorageException("Unknown problem by saving tournament");
+		}
 	}
 
 	public Address getAddress(TournamentDTO tournamentDTO) {
@@ -87,6 +93,7 @@ public class TournamentService {
 			new ResourceNotFoundException("No tournament with id " + id + " was found"));
 	}
 
+	@Transactional
 	public TournamentDTO updateTournament(Long id, TournamentDTO tournamentDTO) {
 		Tournament tournament = findTournamentById(id);
 		if (isDifferentAddresses(tournament.getAddress(), getAddress(tournamentDTO))) {
@@ -96,13 +103,17 @@ public class TournamentService {
 		tournament.setName(tournamentDTO.getName());
 		tournament.setStatus(tournamentDTO.getStatus());
 		tournament.setEventDate(tournamentDTO.getEventDateTime());
-		Tournament savedTournament = tournamentRepository.save(tournament);
-		return TournamentDTO.getTournamentDTO(savedTournament);
+		try {
+			Tournament savedTournament = tournamentRepository.save(tournament);
+			return TournamentDTO.getTournamentDTO(savedTournament);
+		} catch (Exception e) {
+			throw new ResourceStorageException("Unknown problem by saving tournament");
+		}
 	}
 
 	private Address saveTournamentAddress(TournamentDTO tournamentDTO) {
 		Address address = getAddress(tournamentDTO);
-		return addressRepository.save(address);
+		return addressService.saveAddress(address);
 	}
 
 	private Boolean isDifferentAddresses(Address address1, Address address2) {
@@ -120,8 +131,12 @@ public class TournamentService {
 		Tournament foundTournament = findTournamentById(id);
 		isValidParticipation(foundTournament, authenticatedProfile);
 		toggleParticipant(foundTournament, authenticatedProfile);
-		Tournament savedTournament = tournamentRepository.save(foundTournament);
-		return TournamentDTO.getTournamentDTO(savedTournament);
+		try {
+			Tournament savedTournament = tournamentRepository.save(foundTournament);
+			return TournamentDTO.getTournamentDTO(savedTournament);
+		} catch (Exception e) {
+			throw new ResourceStorageException("Unknown problem by updating tournament");
+		}
 	}
 
 	public void toggleParticipant(Tournament tournament, Profile profile) {
