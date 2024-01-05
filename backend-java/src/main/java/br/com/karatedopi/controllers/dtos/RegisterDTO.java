@@ -10,8 +10,10 @@ import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +38,7 @@ public class RegisterDTO {
     private String state;
     private String bloodType;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
@@ -54,6 +56,14 @@ public class RegisterDTO {
 
     @Builder.Default
     private Set<String> phoneNumbers = new HashSet<>();
+
+    public void setBirthday(String birthday) {
+        try {
+            this.birthday = LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE);
+        } catch (DateTimeException e) {
+            this.birthday = LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE_TIME);
+        }
+    }
 
     @PrePersist
     public void prePersist() {

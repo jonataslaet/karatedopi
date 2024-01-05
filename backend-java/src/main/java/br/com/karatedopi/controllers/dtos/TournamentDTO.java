@@ -3,12 +3,14 @@ package br.com.karatedopi.controllers.dtos;
 import br.com.karatedopi.entities.Tournament;
 import br.com.karatedopi.entities.enums.TournamentStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,7 @@ public class TournamentDTO {
 	private TournamentStatus status;
 	private AddressDTO address;
 
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime eventDateTime;
 
 	@Builder.Default

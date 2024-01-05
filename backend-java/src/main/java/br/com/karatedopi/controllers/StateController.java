@@ -30,10 +30,9 @@ public class StateController {
 	}
 
 	@GetMapping("/all")
-	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
 	public ResponseEntity<List<StateDTO>> getAllStates(){
-		List<StateDTO> cities = stateService.getAllCities();
-		return ResponseEntity.ok().body(cities);
+		List<StateDTO> allStates = stateService.getAllStates();
+		return ResponseEntity.ok().body(allStates);
 	}
 }
 
