@@ -9,7 +9,7 @@ import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.Profile;
 
 import br.com.karatedopi.entities.enums.TournamentStatus;
-import br.com.karatedopi.repositories.AddressRepository;
+import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.TournamentRepository;
 import br.com.karatedopi.services.exceptions.InvalidAuthenticationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
@@ -36,6 +36,7 @@ public class TournamentService {
 	private final AddressService addressService;
 	private final ProfileService profileService;
 
+	@Transactional(readOnly = true)
 	public Page<TournamentDTO> findAllTournaments(String status, Pageable pagination) {
 		if (Objects.isNull(status) || status.isEmpty()){
 			return tournamentRepository.findAllTournaments(pagination).map(TournamentDTO::getTournamentDTO);
@@ -45,6 +46,7 @@ public class TournamentService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public TournamentDTO createTournament(TournamentDTO tournamentDTO) {
+		isValidUserForCreatingTournament();
 		Address savedAddress = saveTournamentAddress(tournamentDTO);
 		Tournament tournament = Tournament.builder()
 				.eventDate(tournamentDTO.getEventDateTime())
@@ -60,6 +62,13 @@ public class TournamentService {
 		catch (Exception e) {
 			throw new ResourceStorageException("Unknown problem by saving tournament");
 		}
+	}
+
+	private void isValidUserForCreatingTournament() {
+		User user = AuthService.authenticated();
+//		if (user.getRoles().containsAll()) {
+//
+//		}
 	}
 
 	public Address getAddress(TournamentDTO tournamentDTO) {
@@ -129,7 +138,7 @@ public class TournamentService {
 	public TournamentDTO updateParticipationInTournament(Long id) {
 		Profile authenticatedProfile = getAuthenticatedProfile();
 		Tournament foundTournament = findTournamentById(id);
-		isValidParticipation(foundTournament, authenticatedProfile);
+		isValidParticipation(foundTournament, AuthService.authenticated());
 		toggleParticipant(foundTournament, authenticatedProfile);
 		try {
 			Tournament savedTournament = tournamentRepository.save(foundTournament);
@@ -145,6 +154,14 @@ public class TournamentService {
 		} else {
 			addParticipant(tournament, profile);
 		}
+	}
+
+	public List<TournamentParticipantDTO> findParticipants(Long id) {
+		List<TournamentParticipantDTO> participantDTOs = new ArrayList<>();
+		Tournament foundTournament = findTournamentById(id);
+		foundTournament.getParticipants().forEach(participant ->
+				participantDTOs.add(TournamentParticipantDTO.getTournamentParticipantDTO(participant)));
+		return participantDTOs;
 	}
 
 	private void addParticipant(Tournament tournament, Profile profile) {
@@ -163,10 +180,18 @@ public class TournamentService {
 		return profileService.getProfile(user.getId());
 	}
 
-	private void isValidParticipation(Tournament foundTournament, Profile profile) {
-		if (profile.getFullname().isBlank()) {
-			throw new TournamentParticipationException("You need to fix your personal informations.");
+	private void isValidParticipation(Tournament foundTournament, User authenticatedUser) {
+		isValidTournamentStatus(foundTournament);
+		isValidUserStatus(authenticatedUser);
+	}
+
+	private void isValidUserStatus(User user) {
+		if (!user.getStatus().equals(UserStatus.ACTIVE)) {
+			throw new TournamentParticipationException("You need to be active.");
 		}
+	}
+
+	private void isValidTournamentStatus(Tournament foundTournament) {
 		if (foundTournament.getStatus().equals(TournamentStatus.SUSPENDED)) {
 			throw new TournamentParticipationException("This tournament is temporarialy suspended.");
 		}
@@ -178,12 +203,5 @@ public class TournamentService {
 		}
 	}
 
-	public List<TournamentParticipantDTO> findParticipants(Long id) {
-		List<TournamentParticipantDTO> participantDTOs = new ArrayList<>();
-		Tournament foundTournament = findTournamentById(id);
-		foundTournament.getParticipants().forEach(participant ->
-				participantDTOs.add(TournamentParticipantDTO.getTournamentParticipantDTO(participant)));
-		return participantDTOs;
-	}
 }
 
