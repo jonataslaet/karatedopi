@@ -1,12 +1,13 @@
 package br.com.karatedopi.services;
 
-import br.com.karatedopi.controllers.dtos.UserReadDTO;
 import br.com.karatedopi.controllers.dtos.UserEvaluationDTO;
+import br.com.karatedopi.controllers.dtos.UserReadDTO;
 import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.UserDetailsProjection;
 import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.UserRepository;
+import br.com.karatedopi.services.exceptions.ForbiddenOperationException;
 import br.com.karatedopi.services.exceptions.NoSuchFieldException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import br.com.karatedopi.services.exceptions.ResourceStorageException;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,10 +72,45 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserReadDTO evaluateUser(Long id, UserEvaluationDTO userEvaluationDTO) {
-        User foundUser = getUser(id);
-        fillEvaluation(foundUser, userEvaluationDTO);
-        User updatedUser = this.saveUser(foundUser);
+        User authenticatedUser = AuthService.authenticated();
+        User userToBeEvaluate = getUser(id);
+        validEvaluate(userToBeEvaluate, authenticatedUser, userEvaluationDTO);
+        fillEvaluation(userToBeEvaluate, userEvaluationDTO);
+        User updatedUser = this.saveUser(userToBeEvaluate);
         return UserReadDTO.getUserReadDTO(updatedUser);
+    }
+
+    private void validEvaluate(User userToBeEvaluate, User authenticatedUser, UserEvaluationDTO userEvaluationDTO) {
+        if (Objects.equals(authenticatedUser.getId(), userToBeEvaluate.getId())) {
+            throw new ForbiddenOperationException("Authenticated user can not evaluate himself");
+        }
+
+        if (!authenticatedUser.isEnabled()) {
+            throw new ForbiddenOperationException("Authenticated user needs to be active for evaluating other");
+        }
+
+        Role authenticatedUserBiggerRole = authenticatedUser.getRoles().stream()
+                .min(Comparator.comparingLong(Role::getId))
+                .orElseThrow(() -> new ResourceStorageException("Problem by loading role of a user"));
+
+        Role userToBeEvaluateBiggerRole = userToBeEvaluate.getRoles().stream()
+                .min(Comparator.comparingLong(Role::getId))
+                .orElseThrow(() -> new ResourceStorageException("Problem by loading role of a user"));
+
+        Role evaluateRole = roleService.getRoleByName(userEvaluationDTO.authority());
+
+        if (firstRoleHasEqualOrMoreAuthority(userToBeEvaluateBiggerRole, authenticatedUserBiggerRole)) {
+            throw new ForbiddenOperationException("Authenticated user can't evaluate other user who have an authority bigger or equals");
+        }
+
+        if (firstRoleHasEqualOrMoreAuthority(evaluateRole, authenticatedUserBiggerRole)) {
+            throw new ForbiddenOperationException("Authenticated user can't evaluate other user with an authority equal or bigger than his own");
+        }
+
+    }
+
+    private boolean firstRoleHasEqualOrMoreAuthority(Role firstRole, Role secondRole) {
+        return firstRole.getId() <= secondRole.getId();
     }
 
     private void fillEvaluation(User foundUser, UserEvaluationDTO userEvaluationDTO) {
@@ -85,13 +121,7 @@ public class UserService implements UserDetailsService {
     }
 
     private void removeBiggerAuthoritiesThanInEvaluationRole(User foundUser, Role evaluationRole) {
-        Iterator<Role> iterator = foundUser.getRoles().iterator();
-        while (iterator.hasNext()) {
-            Role role = iterator.next();
-            if (role.getId() < evaluationRole.getId()) {
-                iterator.remove();
-            }
-        }
+        foundUser.getRoles().removeIf(role -> role.getId() < evaluationRole.getId());
     }
 
     @Transactional(readOnly = true)
@@ -121,4 +151,5 @@ public class UserService implements UserDetailsService {
         User user = this.getUser(userId);
         userRepository.deleteById(user.getId());
     }
+
 }

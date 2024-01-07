@@ -13,13 +13,25 @@ import java.time.Instant;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
+    @ExceptionHandler(ForbiddenOperationException.class)
+    public ResponseEntity<StandardError> handleForbiddenOperationException(ForbiddenOperationException ex, HttpServletRequest httpServletRequest) {
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(HttpStatus.FORBIDDEN.value());
+        standardError.setError("Forbidden Operation");
+        standardError.setMessage(ex.getMessage());
+        standardError.setPath(httpServletRequest.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
+    }
+
     @ExceptionHandler(ResourceStorageException.class)
-    public ResponseEntity<StandardError> handleResourceStorageException(ResourceStorageException ex) {
+    public ResponseEntity<StandardError> handleResourceStorageException(ResourceStorageException ex, HttpServletRequest httpServletRequest) {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         standardError.setError("Internal Server Error");
         standardError.setMessage(ex.getMessage());
+        standardError.setPath(httpServletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(standardError);
     }
 

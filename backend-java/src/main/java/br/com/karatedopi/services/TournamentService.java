@@ -46,7 +46,6 @@ public class TournamentService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public TournamentDTO createTournament(TournamentDTO tournamentDTO) {
-		isValidUserForCreatingTournament();
 		Address savedAddress = saveTournamentAddress(tournamentDTO);
 		Tournament tournament = Tournament.builder()
 				.eventDate(tournamentDTO.getEventDateTime())
@@ -62,13 +61,6 @@ public class TournamentService {
 		catch (Exception e) {
 			throw new ResourceStorageException("Unknown problem by saving tournament");
 		}
-	}
-
-	private void isValidUserForCreatingTournament() {
-		User user = AuthService.authenticated();
-//		if (user.getRoles().containsAll()) {
-//
-//		}
 	}
 
 	public Address getAddress(TournamentDTO tournamentDTO) {
@@ -174,9 +166,6 @@ public class TournamentService {
 
 	private Profile getAuthenticatedProfile() {
 		User user = AuthService.authenticated();
-		if (Objects.isNull(user)) {
-			throw new InvalidAuthenticationException("The user needs to be authenticated for performing this operation");
-		}
 		return profileService.getProfile(user.getId());
 	}
 

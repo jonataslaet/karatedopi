@@ -10,6 +10,7 @@ import br.com.karatedopi.services.exceptions.InvalidAuthenticationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,9 +58,13 @@ public class AuthService {
 
     public static User authenticated() {
         try {
-            return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+                throw new InvalidAuthenticationException("The user needs to be authenticated for performing this operation");
+            }
+            return (User) authentication.getPrincipal();
         } catch (Exception e) {
-            return null;
+            throw new InvalidAuthenticationException("The user needs to be authenticated for performing this operation");
         }
     }
 
