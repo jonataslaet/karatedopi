@@ -2,6 +2,7 @@ package br.com.karatedopi.services;
 
 import br.com.karatedopi.controllers.dtos.UserEvaluationDTO;
 import br.com.karatedopi.controllers.dtos.UserReadDTO;
+import br.com.karatedopi.entities.Graduation;
 import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.UserDetailsProjection;
@@ -119,8 +120,9 @@ public class UserService implements UserDetailsService {
         removeBiggerAuthoritiesThanInEvaluationRole(foundUser, evaluationRole);
         foundUser.getRoles().add(evaluationRole);
         foundUser.setStatus(UserStatus.getValueByName(userEvaluationDTO.status()));
-        if (Objects.isNull(foundUser.getProfile().getBelt())) {
-            foundUser.getProfile().setBelt(Belt.WHITE);
+        if (foundUser.getProfile().getGraduations().isEmpty()) {
+            foundUser.getProfile().getGraduations()
+                .add(Graduation.builder().belt(Belt.WHITE).profile(foundUser.getProfile()).build());
         }
     }
 

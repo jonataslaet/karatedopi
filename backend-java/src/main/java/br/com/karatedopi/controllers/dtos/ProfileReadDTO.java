@@ -1,6 +1,8 @@
 package br.com.karatedopi.controllers.dtos;
 
+import br.com.karatedopi.entities.Graduation;
 import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.enums.Belt;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,6 +50,8 @@ public class ProfileReadDTO {
 	@Builder.Default
 	private Set<String> phoneNumbers = new HashSet<>();
 
+	private Belt currentBelt;
+
 	public static ProfileReadDTO getProfileReadDTO(Profile profile) {
 		return ProfileReadDTO.builder()
 				.id(profile.getId())
@@ -59,6 +64,10 @@ public class ProfileReadDTO {
 				.cpf(profile.getCpf())
 				.rg(profile.getRg())
 				.phoneNumbers(profile.getPhoneNumbers())
+				.currentBelt(profile.getGraduations().stream()
+						.max(Comparator.comparing(Graduation::getCreatedOn))
+						.map(Graduation::getBelt)
+						.orElse(null))
 				.creationDate(profile.getCreatedOn())
 				.lastUpdate(profile.getUpdatedOn())
 				.build();

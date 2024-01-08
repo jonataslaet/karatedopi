@@ -1,7 +1,9 @@
 package br.com.karatedopi.utils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 public class Utils {
 
@@ -11,5 +13,10 @@ public class Utils {
         }
         Period period = Period.between(birthday, LocalDate.now());
         return period.getYears();
+    }
+
+    public static long getDifferenceInHours(LocalDateTime dateTime1, LocalDateTime dateTime2) {
+        long difference = ChronoUnit.HOURS.between(dateTime1, dateTime2);
+        return difference < 0 ? -1 * difference : difference;
     }
 }

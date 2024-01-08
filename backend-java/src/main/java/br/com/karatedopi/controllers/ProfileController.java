@@ -3,7 +3,9 @@ package br.com.karatedopi.controllers;
 import br.com.karatedopi.controllers.dtos.ProfileCreateDTO;
 import br.com.karatedopi.controllers.dtos.ProfileReadDTO;
 import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
+import br.com.karatedopi.controllers.dtos.GraduationDTO;
 import br.com.karatedopi.services.ProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -47,5 +50,13 @@ public class ProfileController {
 	public ResponseEntity<ProfileUpdateDTO> updateProfile(@PathVariable("id") Long id, @RequestBody ProfileCreateDTO profileCreateDTO){
 		ProfileUpdateDTO updatedProfile = profileService.updateProfile(id, profileCreateDTO);
 		return ResponseEntity.ok().body(updatedProfile);
+	}
+
+	@PatchMapping("/{id}/graduations")
+	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN')")
+	public ResponseEntity<ProfileReadDTO> changeGraduation(@PathVariable("id") Long id,
+	   	@RequestBody @Valid GraduationDTO graduationDTO){
+		ProfileReadDTO graduatedProfile = profileService.changeGraduation(id, graduationDTO);
+		return ResponseEntity.ok().body(graduatedProfile);
 	}
 }

@@ -58,4 +58,14 @@ public enum Belt {
 		}
 		throw new ResourceNotFoundException("No enum constant with name " + value);
 	}
+
+	public static int getIndexByValue(Belt enumValue) {
+		Belt[] belts = Belt.values();
+		for (int i = 0; i < belts.length; i++) {
+			if (belts[i] == enumValue) {
+				return i;
+			}
+		}
+		throw new ResourceNotFoundException("Enum constant not found: " + enumValue);
+	}
 }

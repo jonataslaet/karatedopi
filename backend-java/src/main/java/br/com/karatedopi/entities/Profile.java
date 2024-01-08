@@ -5,18 +5,17 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.com.karatedopi.entities.enums.Belt;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Id;
 import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -53,8 +52,9 @@ public class Profile {
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Set<String> phoneNumbers;
 
-	@Enumerated(EnumType.STRING)
-	private Belt belt;
+	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Builder.Default
+	private Set<Graduation> graduations = new HashSet<>();
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId

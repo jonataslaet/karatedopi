@@ -1,19 +1,27 @@
 package br.com.karatedopi.services;
 
+import br.com.karatedopi.controllers.dtos.GraduationDTO;
 import br.com.karatedopi.controllers.dtos.ProfileCreateDTO;
 import br.com.karatedopi.controllers.dtos.ProfileReadDTO;
 import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
+import br.com.karatedopi.entities.Graduation;
 import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.enums.Belt;
 import br.com.karatedopi.repositories.ProfileRepository;
+import br.com.karatedopi.services.exceptions.ForbiddenOperationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import br.com.karatedopi.services.exceptions.ResourceStorageException;
+import br.com.karatedopi.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -71,5 +79,48 @@ public class ProfileService {
 		foundProfile.setCpf(profileCreateDTO.getCpf());
 		foundProfile.setRg(profileCreateDTO.getRg());
 		foundProfile.setPhoneNumbers(profileCreateDTO.getPhoneNumbers());
+	}
+
+    public ProfileReadDTO changeGraduation(Long id, GraduationDTO graduationDTO) {
+		Profile profile = this.getProfile(id);
+		Belt newGraduationBelt = Belt.getValueByDescriptionOrValue(graduationDTO.belt());
+		Graduation lastGraduation = findLastGraduation(profile.getGraduations());
+		validChangeGraduation(lastGraduation, newGraduationBelt);
+		Graduation newGraduation = Graduation.builder().belt(newGraduationBelt).profile(profile).build();
+		profile.getGraduations().add(newGraduation);
+		profile = this.saveProfile(profile);
+		return ProfileReadDTO.getProfileReadDTO(profile);
+    }
+
+	private void validChangeGraduation(Graduation lastGraduation, Belt graduationBelt) {
+		if (Objects.nonNull(lastGraduation)) {
+			Integer graduationBeltIndex = Belt.getIndexByValue(graduationBelt);
+			Integer lastGraduationBeltIndex = Belt.getIndexByValue(lastGraduation.getBelt());
+			if (graduationBeltIndex <= lastGraduationBeltIndex || graduationBeltIndex - lastGraduationBeltIndex > 1) {
+				throw new ForbiddenOperationException("A new graduation cannot be 2 or more levels greater than the last one");
+			}
+			if (Utils.getDifferenceInHours(lastGraduation.getCreatedOn(), LocalDateTime.now()) < 1) {
+				throw new ForbiddenOperationException("More than 1 graduation change in less than 1 hour is forbidden");
+			}
+		}
+	}
+
+	private Graduation findLastGraduation(Set<Graduation> graduations) {
+		if (!graduations.isEmpty()) {
+			return graduations.stream()
+					.max(Comparator.comparing(Graduation::getCreatedOn))
+					.orElse(null);
+		} else {
+			return null;
+		}
+	}
+
+	@Transactional
+	public Profile saveProfile(Profile profile) {
+		try {
+			return profileRepository.save(profile);
+		} catch (Exception e) {
+			throw new ResourceStorageException("Unknown problem by saving profile");
+		}
 	}
 }
