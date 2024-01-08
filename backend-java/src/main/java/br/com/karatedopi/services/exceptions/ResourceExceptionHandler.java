@@ -3,15 +3,29 @@ package br.com.karatedopi.services.exceptions;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<StandardError> handleAccessDeniedException(AccessDeniedException ex, HttpServletRequest httpServletRequest) {
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(HttpStatus.FORBIDDEN.value());
+        standardError.setError("Access Denied");
+        standardError.setMessage(ex.getLocalizedMessage());
+        standardError.setPath(httpServletRequest.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
+    }
 
     @ExceptionHandler(ForbiddenOperationException.class)
     public ResponseEntity<StandardError> handleForbiddenOperationException(ForbiddenOperationException ex, HttpServletRequest httpServletRequest) {
