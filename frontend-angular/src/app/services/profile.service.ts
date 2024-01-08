@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProfileInput } from '../common/profile-input';
@@ -12,14 +11,7 @@ import { RequestService } from './request.service';
 })
 export class ProfileService {
 
-  private baseUrl = 'http://localhost:8080/profiles';
-
-  constructor(private httpClient: HttpClient, private requestService: RequestService) { }
-
-  // getProfileListPaginate(thePage: number, thePageSize: number, theField: string, theDirection: string): Observable<ProfilesReadResponse> {
-  //   const searchUrl = `${this.baseUrl}?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
-  //   return this.httpClient.get<ProfilesReadResponse>(searchUrl);
-  // }
+  constructor(private requestService: RequestService) { }
 
   getProfileListPaginate(thePage: number, thePageSize: number, theField: string, theDirection: string): Observable<ProfilesReadResponse> {
     const endpoint = `/profiles?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
@@ -27,12 +19,13 @@ export class ProfileService {
   }
 
   getProfileById(id: number): Observable<ProfileReadResponse> {
-    return this.httpClient.get<ProfileReadResponse>(`${this.baseUrl}/${id}`);
+    const endpoint = `/profiles/${id}`;
+    return this.requestService.request('GET', endpoint, id);
   }
-   
+
   updateProfile(payload: ProfileInput): Observable<ProfileUpdateResponse> {
-    const updateUrl = `${this.baseUrl}/${payload.id}`;
-    return this.httpClient.put<ProfileUpdateResponse>(updateUrl, payload);
+    const endpoint = `/profiles/${payload.id}`;
+    return this.requestService.request('PUT', endpoint, payload);
   }
   
 }

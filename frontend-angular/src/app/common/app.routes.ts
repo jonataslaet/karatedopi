@@ -26,7 +26,7 @@ export const routes: Routes = [
         component: CreateRegistrationComponent,
     },
     {
-        path: 'profile/update/:id',
+        path: 'profiles/update/:id',
         component: UpdateProfileComponent,
         canActivate: [AuthenticationGuard]
     },

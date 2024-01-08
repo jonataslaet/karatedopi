@@ -39,6 +39,7 @@ export const AuthenticationGuard: CanActivateFn = (
     }
     snackBar.open('Acesso negado.','❌');
     inject(Router).navigate(['/home']);
+    return false;
   }
 
   return authenticationService.isLoggedIn ? true : inject(Router).navigate(['/login']);
