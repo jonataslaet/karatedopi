@@ -5,6 +5,7 @@ import br.com.karatedopi.controllers.dtos.UserReadDTO;
 import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.UserDetailsProjection;
+import br.com.karatedopi.entities.enums.Belt;
 import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.UserRepository;
 import br.com.karatedopi.services.exceptions.ForbiddenOperationException;
@@ -118,6 +119,9 @@ public class UserService implements UserDetailsService {
         removeBiggerAuthoritiesThanInEvaluationRole(foundUser, evaluationRole);
         foundUser.getRoles().add(evaluationRole);
         foundUser.setStatus(UserStatus.getValueByName(userEvaluationDTO.status()));
+        if (Objects.isNull(foundUser.getProfile().getBelt())) {
+            foundUser.getProfile().setBelt(Belt.WHITE);
+        }
     }
 
     private void removeBiggerAuthoritiesThanInEvaluationRole(User foundUser, Role evaluationRole) {

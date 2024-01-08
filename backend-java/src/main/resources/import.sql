@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS state (id bigserial, name varchar(255) NOT NULL, stat
 CREATE TABLE IF NOT EXISTS city (id bigserial, state_id int8 NOT NULL, name varchar(255) NULL, CONSTRAINT city_pkey PRIMARY KEY (id));
 CREATE TABLE IF NOT EXISTS address (id bigserial, city_id bigserial, neighbourhood varchar(255) NOT NULL, number varchar(255) NOT NULL, street varchar(255) NOT NULL, zip_code varchar(255) NULL, CONSTRAINT address_pkey PRIMARY KEY (id));
 CREATE TABLE IF NOT EXISTS tournament (id bigserial, address_id int8 NOT NULL, event_date timestamp(6) NOT NULL, name varchar(255) NOT NULL, status varchar(255) NOT NULL, CONSTRAINT tournament_pkey PRIMARY KEY (id));
-CREATE TABLE IF NOT EXISTS profile (user_id int8 NOT NULL, birthday date NOT NULL, address_id int8 NOT NULL, created_on timestamp(6) NOT NULL, updated_on timestamp(6) NULL, blood_type varchar(255) NOT NULL, cpf varchar(255) NOT NULL, father varchar(255) NOT NULL, fullname varchar(255) NOT NULL, mother varchar(255) NOT NULL, rg varchar(255) NOT NULL, CONSTRAINT profile_pkey PRIMARY KEY (user_id));
+CREATE TABLE IF NOT EXISTS profile (user_id int8 NOT NULL, birthday date NOT NULL, address_id int8 NOT NULL, created_on timestamp(6) NOT NULL, updated_on timestamp(6) NULL, blood_type varchar(255) NOT NULL, cpf varchar(255) NOT NULL, father varchar(255) NOT NULL, fullname varchar(255) NOT NULL, mother varchar(255) NOT NULL, rg varchar(255) NOT NULL, belt varchar(255) NULL, CONSTRAINT profile_pkey PRIMARY KEY (user_id));
 CREATE TABLE IF NOT EXISTS profile_phone_numbers (profile_user_id int8 NOT NULL, phone_numbers varchar(255) NULL, CONSTRAINT profile_phone_numbers_pkey PRIMARY KEY (profile_user_id, phone_numbers));
 CREATE TABLE IF NOT EXISTS tb_tournament_participant (tournament_id bigserial, participant_id bigserial);
 
@@ -5629,7 +5629,7 @@ INSERT INTO address (city_id, neighbourhood, number, street, zip_code) VALUES(31
 insert into address (city_id, neighbourhood, number, street, zip_code) values (3179, 'Santo Antônio', '649', 'Rua Curitiba', '64028220');
 INSERT INTO tournament (address_id, event_date, name, status) VALUES(1, TO_TIMESTAMP('2023-12-25 15:30:00', 'YYYY-MM-DD HH24:MI:SS')::timestamp(6), 'I Torneio de Karatê', 'OPENED');
 insert into tb_user (created_on, email, firstname, lastname, password, status) values (CURRENT_TIMESTAMP(6), 'blendolove@hotmail.com', 'Jonatas', 'Laet', '$2a$10$qNOtpf.WH7.uxNGYyRKCMug9Zh9ovh/Mqf49DIVnE88pDbj700ufy', 'ACTIVE');
-insert into profile (address_id, birthday, blood_type, cpf, created_on, father, fullname, mother, rg, user_id) values (2, '1993-09-06', 'O+', '41925146308', CURRENT_TIMESTAMP(6), 'Paulo Miguel Calebe Assis', 'Jonatas Blendo dos Santos Laet', 'Hadassa Daiane Eduarda', '494937221', 1);
+insert into profile (address_id, birthday, blood_type, cpf, created_on, father, fullname, mother, rg, user_id, belt) values (2, '1993-09-06', 'O+', '41925146308', CURRENT_TIMESTAMP(6), 'Paulo Miguel Calebe Assis', 'Jonatas Blendo dos Santos Laet', 'Hadassa Daiane Eduarda', '494937221', 1, 'WHITE');
 insert into tb_user_role (user_id, role_id) values (1, 1);
 insert into tb_user_role (user_id, role_id) values (1, 2);
 insert into tb_user_role (user_id, role_id) values (1, 3);
