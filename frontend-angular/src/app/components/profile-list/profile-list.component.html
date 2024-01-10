@@ -21,6 +21,14 @@
         <td mat-cell *matCellDef="let row"> {{row.mother}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="currentBelt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Faixa </th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="row.currentBelt; else pendente">{{ row.currentBelt | beltEnumTranslation }}</ng-container>
+          <ng-template #pendente>Pendente de avaliação</ng-template>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="zipCode">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> CEP </th>
         <td mat-cell *matCellDef="let row"> {{row.address.zipCode}} </td>
@@ -65,7 +73,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> CPF </th>
         <td mat-cell *matCellDef="let row"> {{row.cpf}} </td>
       </ng-container>
-  
+
       <ng-container matColumnDef="rg">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> RG </th>
         <td mat-cell *matCellDef="let row"> {{row.rg}} </td>

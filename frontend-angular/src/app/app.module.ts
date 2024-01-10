@@ -8,6 +8,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BeltEnumTranslationPipe } from './common/belt-enum-translation-pipe';
 import { EnumTranslationPipe } from './common/enum-translation-pipe';
 import { AddressListComponent } from './components/address-list/address-list.component';
 import { CreateRegistrationComponent } from './components/create-registration/create-registration.component';
@@ -42,6 +43,7 @@ export function tokenGetter() {
     CreateRegistrationComponent,
     TournamentsListComponent,
     EnumTranslationPipe,
+    BeltEnumTranslationPipe,
     HeaderComponent,
     LoginFormComponent,
     HomeComponent,

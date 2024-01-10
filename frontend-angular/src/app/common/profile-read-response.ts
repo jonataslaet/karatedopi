@@ -7,10 +7,11 @@ export class ProfileReadResponse {
       public fullname: string,
       public father: string,
       public mother: string,
+      public currentBelt: string,
       public address: AddressReadResponse,
       public bloodType: string,
       public birthday: Date,
-      public cpf: string, 
+      public cpf: string,
       public rg: string,
       public phone: string
     ){

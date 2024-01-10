@@ -23,7 +23,7 @@ export class ProfileListComponent implements AfterViewInit {
   sortDirection: string = 'desc';
   
   displayedColumns: string[] = [
-    'fullname', 'zipCode', 'neighbourhood', 'city', 'state', 'bloodType', 'birthday', 'cpf', 'rg', 'actions'
+    'fullname', 'currentBelt', 'neighbourhood', 'city', 'state', 'bloodType', 'birthday', 'cpf', 'actions'
   ];
   dataSource: MatTableDataSource<ProfileReadResponse>;
 
