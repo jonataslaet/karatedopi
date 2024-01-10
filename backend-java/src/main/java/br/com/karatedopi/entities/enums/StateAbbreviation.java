@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Enum que contém todos os estados brasileiros.
+ * Enum that contains all the brazilian states.
  * @author Jerônimo Nunes Rocha
- * Adaptado por Jonatas Laet em 09/05/2021
+ * Edited by Jonatas Blendo dos Santos Laet em 09/05/2021
  */
 @Getter
 @RequiredArgsConstructor

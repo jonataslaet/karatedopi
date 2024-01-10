@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoleService {
     private static final Long ROLE_USER_ID = 4L;
 
@@ -25,7 +26,6 @@ public class RoleService {
         return foundUser;
     }
 
-    @Transactional(readOnly = true)
     public Role getRoleUser() {
         Role foundUser = roleRepository.findById(ROLE_USER_ID).orElse(null);
         if (Objects.isNull(foundUser)) {

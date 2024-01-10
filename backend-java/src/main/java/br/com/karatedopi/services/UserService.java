@@ -36,6 +36,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
 
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         List<UserDetailsProjection> userDetailsProjections =
                 userRepository.searchUserAndRolesByEmail(email);
@@ -55,6 +56,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    @Transactional(readOnly = true)
     public Page<UserReadDTO> getPagedUsers(Pageable pageable) {
         validPageable(pageable);
         Page<User> users = userRepository.findAll(pageable);

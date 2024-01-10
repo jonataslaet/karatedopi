@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Enum que contém todos os estados brasileiros.
- * @author Jerônimo Nunes Rocha
- * Adaptado por Jonatas Laet em 09/05/2021
+ * Enum that contains all the tournament statuses.
+ * @author Jonatas Blendo dos Santos Laet
  */
 @Getter
 @RequiredArgsConstructor

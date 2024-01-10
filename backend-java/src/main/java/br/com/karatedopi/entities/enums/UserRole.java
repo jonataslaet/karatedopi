@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Enum que contém todos os status de usuário.
+ * Enum that contains all the user roles.
  * @author Jonatas Blendo dos Santos Laet
  */
 @Getter

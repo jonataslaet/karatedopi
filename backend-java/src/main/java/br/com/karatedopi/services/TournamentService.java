@@ -74,6 +74,7 @@ public class TournamentService {
 				.build();
 	}
 
+	@Transactional(propagation = Propagation.SUPPORTS)
 	private City getCity(TournamentDTO tournamentDTO) {
 		return cityService.getCityByCityNameAndStateName(tournamentDTO.getAddress().getCity(), tournamentDTO.getAddress().getState());
 	}
@@ -89,6 +90,7 @@ public class TournamentService {
 		return TournamentDTO.getTournamentDTO(tournament);
 	}
 
+	@Transactional(readOnly = true)
 	private Tournament findTournamentById(Long id) {
 		return tournamentRepository.findById(id).orElseThrow(() ->
 			new ResourceNotFoundException("No tournament with id " + id + " was found"));

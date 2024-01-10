@@ -29,6 +29,7 @@ public class ProfileService {
 
 	private final ProfileRepository profileRepository;
 
+	@Transactional(readOnly = true)
 	public Page<ProfileReadDTO> getPagedProfiles(String hometown, Pageable pageable) {
 		Page<Profile> profiles;
 		if (isBlank(hometown)) {
