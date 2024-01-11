@@ -23,6 +23,7 @@ import { TournamentsListComponent } from './components/tournaments-list/tourname
 import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { appConfiguration } from './configurations/app.configuration';
+import { errorsHandlerConfiguration } from './configurations/errors-handler.configuration';
 import { MaterialModule } from './material-module';
 import { CityService } from './services/city-service';
 import { ProfileService } from './services/profile.service';
@@ -72,7 +73,7 @@ export function tokenGetter() {
     }),
   ],
   exports: [EnumTranslationPipe],
-  providers: [appConfiguration.providers, TournamentService, RegistrationService, ProfileService, CityService, StateService, provideNgxMask()],
+  providers: [appConfiguration.providers, errorsHandlerConfiguration.providers, TournamentService, RegistrationService, ProfileService, CityService, StateService, provideNgxMask()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
