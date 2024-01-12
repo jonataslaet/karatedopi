@@ -21,7 +21,7 @@ public class ResourceExceptionHandler {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(HttpStatus.FORBIDDEN.value());
-        standardError.setError("Access Denied");
+        standardError.setError("Acesso negado");
         standardError.setMessage(ex.getLocalizedMessage());
         standardError.setPath(httpServletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
@@ -32,7 +32,7 @@ public class ResourceExceptionHandler {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(HttpStatus.FORBIDDEN.value());
-        standardError.setError("Forbidden Operation");
+        standardError.setError("Operação não permitida");
         standardError.setMessage(ex.getMessage());
         standardError.setPath(httpServletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
@@ -43,7 +43,7 @@ public class ResourceExceptionHandler {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        standardError.setError("Internal Server Error");
+        standardError.setError("Erro interno do servidor");
         standardError.setMessage(ex.getMessage());
         standardError.setPath(httpServletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(standardError);
@@ -54,7 +54,7 @@ public class ResourceExceptionHandler {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(HttpStatus.NOT_FOUND.value());
-        standardError.setError("Resource not found");
+        standardError.setError("Recurso não encontrado");
         standardError.setMessage(ex.getMessage());
         standardError.setPath(httpServletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(standardError);
@@ -65,7 +65,7 @@ public class ResourceExceptionHandler {
         ValidationError validationError = new ValidationError();
         validationError.setTimestamp(Instant.now());
         validationError.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
-        validationError.setError("Validation Error");
+        validationError.setError("Erro de validação");
         validationError.setMessage(ex.getMessage());
         validationError.setPath(httpServletRequest.getRequestURI());
         for (FieldError fieldError: ex.getBindingResult().getFieldErrors()) {
@@ -79,7 +79,7 @@ public class ResourceExceptionHandler {
         ValidationError validationError = new ValidationError();
         validationError.setTimestamp(Instant.now());
         validationError.setStatus(HttpStatus.UNAUTHORIZED.value());
-        validationError.setError("Authentication Error");
+        validationError.setError("Erro de autenticação");
         validationError.setMessage(ex.getMessage());
         validationError.setPath(httpServletRequest.getRequestURI());
 
@@ -91,7 +91,7 @@ public class ResourceExceptionHandler {
         ValidationError validationError = new ValidationError();
         validationError.setTimestamp(Instant.now());
         validationError.setStatus(HttpStatus.BAD_REQUEST.value());
-        validationError.setError("Resource already in use");
+        validationError.setError("Recurso já em uso");
         validationError.setMessage(ex.getMessage());
         validationError.setPath(httpServletRequest.getRequestURI());
 
@@ -103,7 +103,7 @@ public class ResourceExceptionHandler {
         ValidationError validationError = new ValidationError();
         validationError.setTimestamp(Instant.now());
         validationError.setStatus(HttpStatus.BAD_REQUEST.value());
-        validationError.setError("Field not found");
+        validationError.setError("Campo não encontrado");
         validationError.setMessage(ex.getMessage());
         validationError.setPath(httpServletRequest.getRequestURI());
 
