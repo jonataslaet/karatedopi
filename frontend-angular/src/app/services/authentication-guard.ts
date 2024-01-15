@@ -27,7 +27,7 @@ export const AuthenticationGuard: CanActivateFn = (
   if (authenticationService.isLoggedIn) {
     const menusByRole: RouteItem[] = [];
     endpoints.routes.forEach((menu: RouteItem) => {
-      if (menu.authorities.some((authority) => jwtDecode(authenticationService.authenticatedToken)['authorities'].includes(authority))) {
+      if (menu.authorities.some((authority) => jwtDecode(authenticationService.authenticatedToken)['authorities'].includes(authority)) && menu.isMenu) {
         menusByRole.push(menu);
       }
     });
