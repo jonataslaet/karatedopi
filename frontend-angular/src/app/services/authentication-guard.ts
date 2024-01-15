@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { jwtDecode } from 'jwt-decode';
 import { endpoints } from '../common/app.endpoints';
-import { MenuItem } from '../common/menu-item';
+import { RouteItem } from '../common/route-item';
 import { AuthenticationService } from './authentication.service';
 
 export const AuthenticationGuard: CanActivateFn = (
@@ -25,8 +25,8 @@ export const AuthenticationGuard: CanActivateFn = (
 
   let isAllowedByRole: boolean = false;
   if (authenticationService.isLoggedIn) {
-    const menusByRole: MenuItem[] = [];
-    endpoints.menus.forEach((menu: MenuItem) => {
+    const menusByRole: RouteItem[] = [];
+    endpoints.routes.forEach((menu: RouteItem) => {
       if (menu.authorities.some((authority) => jwtDecode(authenticationService.authenticatedToken)['authorities'].includes(authority))) {
         menusByRole.push(menu);
       }

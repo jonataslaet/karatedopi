@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthenticationResponse } from 'src/app/common/authentication-response';
 import { CredentialsDTO } from 'src/app/common/credentials-dto';
-import { MenuItem } from 'src/app/common/menu-item';
+import { RouteItem } from 'src/app/common/route-item';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { KaratedopiValidators } from 'src/app/validators/karatedopi-validators';
 
@@ -62,7 +62,7 @@ export class LoginFormComponent {
     });
   }
 
-  checkAuthority(menu: MenuItem, authorities: string[]): boolean {
+  checkAuthority(menu: RouteItem, authorities: string[]): boolean {
     return menu.authorities.some((authority) => authorities.includes(authority));
   }
 }

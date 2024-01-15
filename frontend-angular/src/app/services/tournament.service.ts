@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TournamentForm } from '../common/tournament-form';
 import { TournamentsReadResponse } from '../common/tournaments-read-response';
 import { RequestService } from './request.service';
 
@@ -9,6 +10,10 @@ import { RequestService } from './request.service';
 export class TournamentService {
 
   constructor(private requestService: RequestService) { }
+
+  createTournament(tournamentForm: TournamentForm) {
+    return this.requestService.request('POST', '/tournaments', tournamentForm);
+  }
 
   getTournamentListPaginate(thePage: number, thePageSize: number, theField: string, theDirection: string): Observable<TournamentsReadResponse> {
     const endpoint = `/tournaments?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;

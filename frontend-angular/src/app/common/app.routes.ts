@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AddressListComponent } from '../components/address-list/address-list.component';
 import { CreateRegistrationComponent } from '../components/create-registration/create-registration.component';
+import { CreateTournamentComponent } from '../components/create-tournament/create-tournament.component';
 import { HomeComponent } from '../components/home/home.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
 import { ProfileListComponent } from '../components/profile-list/profile-list.component';
@@ -38,6 +39,11 @@ export const routes: Routes = [
     {
         path: 'tournaments',
         component: TournamentsListComponent,
+        canActivate: [AuthenticationGuard]
+    },
+    {
+        path: 'tournaments/create',
+        component: CreateTournamentComponent,
         canActivate: [AuthenticationGuard]
     },
     {

@@ -4,6 +4,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { jwtDecode } from 'jwt-decode';
+import { endpoints } from 'src/app/common/app.endpoints';
+import { RouteItem } from 'src/app/common/route-item';
 import { TournamentItem } from 'src/app/common/tournament-item';
 import { TournamentParticipant } from 'src/app/common/tournament-participant';
 import { TournamentsReadResponse } from 'src/app/common/tournaments-read-response';
@@ -106,5 +108,27 @@ export class TournamentsListComponent implements AfterViewInit {
       return isParticipant;
     }
     return false;
+  }
+
+  hasPrivileges(): boolean {
+    const token = localStorage.getItem('auth_token') ?? '';
+    if (token && token !== null && token.length > 7) {
+      let pathAuthorities: string[] = this.getAuthoritiesForPath("/tournaments/create");
+      const hasPrivileges = pathAuthorities.some(
+          (authority) => jwtDecode(token)['authorities'].includes(authority)
+        );
+        return hasPrivileges;
+    }
+    return false;
+  }
+
+  getAuthoritiesForPath(path: string): string[] {
+    const matchingMenu = endpoints.routes.find((menu: RouteItem) => menu.path === path);
+
+    if (matchingMenu) {
+      return matchingMenu.authorities || [];
+    }
+
+    return [];
   }
 }

@@ -1,9 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { AuthenticationResponse } from '../common/authentication-response';
 import { CredentialsDTO } from '../common/credentials-dto';
-import { MenuItem } from '../common/menu-item';
+import { RouteItem } from '../common/route-item';
 import { RequestService } from './request.service';
 
 @Injectable({
@@ -14,7 +15,7 @@ export class AuthenticationService {
   currentUserSignal = signal<AuthenticationResponse | undefined | null>(
     undefined
   );
-  currentMenusByRole = signal<MenuItem[] | undefined | null>(undefined);
+  currentMenusByRole = signal<RouteItem[] | undefined | null>(undefined);
 
   constructor(private requestService: RequestService, private router: Router) {}
 
@@ -49,5 +50,13 @@ export class AuthenticationService {
 
   getAuthToken(): string {
     return this.requestService.getAuthToken();
+  }
+
+  getAuthenticatedAuthorities(): string[] {
+    const token = localStorage.getItem('auth_token') ?? '';
+    if (token && token !== null && token.length > 7) {
+      return jwtDecode(token)['authorities'];
+    }
+    return [];
   }
 }

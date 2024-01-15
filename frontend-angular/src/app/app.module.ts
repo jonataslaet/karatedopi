@@ -30,6 +30,7 @@ import { ProfileService } from './services/profile.service';
 import { RegistrationService } from './services/registration.service';
 import { StateService } from './services/state-service';
 import { TournamentService } from './services/tournament.service';
+import { CreateTournamentComponent } from './components/create-tournament/create-tournament.component';
 
 export function tokenGetter() {
   return sessionStorage.getItem("auth_token");
@@ -51,7 +52,8 @@ export function tokenGetter() {
     UserListComponent,
     EvaluateDialogUserComponent,
     AddressListComponent,
-    ParticipateDialogTournamentComponent
+    ParticipateDialogTournamentComponent,
+    CreateTournamentComponent
   ],
   imports: [
     HttpClientModule,
