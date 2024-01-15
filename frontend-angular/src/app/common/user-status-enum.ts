@@ -1,5 +1,5 @@
 export enum UserStatusEnum {
-  PENDING_EVALUATION = 'Pending evaluation',
-  ACTIVE = 'Active',
-  SUSPENDED = 'Suspended',
+  PENDING_EVALUATION = 'Pendente de avaliação',
+  ACTIVE = 'Ativo',
+  SUSPENDED = 'Suspenso',
 }
