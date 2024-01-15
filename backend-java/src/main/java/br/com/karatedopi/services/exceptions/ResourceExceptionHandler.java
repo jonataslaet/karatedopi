@@ -15,6 +15,18 @@ import java.time.Instant;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
+    @ExceptionHandler(TournamentParticipationException.class)
+    public ResponseEntity<StandardError> handleTournamentParticipationException(
+            TournamentParticipationException ex, HttpServletRequest httpServletRequest) {
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(HttpStatus.FORBIDDEN.value());
+        standardError.setError("Status inválido de torneio para receber inscrições");
+        standardError.setMessage(ex.getLocalizedMessage());
+        standardError.setPath(httpServletRequest.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<StandardError> handleAccessDeniedException(AccessDeniedException ex, HttpServletRequest httpServletRequest) {
