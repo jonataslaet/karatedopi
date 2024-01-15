@@ -93,9 +93,14 @@ export class CreateTournamentComponent implements OnInit {
       const year = parseInt(eventDateTime.substring(4, 8), 10);
       const hour = parseInt(eventDateTime.substring(8, 10), 10);
       const minute = parseInt(eventDateTime.substring(10, 12), 10);
-  
-      const date = new Date(year, month, day, hour, minute);
-  
+
+      const date = new Date();
+      date.setUTCFullYear(year);
+      date.setUTCMonth(month);
+      date.setUTCDate(day);
+      date.setUTCHours(hour);
+      date.setUTCMinutes(minute);
+
       if (!isNaN(date.getTime())) {
         return date;
       }
