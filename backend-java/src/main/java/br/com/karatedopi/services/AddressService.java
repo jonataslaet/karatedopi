@@ -59,7 +59,7 @@ public class AddressService {
 		try {
 			return addressRepository.save(address);
 		} catch (Exception e) {
-			throw new ResourceStorageException("Unknown problem by saving address");
+			throw new ResourceStorageException("Problema desconhecido ao salvar endereço");
 		}
 	}
 

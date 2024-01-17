@@ -45,7 +45,7 @@ public class RegistrationService {
 
 	private void validateNonExistingEmail(String email) {
 		if (userService.userExistsByEmail(email)) {
-			throw new AlreadyInUseException("Email already exists");
+			throw new AlreadyInUseException("Email já existe");
 		}
 	}
 
@@ -96,7 +96,7 @@ public class RegistrationService {
 	private City getCityByName(String cityName, State state) {
 		return state.getCities().stream().filter(city ->
 			cityName.equalsIgnoreCase(city.getName())).findFirst().orElseThrow(() ->
-				new ResourceNotFoundException("No city was found for this state"));
+				new ResourceNotFoundException("Nenhuma cidade foi encontrada para este estado"));
 	}
 
 	private String getFirstname(String fullname) {

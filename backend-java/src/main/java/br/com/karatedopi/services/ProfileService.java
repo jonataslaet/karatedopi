@@ -54,7 +54,7 @@ public class ProfileService {
 	public Profile getProfile(Long id) {
 		Profile foundProfile = profileRepository.findById(id).orElse(null);
 		if (Objects.isNull(foundProfile)) {
-			throw new ResourceNotFoundException("Profile not found id = " + id);
+			throw new ResourceNotFoundException("Perfil não encontrado com o id " + id);
 		}
 		return foundProfile;
 	}
@@ -67,7 +67,7 @@ public class ProfileService {
 			Profile updatedProfile = profileRepository.save(foundProfile);
 			return ProfileUpdateDTO.getProfileUpdateResponseDTO(updatedProfile);
 		} catch (Exception e) {
-			throw new ResourceStorageException("Unknown problem by saving profile");
+			throw new ResourceStorageException("Problema desconhecido ao salvar perfil");
 		}
 	}
 
@@ -98,10 +98,10 @@ public class ProfileService {
 			Integer graduationBeltIndex = Belt.getIndexByValue(graduationBelt);
 			Integer lastGraduationBeltIndex = Belt.getIndexByValue(lastGraduation.getBelt());
 			if (graduationBeltIndex <= lastGraduationBeltIndex || graduationBeltIndex - lastGraduationBeltIndex > 1) {
-				throw new ForbiddenOperationException("A new graduation cannot be 2 or more levels greater than the last one");
+				throw new ForbiddenOperationException("Uma nova graduação não pode ser 2 ou mais vezes superior à anterior");
 			}
 			if (Utils.getDifferenceInHours(lastGraduation.getCreatedOn(), LocalDateTime.now()) < 1) {
-				throw new ForbiddenOperationException("More than 1 graduation change in less than 1 hour is forbidden");
+				throw new ForbiddenOperationException("Mais de 1 graduação em menos de 1 hora é proibido");
 			}
 		}
 	}
@@ -121,7 +121,7 @@ public class ProfileService {
 		try {
 			return profileRepository.save(profile);
 		} catch (Exception e) {
-			throw new ResourceStorageException("Unknown problem by saving profile");
+			throw new ResourceStorageException("Problema desconhecido ao salvar perfil");
 		}
 	}
 }

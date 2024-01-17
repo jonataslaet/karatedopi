@@ -28,7 +28,7 @@ public class UserReadDTO {
 		return UserReadDTO.builder()
 				.id(user.getId())
 				.authority(user.getRoles().stream().map(Role::getAuthority).findFirst().orElseThrow(() ->
-						new ResourceNotFoundException("Role not found")))
+						new ResourceNotFoundException("Autoridade não encontrada")))
 				.email(user.getEmail())
 				.firstname(user.getFirstname())
 				.lastname(user.getLastname())

@@ -21,7 +21,7 @@ public class ResourceExceptionHandler {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(HttpStatus.FORBIDDEN.value());
-        standardError.setError("Status inválido de torneio para receber inscrições");
+        standardError.setError("Requisito não atendido para participação em torneio");
         standardError.setMessage(ex.getLocalizedMessage());
         standardError.setPath(httpServletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);

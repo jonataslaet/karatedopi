@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
         List<UserDetailsProjection> userDetailsProjections =
                 userRepository.searchUserAndRolesByEmail(email);
         if (userDetailsProjections.isEmpty()) {
-            throw new ResourceNotFoundException("User not found for email = " + email);
+            throw new ResourceNotFoundException("Usuário não encontrado com o email " + email);
         }
         User user = new User();
         user.setId(userDetailsProjections.get(0).getId());
@@ -86,29 +86,29 @@ public class UserService implements UserDetailsService {
 
     private void validEvaluate(User userToBeEvaluate, User authenticatedUser, UserEvaluationDTO userEvaluationDTO) {
         if (Objects.equals(authenticatedUser.getId(), userToBeEvaluate.getId())) {
-            throw new ForbiddenOperationException("Authenticated user can not evaluate himself");
+            throw new ForbiddenOperationException("O usuário autenticado não pode se avaliar");
         }
 
         if (!authenticatedUser.isEnabled()) {
-            throw new ForbiddenOperationException("Authenticated user needs to be active for evaluating other");
+            throw new ForbiddenOperationException("O usuário autenticado precisar de estar ativo para avaliar outro usuário");
         }
 
         Role authenticatedUserBiggerRole = authenticatedUser.getRoles().stream()
                 .min(Comparator.comparingLong(Role::getId))
-                .orElseThrow(() -> new ResourceStorageException("Problem by loading role of a user"));
+                .orElseThrow(() -> new ResourceStorageException("Problema desconhecido ao carregar autoridade de um usuário"));
 
         Role userToBeEvaluateBiggerRole = userToBeEvaluate.getRoles().stream()
                 .min(Comparator.comparingLong(Role::getId))
-                .orElseThrow(() -> new ResourceStorageException("Problem by loading role of a user"));
+                .orElseThrow(() -> new ResourceStorageException("Problema desconhecido ao carregar autoridade de um usuário"));
 
         Role evaluateRole = roleService.getRoleByName(userEvaluationDTO.authority());
 
         if (firstRoleHasEqualOrMoreAuthority(userToBeEvaluateBiggerRole, authenticatedUserBiggerRole)) {
-            throw new ForbiddenOperationException("Authenticated user can't evaluate other user who have an authority bigger or equals");
+            throw new ForbiddenOperationException("Usuário autenticado não pode avaliar outro usuário que tenha autoridade maior ou igual");
         }
 
         if (firstRoleHasEqualOrMoreAuthority(evaluateRole, authenticatedUserBiggerRole)) {
-            throw new ForbiddenOperationException("Authenticated user can't evaluate other user with an authority equal or bigger than his own");
+            throw new ForbiddenOperationException("Usuário autenticado não pode avaliar, com autoridade maior ou igual que a dele próprio, outro usuário");
         }
 
     }
@@ -136,7 +136,7 @@ public class UserService implements UserDetailsService {
     private User getUser(Long id) {
         User foundUser = userRepository.findById(id).orElse(null);
         if (Objects.isNull(foundUser)) {
-            throw new ResourceNotFoundException("User not found id = " + id);
+            throw new ResourceNotFoundException("Usuário não encontrado com o id " + id);
         }
         return foundUser;
     }
@@ -146,7 +146,7 @@ public class UserService implements UserDetailsService {
         try {
             return userRepository.save(user);
         } catch (Exception e) {
-            throw new ResourceStorageException("Unknown problem by saving user");
+            throw new ResourceStorageException("Problema desconhecido ao salvar usuário");
         }
     }
 
