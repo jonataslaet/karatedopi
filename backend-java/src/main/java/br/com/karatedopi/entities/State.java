@@ -48,6 +48,6 @@ public class State {
 	public City getCityByName(String cityName) {
 		return this.cities.stream().filter(c ->
 			c.getName().equalsIgnoreCase(cityName)).findFirst().orElseThrow(() ->
-			new ResourceNotFoundException("No city was found for this state"));
+			new ResourceNotFoundException("Nenhuma cidade foi encontrada para este estado"));
 	}
 }

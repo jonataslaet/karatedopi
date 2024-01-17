@@ -42,7 +42,7 @@ public class AuthService {
                     .authorities(user.getRoles().stream().map(Role::getAuthority).collect(Collectors.toSet()))
                     .build();
         }
-        throw new InvalidAuthenticationException("Email or password are invalid");
+        throw new InvalidAuthenticationException("Email ou senha estão inválidos");
     }
 
     public AuthenticationResponse current() {
@@ -62,11 +62,11 @@ public class AuthService {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
-                throw new InvalidAuthenticationException("The user needs to be authenticated for performing this operation");
+                throw new InvalidAuthenticationException("O usuário precisa de estar autenticado para fazer esta operação");
             }
             return (User) authentication.getPrincipal();
         } catch (Exception e) {
-            throw new InvalidAuthenticationException("The user needs to be authenticated for performing this operation");
+            throw new InvalidAuthenticationException("O usuário precisa de estar autenticado para fazer esta operação");
         }
     }
 

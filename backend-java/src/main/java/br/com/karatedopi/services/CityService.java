@@ -32,17 +32,17 @@ public class CityService {
 
 	public List<City> getAllCitiesByStateNameOrAbbreviation(String stateName) {
 		List<City> allCitiesByState = cityRepository.findAllCitiesByStateNameOrAbbreviation(stateName);
-		if (Objects.isNull(allCitiesByState) || allCitiesByState.isEmpty()) throw new ResourceNotFoundException("No city was found for this state");
+		if (Objects.isNull(allCitiesByState) || allCitiesByState.isEmpty()) throw new ResourceNotFoundException("Nenhuma cidade encontrada para este estado");
 		return allCitiesByState;
 	}
 
     public City getCityByCityNameAndStateName(String city, String state) {
-		return cityRepository.findCityByCityNameAndStateName(city, state).orElseThrow(() -> new ResourceNotFoundException("No city was found for this state"));
+		return cityRepository.findCityByCityNameAndStateName(city, state).orElseThrow(() -> new ResourceNotFoundException("Nenhuma cidade encontrada para este estado"));
 	}
 
 	public List<City> getAllCitiesByCityName(String cityName) {
 		List<City> allCitiesByName = cityRepository.findAllCitiesByName(cityName);
-		if (Objects.isNull(allCitiesByName) || allCitiesByName.isEmpty()) throw new ResourceNotFoundException("No city was found for this state");
+		if (Objects.isNull(allCitiesByName) || allCitiesByName.isEmpty()) throw new ResourceNotFoundException("Nenhuma cidade encontrada para este estado");
 		return allCitiesByName;
 	}
 }

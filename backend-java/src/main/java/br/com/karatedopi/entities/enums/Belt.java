@@ -38,7 +38,7 @@ public enum Belt {
 				return belt;
 			}
 		}
-		throw new ResourceNotFoundException("No enum constant with name " + name);
+		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + name);
 	}
 
 	public static Belt getValueByDescription(String name) {
@@ -47,7 +47,7 @@ public enum Belt {
 				return belt;
 			}
 		}
-		throw new ResourceNotFoundException("No enum constant with name " + name);
+		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + name);
 	}
 
 	public static Belt getValueByValue(String value) {
@@ -56,7 +56,7 @@ public enum Belt {
 				return belt;
 			}
 		}
-		throw new ResourceNotFoundException("No enum constant with name " + value);
+		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
 	}
 
 	public static int getIndexByValue(Belt enumValue) {
@@ -66,6 +66,6 @@ public enum Belt {
 				return i;
 			}
 		}
-		throw new ResourceNotFoundException("Enum constant not found: " + enumValue);
+		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + enumValue);
 	}
 }

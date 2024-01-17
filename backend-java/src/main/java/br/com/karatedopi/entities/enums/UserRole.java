@@ -29,6 +29,6 @@ public enum UserRole {
 				return status;
 			}
 		}
-		throw new ResourceNotFoundException("No enum constant with name " + value);
+		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
 	}
 }

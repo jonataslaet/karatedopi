@@ -28,7 +28,7 @@ public enum UserStatus {
 				return status;
 			}
 		}
-		throw new ResourceNotFoundException("No enum constant with name " + name);
+		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + name);
 	}
 
 	public static UserStatus getValueByValue(String value) {
@@ -37,7 +37,7 @@ public enum UserStatus {
 				return status;
 			}
 		}
-		throw new ResourceNotFoundException("No enum constant with name " + value);
+		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
 	}
 
 }

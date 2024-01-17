@@ -9,7 +9,7 @@ public class Utils {
 
     public static int getAgeByBirthday(LocalDate birthday) {
         if (birthday == null) {
-            throw new IllegalArgumentException("Birthday cannot be null");
+            throw new IllegalArgumentException("A data de nascimento não pode ser nula");
         }
         Period period = Period.between(birthday, LocalDate.now());
         return period.getYears();

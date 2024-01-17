@@ -59,7 +59,7 @@ public class TournamentService {
 			return TournamentDTO.getTournamentDTO(savedTournament);
 		}
 		catch (Exception e) {
-			throw new ResourceStorageException("Unknown problem by saving tournament");
+			throw new ResourceStorageException("Problema desconhecido ao salvar torneio");
 		}
 	}
 
@@ -93,7 +93,7 @@ public class TournamentService {
 	@Transactional(readOnly = true)
 	private Tournament findTournamentById(Long id) {
 		return tournamentRepository.findById(id).orElseThrow(() ->
-			new ResourceNotFoundException("No tournament with id " + id + " was found"));
+			new ResourceNotFoundException("Nenhum torneio foi encontrado com o id " + id));
 	}
 
 	@Transactional
@@ -110,7 +110,7 @@ public class TournamentService {
 			Tournament savedTournament = tournamentRepository.save(tournament);
 			return TournamentDTO.getTournamentDTO(savedTournament);
 		} catch (Exception e) {
-			throw new ResourceStorageException("Unknown problem by saving tournament");
+			throw new ResourceStorageException("Problema desconhecido ao salvar torneio");
 		}
 	}
 
@@ -138,7 +138,7 @@ public class TournamentService {
 			Tournament savedTournament = tournamentRepository.save(foundTournament);
 			return TournamentDTO.getTournamentDTO(savedTournament);
 		} catch (Exception e) {
-			throw new ResourceStorageException("Unknown problem by updating tournament");
+			throw new ResourceStorageException("Problema desconhecido ao salvar torneio");
 		}
 	}
 
@@ -178,19 +178,19 @@ public class TournamentService {
 
 	private void isValidUserStatus(User user) {
 		if (!user.getStatus().equals(UserStatus.ACTIVE)) {
-			throw new TournamentParticipationException("You need to be active.");
+			throw new TournamentParticipationException("O usuário logado precisa de estar ativo para participar deste torneio.");
 		}
 	}
 
 	private void isValidTournamentStatus(Tournament foundTournament) {
 		if (foundTournament.getStatus().equals(TournamentStatus.SUSPENDED)) {
-			throw new TournamentParticipationException("This tournament is temporarialy suspended.");
+			throw new TournamentParticipationException("Este torneio está temporariamente suspenso.");
 		}
 		if (foundTournament.getStatus().equals(TournamentStatus.FINISHED)) {
-			throw new TournamentParticipationException("This tournament is finished.");
+			throw new TournamentParticipationException("Este torneio está finalizado.");
 		}
 		if (!foundTournament.getStatus().equals(TournamentStatus.OPENED)) {
-			throw new TournamentParticipationException("This tournament is not open for registrations.");
+			throw new TournamentParticipationException("Este torneio não está aberto para inscrições.");
 		}
 	}
 
