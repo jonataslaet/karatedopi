@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.karatedopi</groupId>
 	<artifactId>karatedopi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>karatedopi</name>
 	<description>Uma API para gerenciar caratecas, fichas e torneios de karatê</description>
 	<properties>
