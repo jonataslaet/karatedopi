@@ -107,7 +107,7 @@ export class CreateRegistrationComponent implements OnInit {
     }
     this.registrationForm.birthday = this.getDateFormat(this.personalBirthday.value);
     this.registrationService.createRegistration(this.registrationForm).subscribe(() => {
-      this.snackBar.open('Cadastro efetuado com sucesso.','✅');
+      this.snackBar.open('Cadastro efetuado com sucesso.','✅')._dismissAfter(3000);
       this.router.navigate(['/login']);
     });
   }

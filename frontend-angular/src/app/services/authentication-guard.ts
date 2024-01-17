@@ -19,7 +19,7 @@ export const AuthenticationGuard: CanActivateFn = (
     snackBar.open(
       'Sua sessão expirou. Por favor, faça login novamente.',
       '❌'
-    );
+    )._dismissAfter(3000);
     authenticationService.startFromLogin();
   }
 
@@ -37,7 +37,7 @@ export const AuthenticationGuard: CanActivateFn = (
     if (isAllowedByRole) {
       return true;
     }
-    snackBar.open('Acesso negado.','❌');
+    snackBar.open('Acesso negado.','❌')._dismissAfter(3000);
     inject(Router).navigate(['/home']);
     return false;
   }

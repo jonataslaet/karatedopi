@@ -15,7 +15,7 @@ export class ErrorsHandler implements ErrorHandler {
                 this.snackBar.open(
                     'Sem conexão com a internet.',
                     '❌'
-                );
+                )._dismissAfter(3000);
             } else {
                 let standardError: StandardError = {
                     timestamp: null,
@@ -26,13 +26,13 @@ export class ErrorsHandler implements ErrorHandler {
                 };
                 standardError.status = error.error.status;
                 standardError.error = error.error.error;
-                this.snackBar.open(standardError.error, '❌');
+                this.snackBar.open(standardError.error, '❌')._dismissAfter(3000);
             }
         } else {
             this.snackBar.open(
                 'Erro desconhecido.',
                 '❌'
-            );
+            )._dismissAfter(3000);
         }
     }
 }

@@ -56,7 +56,7 @@ export class LoginFormComponent {
           accessToken: '',
           authorities: []
         };
-        this.snackBar.open('Login ou Senha incorretos.','❌');
+        this.snackBar.open('Login ou Senha incorretos.','❌')._dismissAfter(3000);
         this.authenticationService.startFromLogin();
       },
     });

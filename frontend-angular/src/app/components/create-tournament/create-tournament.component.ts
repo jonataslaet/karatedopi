@@ -74,7 +74,7 @@ export class CreateTournamentComponent implements OnInit {
     }
     this.tournamentForm.eventDateTime = this.getDateFormat(this.tournamentEventDateTime.value);
     this.tournamentService.createTournament(this.tournamentForm).subscribe(() => {
-      this.snackBar.open('Cadastro efetuado com sucesso.','✅');
+      this.snackBar.open('Cadastro efetuado com sucesso.','✅')._dismissAfter(3000);
       this.router.navigate(['/tournaments']);
     });
   }
