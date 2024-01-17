@@ -26,7 +26,8 @@ export class ErrorsHandler implements ErrorHandler {
                 };
                 standardError.status = error.error.status;
                 standardError.error = error.error.error;
-                this.snackBar.open(standardError.error, '❌')._dismissAfter(3000);
+                standardError.message = error.error.message;
+                this.snackBar.open(standardError.message, '❌')._dismissAfter(3000);
             }
         } else {
             this.snackBar.open(
