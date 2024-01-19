@@ -1,9 +1,16 @@
 version: '3.8'
 services:
-  # ====================================================================================================================
-  # KARATEDOPI SERVER 
-  # docker run -p 8080:8080 --name karatedopi-container-dev -e APP_PROFILE=dev -e DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi -e DB_USERNAME=jonataslaet -e DB_PASSWORD=blendo273 jonataslaet/karatedopi
-  # ====================================================================================================================
+  postgres-server:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=jonataslaet
+      - POSTGRES_PASSWORD=blendo273
+      - POSTGRES_DB=dbkaratedopi
+    ports:
+      - '5432:5432'
+    networks:
+      - karatedopi-network
   karatedopi-container-dev:
     image: jonataslaet/karatedopi
     restart: always
@@ -21,22 +28,5 @@ services:
       - DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
       - DB_USERNAME=jonataslaet
       - DB_PASSWORD=blendo273
-  # ====================================================================================================================
-  # POSTGRES SERVER
-  # ====================================================================================================================
-  postgres-server:
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=jonataslaet
-      - POSTGRES_PASSWORD=blendo273
-      - POSTGRES_DB=dbkaratedopi
-    ports:
-      - '5432:5432'
-    networks:
-      - dev-network
-# ======================================================================================================================
-# REDE
-# ======================================================================================================================
 networks:
-  dev-network:
+  karatedopi-network:
