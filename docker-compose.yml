@@ -20,7 +20,8 @@ services:
     ports:
       - '8080:8080'
     networks:
-      - dev-network
+      - karatedopi-network
+    command: mvn spring-boot:run
     depends_on:
       - postgres-server
     environment:
@@ -30,3 +31,4 @@ services:
       - DB_PASSWORD=blendo273
 networks:
   karatedopi-network:
+    driver: bridge
