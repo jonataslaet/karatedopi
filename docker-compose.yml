@@ -25,10 +25,10 @@ services:
     depends_on:
       - postgres-server
     environment:
-      - APP_PROFILE=dev
-      - DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
-      - DB_USERNAME=jonataslaet
-      - DB_PASSWORD=blendo273
+      - SPRING.PROFILES.ACTIVE=dev
+      - SPRING.DATASOURCE.URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
+      - SPRING.DATASOURCE.USERNAME=jonataslaet
+      - SPRING.DATASOURCE.PASSWORD=blendo273
 networks:
   karatedopi-network:
     driver: bridge
