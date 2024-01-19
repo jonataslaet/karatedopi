@@ -1,7 +1,8 @@
 version: '3.8'
 services:
   # ====================================================================================================================
-  # KARATEDOPI SERVER
+  # KARATEDOPI SERVER 
+  # docker run -p 8080:8080 --name karatedopi-container-dev -e APP_PROFILE=dev -e DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi -e DB_USERNAME=jonataslaet -e DB_PASSWORD=blendo273 jonataslaet/karatedopi
   # ====================================================================================================================
   # karatedopi-container-dev:
   #   image: jonataslaet/karatedopi
