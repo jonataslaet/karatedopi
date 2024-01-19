@@ -27,7 +27,7 @@ public class SecurityConfiguration {
     private final CorsConfigurationSource corsConfigurationSource;
     
     private final String[] PUBLIC_ENDPOINTS = {"/hello"};
-    private final String[] POST_PUBLIC_ENDPOINTS = {"/login", "/registration", "/email"};
+    private final String[] POST_PUBLIC_ENDPOINTS = {"/login", "/registration", "/email", "/recovery-token", "/new-password/**"};
     private final String[] GET_PUBLIC_ENDPOINTS = {"/cities**", "/states/all", "/cities/all"};
 
     @Bean

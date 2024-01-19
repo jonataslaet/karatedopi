@@ -3,8 +3,9 @@ package br.com.karatedopi.controllers;
 import br.com.karatedopi.controllers.dtos.AuthenticationResponse;
 import br.com.karatedopi.controllers.dtos.CredentialsDTO;
 import br.com.karatedopi.controllers.dtos.SendingEmailDTO;
+import br.com.karatedopi.controllers.dtos.EmailDTO;
+import br.com.karatedopi.controllers.dtos.PasswordResetDTO;
 import br.com.karatedopi.services.AuthService;
-import br.com.karatedopi.services.EmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -23,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthController {
 
     private final AuthService authService;
-    private final EmailService emailService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody CredentialsDTO credentialsDTO) {
@@ -41,7 +42,20 @@ public class AuthController {
     @PostMapping("/email")
     public ResponseEntity<Void> sendingEmail(@RequestParam(value = "file", required = false) MultipartFile[] files,
         SendingEmailDTO sendingEmailDTO) {
-        emailService.sendEmail(files, sendingEmailDTO);
+        authService.sendEmail(files, sendingEmailDTO);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/recovery-token")
+    public ResponseEntity<?> recoveryToken(@RequestBody @Valid EmailDTO emailDTO) {
+        authService.recoveryToken(emailDTO);
+        return ResponseEntity.ok("Caso esse email exista, será enviado a ele um link para resetar a senha");
+    }
+
+    @PostMapping("/new-password/{token}")
+    public ResponseEntity<?> renewPassword(@PathVariable String token,
+        @RequestBody @Valid PasswordResetDTO passwordResetDTO) {
+        authService.resetPassword(token, passwordResetDTO);
         return ResponseEntity.noContent().build();
     }
 
