@@ -32,4 +32,6 @@ jobs:
 
     - name: Build and push Docker images
       uses: docker/build-push-action@v5.1.0
-      file: ./backend-java
+      with:
+          context: ./backend-java
+          push: true
