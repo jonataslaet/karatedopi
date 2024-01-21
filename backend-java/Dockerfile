@@ -1,9 +1,9 @@
 FROM eclipse-temurin:17-jdk-jammy AS build
 RUN apt-get update && apt-get install -y maven
 WORKDIR /app
-COPY backend-java/pom.xml /app/pom.xml
+COPY ./pom.xml /app/pom.xml
 RUN mvn -B dependency:go-offline
-COPY backend-java /app
+COPY . /app
 RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
