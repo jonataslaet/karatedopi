@@ -1,34 +1,33 @@
 version: '3.8'
-
 services:
+  karatedopi-backend:
+    image: 'jonataslaet/karatedopi'
+    build:
+      context: .
+      dockerfile: ./backend-java/Dockerfile
+    depends_on:
+      - postgres-server
+    ports:
+      - 8080:8080
+    environment:
+      - APP_PROFILE=dev
+      - DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
+      - DB_USERNAME=jonataslaet
+      - DB_PASSWORD=blendo273
+    command: mvn spring-boot:run
+    networks:
+      - karatedopi-network
+
   postgres-server:
-    image: postgres
-    restart: always
+    image: 'postgres'
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_USER=jonataslaet
       - POSTGRES_PASSWORD=blendo273
       - POSTGRES_DB=dbkaratedopi
-    ports:
-      - '5432:5432'
     networks:
       - karatedopi-network
-
-  karatedopi-backend:
-    build:
-      context: ./backend-java
-    restart: always
-    ports:
-      - '8080:8080'
-    depends_on:
-      - postgres-server
-    environment:
-      - SPRING.PROFILES.ACTIVE=dev
-      - SPRING.DATASOURCE.URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
-      - SPRING.DATASOURCE.USERNAME=jonataslaet
-      - SPRING.DATASOURCE.PASSWORD=blendo273
-    networks:
-      - karatedopi-network
-
 networks:
   karatedopi-network:
     driver: bridge

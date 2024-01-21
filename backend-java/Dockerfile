@@ -1,20 +1,12 @@
-# Use an official OpenJDK runtime as a parent image
-FROM adoptopenjdk:17-jdk-hotspot
-
-# Set the working directory to /app
+FROM eclipse-temurin:17-jdk-jammy AS build
+RUN apt-get update && apt-get install -y maven
 WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Build the application
-RUN ./mvnw clean package
-
-# Expose the port that your Spring Boot application will run on
+COPY backend-java/pom.xml /app/pom.xml
+RUN mvn -B dependency:go-offline
+COPY backend-java /app
+RUN mvn clean package -DskipTests
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+COPY --from=build /app/target/karatedopi-0.0.3-SNAPSHOT.jar karatedopi.jar
 EXPOSE 8080
-
-# Copy the JAR file into the container
-ADD ./target/karatedopi-0.0.3-SNAPSHOT.jar karatedopi.jar
-
-# Command to run the application
-CMD ["java", "-jar", "karatedopi.jar"]
+ENTRYPOINT ["java", "-jar", "karatedopi.jar"]
