@@ -18,7 +18,7 @@ services:
     working_dir: /backend-java
     mem_limit: 500m
     ports:
-      - '8080:8080'
+      - '80:80'
     networks:
       - karatedopi-network
     command: mvn spring-boot:run
