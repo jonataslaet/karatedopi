@@ -32,5 +32,4 @@ jobs:
 
     - name: Build and push Docker images
       uses: docker/build-push-action@v5.1.0
-      working-directory: ./backend-java
       file: ./backend-java
