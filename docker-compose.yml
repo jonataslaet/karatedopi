@@ -28,6 +28,19 @@ services:
       - POSTGRES_DB=dbkaratedopi
     networks:
       - karatedopi-network
+
+  postgres-server-test:
+    image: 'postgres'
+    command: -p 5433
+    ports:
+      - 5433:5433
+    environment:
+      - POSTGRES_USER=jonataslaet
+      - POSTGRES_PASSWORD=blendo273
+      - POSTGRES_DB=dbtestkaratedopi
+    networks:
+      - karatedopi-network
+
 networks:
   karatedopi-network:
     driver: bridge
