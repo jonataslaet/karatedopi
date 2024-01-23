@@ -2,16 +2,13 @@ package br.com.karatedopi.configurations;
 
 import br.com.karatedopi.filters.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -29,15 +26,6 @@ public class SecurityConfiguration {
     private final String[] PUBLIC_ENDPOINTS = {"/hello"};
     private final String[] POST_PUBLIC_ENDPOINTS = {"/login", "/registration", "/email", "/recovery-token", "/new-password/**"};
     private final String[] GET_PUBLIC_ENDPOINTS = {"/cities**", "/states/all", "/cities/all"};
-
-    @Bean
-    @Profile("test")
-    public SecurityFilterChain h2SecurityFilterChain(HttpSecurity http) throws Exception {
-
-        http.securityMatcher(PathRequest.toH2Console()).csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-        return http.build();
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
