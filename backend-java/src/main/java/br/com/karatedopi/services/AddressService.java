@@ -30,7 +30,7 @@ public class AddressService {
 	public Page<AddressDTO> getPagedAddresses(String cityName, String stateName, Pageable pagination) {
 
 		if (Objects.nonNull(cityName) && Objects.nonNull(stateName)) {
-			State state = stateService.findStateByName(stateName);
+			State state = stateService.findStateByNameOrAbbreviation(stateName);
 			City city = state.getCityByName(cityName);
 			Page<Address> addresses = addressRepository.findAddressesByCityName(city.getName(), pagination);
 			return addresses.map(AddressDTO::getAddressDTO);

@@ -29,8 +29,8 @@ public class StateService {
 		return stateRepository.findAll().stream().map(StateDTO::getStateDTO).collect(Collectors.toList());
     }
 
-	public State findStateByName(String name) {
-		return stateRepository.findStateByName(name).orElseThrow(() -> new ResourceNotFoundException("No state was found"));
+	public State findStateByNameOrAbbreviation(String name) {
+		return stateRepository.findStateByNameOrAbbreviation(name).orElseThrow(() -> new ResourceNotFoundException("No state was found"));
 	}
 }
 

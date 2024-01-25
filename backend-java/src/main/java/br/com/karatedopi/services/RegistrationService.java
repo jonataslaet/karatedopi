@@ -82,7 +82,7 @@ public class RegistrationService {
 	}
 
 	private Address getAddress(RegisterDTO registerDTO) {
-		State state = stateService.findStateByName(registerDTO.getState());
+		State state = stateService.findStateByNameOrAbbreviation(registerDTO.getState());
 		City city = getCityByName(registerDTO.getCity(), state);
 		return Address.builder()
 				.street(registerDTO.getStreet())
