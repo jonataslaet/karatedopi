@@ -12,15 +12,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserStatus {
 
-	PENDING_EVALUATION("Pending evaluation"),
-	ACTIVE("Active"),
-	SUSPENDED("Suspended");
+	PENDING_EVALUATION(1, "Pending evaluation"),
+	ACTIVE(2, "Active"),
+	SUSPENDED(3, "Suspended");
 
+	private final Integer id;
 	private final String name;
-
-	public String getName() {
-		return name;
-	}
 
 	public static UserStatus getValueByName(String name) {
 		for (UserStatus status : values()) {
@@ -39,5 +36,4 @@ public enum UserStatus {
 		}
 		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
 	}
-
 }

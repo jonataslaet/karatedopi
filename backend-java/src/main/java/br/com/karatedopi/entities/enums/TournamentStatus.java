@@ -12,16 +12,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum TournamentStatus {
 
-	OPENED("Opened"),
-	IN_PROGRESS("In progress"),
-	SUSPENDED("Suspended"),
-	FINISHED("Finished");
+	OPENED(1, "Opened"),
+	IN_PROGRESS(2, "In progress"),
+	SUSPENDED(3, "Suspended"),
+	FINISHED(4, "Finished");
 
+	private final Integer id;
 	private final String name;
-
-	public String getName() {
-		return name;
-	}
 
 	public static TournamentStatus getByValue(String value) {
 		for (TournamentStatus status : values()) {
@@ -31,5 +28,4 @@ public enum TournamentStatus {
 		}
 		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
 	}
-
 }

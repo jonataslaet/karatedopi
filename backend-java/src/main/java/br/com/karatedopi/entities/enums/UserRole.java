@@ -12,21 +12,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserRole {
 
-	ROLE_ROOT("Root"),
-	ROLE_ADMIN("Administrator"),
-	ROLE_MODERATOR("Moderator"),
-	ROLE_USER("User");
+	ROLE_ROOT(1, "Root"),
+	ROLE_ADMIN(2, "Administrator"),
+	ROLE_MODERATOR(3, "Moderator"),
+	ROLE_USER(4, "User");
 
+	private final Integer id;
 	private final String name;
 
-	public String getName() {
-		return name;
-	}
-
 	public static UserRole getByValue(String value) {
-		for (UserRole status : values()) {
-			if (status.getName().equalsIgnoreCase(value)) {
-				return status;
+		for (UserRole role : values()) {
+			if (role.getName().equalsIgnoreCase(value)) {
+				return role;
 			}
 		}
 		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
