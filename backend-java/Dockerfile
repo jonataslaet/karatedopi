@@ -1,12 +1,10 @@
-FROM eclipse-temurin:17-jdk-jammy AS build
-RUN apt-get update && apt-get install -y maven
+FROM eclipse-temurin:17-jdk-alpine as builder
 WORKDIR /app
-COPY ./pom.xml /app/pom.xml
-RUN mvn -B dependency:go-offline
-COPY . /app
+COPY . .
+RUN apk add maven
 RUN mvn clean package -DskipTests
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
-COPY --from=build /app/target/karatedopi-0.0.3-SNAPSHOT.jar karatedopi.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "karatedopi.jar"]
+COPY --from=builder /app/target/karatedopi-0.0.3-SNAPSHOT.jar karatedopi.jar
+CMD [ "java", "-jar", "karatedopi.jar"]
