@@ -39,6 +39,6 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:latest .
         DOCKER_TAG=$(basename $(find . -name "karatedopi-*.jar") .jar | sed 's/karatedopi-//')
-        docker tag ${{ secrets.DOCKER_USERNAME }}/karatedopi:latest ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:$DOCKER_TAG
-        docker push ${{ secrets.DOCKER_USERNAME }}/karatedopi:$DOCKER_TAG
-        docker push ${{ secrets.DOCKER_USERNAME }}/karatedopi:latest
+        docker tag ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:latest ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:$DOCKER_TAG
+        docker push ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:$DOCKER_TAG
+        docker push ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:latest
