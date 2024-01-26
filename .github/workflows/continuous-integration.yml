@@ -30,10 +30,15 @@ jobs:
       working-directory: ./backend-java
       run: mvn -B clean package -DskipTests
 
-    - name: Build and push Docker images
+    - name: Extract version from pom.xml
+      id: extract-version
+      run: echo "::set-output name=version::$(grep -oPm1 "(?<=<version>)[^<]+" ./backend-java/pom.xml)"
+
+    - name: Build and push Docker images for Backend
       working-directory: ./backend-java
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/karatedopi:latest .
-        docker tag ${{ secrets.DOCKER_USERNAME }}/karatedopi:latest ${{ secrets.DOCKER_USERNAME }}/karatedopi:${{ github.sha }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/karatedopi:${{ github.sha }}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:latest .
+        DOCKER_TAG=$(basename $(find . -name "karatedopi-*.jar") .jar | sed 's/karatedopi-//')
+        docker tag ${{ secrets.DOCKER_USERNAME }}/karatedopi:latest ${{ secrets.DOCKER_USERNAME }}/karatedopi-backend:$DOCKER_TAG
+        docker push ${{ secrets.DOCKER_USERNAME }}/karatedopi:$DOCKER_TAG
         docker push ${{ secrets.DOCKER_USERNAME }}/karatedopi:latest
