@@ -4,14 +4,13 @@ import br.com.karatedopi.entities.enums.Belt;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
@@ -23,6 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -42,15 +43,15 @@ public class Graduation {
 	@Enumerated(EnumType.STRING)
 	private Belt belt;
 
-	@ManyToOne
-	@JoinColumn(name = "profile_user_id")
-	private Profile profile;
-
 	@Column(name = "updated_on")
 	private LocalDateTime updatedOn;
 
 	@Column(name = "created_on")
 	private LocalDateTime createdOn;
+
+	@OneToMany(mappedBy="id.graduation")
+	@Builder.Default
+	private Set<ProfileGraduation> profileGraduations = new HashSet<>();
 
 	@PrePersist
 	public void prePersist() {

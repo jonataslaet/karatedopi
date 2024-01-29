@@ -6,6 +6,8 @@ import br.com.karatedopi.entities.Graduation;
 import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.UserDetailsProjection;
+import br.com.karatedopi.entities.ProfileGraduation;
+import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.entities.enums.Belt;
 import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.UserRepository;
@@ -28,6 +30,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +39,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final GraduationService graduationService;
+    private final ProfileGraduationService profileGraduationService;
 
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -122,10 +128,27 @@ public class UserService implements UserDetailsService {
         removeBiggerAuthoritiesThanInEvaluationRole(foundUser, evaluationRole);
         foundUser.getRoles().add(evaluationRole);
         foundUser.setStatus(UserStatus.getValueByName(userEvaluationDTO.status()));
-        if (foundUser.getProfile().getGraduations().isEmpty()) {
-            foundUser.getProfile().getGraduations()
-                .add(Graduation.builder().belt(Belt.WHITE).profile(foundUser.getProfile()).build());
+        loadGraduations(foundUser.getProfile());
+        if (!hasAnyGraduation(foundUser)) {
+            ProfileGraduation profileGraduation = ProfileGraduation.builder().build();
+            profileGraduation.setProfile(foundUser.getProfile());
+            profileGraduation.setGraduation(graduationService.getGraduation(Belt.WHITE.toString()));
+            profileGraduationService.saveGraduation(profileGraduation);
         }
+    }
+
+    private void loadGraduations(Profile profile) {
+        Set<ProfileGraduation> profileGraduations = profileGraduationService
+                .getProfileGraduationsByProfile(profile);
+        profile.setProfileGraduations(profileGraduations);
+    }
+
+    private boolean hasAnyGraduation(User foundUser) {
+        return !getGraduations(foundUser.getProfile().getProfileGraduations()).isEmpty();
+    }
+
+    private Set<Graduation> getGraduations(Set<ProfileGraduation> profileGraduationsByProfile) {
+        return profileGraduationsByProfile.stream().map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
     }
 
     private void removeBiggerAuthoritiesThanInEvaluationRole(User foundUser, Role evaluationRole) {

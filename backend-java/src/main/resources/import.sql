@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS profile_graduation;
 DROP TABLE IF EXISTS graduation;
 DROP TABLE IF EXISTS tb_tournament_participant;
 DROP TABLE IF EXISTS profile_phone_numbers;
@@ -20,7 +21,8 @@ CREATE TABLE IF NOT EXISTS tournament (id bigserial, address_id int8 NOT NULL, e
 CREATE TABLE IF NOT EXISTS profile (user_id int8 NOT NULL, birthday date NOT NULL, address_id int8 NOT NULL, created_on timestamp(6) NOT NULL, updated_on timestamp(6) NULL, blood_type varchar(255) NOT NULL, cpf varchar(255) NOT NULL, father varchar(255) NOT NULL, fullname varchar(255) NOT NULL, mother varchar(255) NOT NULL, rg varchar(255) NOT NULL, belt varchar(255) NULL, CONSTRAINT profile_pkey PRIMARY KEY (user_id));
 CREATE TABLE IF NOT EXISTS profile_phone_numbers (profile_user_id int8 NOT NULL, phone_numbers varchar(255) NULL, CONSTRAINT profile_phone_numbers_pkey PRIMARY KEY (profile_user_id, phone_numbers));
 CREATE TABLE IF NOT EXISTS tb_tournament_participant (tournament_id bigserial, participant_id bigserial);
-CREATE TABLE IF NOT EXISTS graduation (id bigserial, belt varchar(255) NOT NULL, profile_user_id int8 NULL, created_on timestamp(6) NOT NULL, updated_on timestamp(6) NULL, CONSTRAINT graduation_pkey PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS graduation (id bigserial, belt varchar(255) NOT NULL, created_on timestamp(6) NOT NULL, updated_on timestamp(6) NULL, CONSTRAINT graduation_pkey PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS profile_graduation (profile_user_id int8 NULL, graduation_id int8 NULL, created_on timestamp(6) NOT NULL, updated_on timestamp(6) NULL, CONSTRAINT profile_graduation_pkey PRIMARY KEY (profile_user_id, graduation_id));
 
 ALTER TABLE tb_user_role ADD CONSTRAINT fk_tb_user_role_user_id FOREIGN KEY (user_id) REFERENCES tb_user(id);
 ALTER TABLE tb_user_role ADD CONSTRAINT fk_tb_user_role_role_id FOREIGN KEY (role_id) REFERENCES tb_role(id);
@@ -32,7 +34,26 @@ ALTER TABLE profile ADD CONSTRAINT fk_profile_user_id FOREIGN KEY (user_id) REFE
 ALTER TABLE profile_phone_numbers ADD CONSTRAINT fk_profile_phone_numbers_profile_user_id FOREIGN KEY (profile_user_id) REFERENCES profile(user_id);
 ALTER TABLE tb_tournament_participant ADD CONSTRAINT fk_tb_tournament_participant_tournament_id FOREIGN KEY (tournament_id) REFERENCES tournament(id);
 ALTER TABLE tb_tournament_participant ADD CONSTRAINT fk_tb_tournament_participant_participant_id FOREIGN KEY (participant_id) REFERENCES profile(user_id);
-ALTER TABLE graduation ADD CONSTRAINT fk_graduation_profile_user_id FOREIGN KEY (profile_user_id) REFERENCES profile(user_id);
+ALTER TABLE profile_graduation ADD CONSTRAINT fk_profile_graduation_profile_user_id FOREIGN KEY (profile_user_id) REFERENCES profile(user_id);
+ALTER TABLE profile_graduation ADD CONSTRAINT fk_profile_graduation_graduation_id FOREIGN KEY (graduation_id) REFERENCES graduation(id);
+
+INSERT INTO graduation (belt, created_on) VALUES ('WHITE', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('YELLOW', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('RED', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('ORANGE', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('GREEN', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('PURPLE', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BROWN', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_01', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_02', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_03', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_04', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_05', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_06', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_07', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_08', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_09', CURRENT_TIMESTAMP(6));
+INSERT INTO graduation (belt, created_on) VALUES ('BLACK_10', CURRENT_TIMESTAMP(6));
 
 INSERT INTO tb_role (authority) VALUES ('ROLE_ROOT');
 INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');

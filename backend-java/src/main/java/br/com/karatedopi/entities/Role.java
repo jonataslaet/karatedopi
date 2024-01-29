@@ -36,6 +36,7 @@ public class Role implements GrantedAuthority {
     private String authority;
 
     @ManyToMany(mappedBy = "roles")
+    @Builder.Default
     private Set<User> users = new HashSet<>();
 
     public Role(Long id, String authority) {

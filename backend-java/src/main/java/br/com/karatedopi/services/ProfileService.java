@@ -6,6 +6,7 @@ import br.com.karatedopi.controllers.dtos.ProfileReadDTO;
 import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
 import br.com.karatedopi.entities.Graduation;
 import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.ProfileGraduation;
 import br.com.karatedopi.entities.enums.Belt;
 import br.com.karatedopi.repositories.ProfileRepository;
 import br.com.karatedopi.services.exceptions.ForbiddenOperationException;
@@ -22,12 +23,15 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
 
 	private final ProfileRepository profileRepository;
+	private final GraduationService graduationService;
+	private final ProfileGraduationService profileGraduationService;
 
 	@Transactional(readOnly = true)
 	public Page<ProfileReadDTO> getPagedProfiles(String hometown, Pageable pageable) {
@@ -37,8 +41,24 @@ public class ProfileService {
 		} else {
 			profiles = profileRepository.findAllByHometown(hometown, pageable);
 		}
-
+		loadGraduations(profiles);
 		return profiles.map(ProfileReadDTO::getProfileReadDTO);
+	}
+
+	private void loadGraduations(Profile profile) {
+		Set<ProfileGraduation> profileGraduations = profileGraduationService
+				.getProfileGraduationsByProfile(profile);
+		profile.setProfileGraduations(profileGraduations);
+	}
+
+	private void loadGraduations(Page<Profile> profiles) {
+		Set<ProfileGraduation> profileGraduations = profileGraduationService
+				.getProfileGraduationsByProfiles(profiles.stream().map(profile ->
+						profile.getUser().getProfile()).collect(Collectors.toSet()));
+		profiles.forEach(profile -> {
+			profile.setProfileGraduations(profileGraduations.stream().filter(profileGraduation ->
+					profileGraduation.getProfile().equals(profile)).collect(Collectors.toSet()));
+		});
 	}
 
 	private static boolean isBlank(String hometown) {
@@ -47,6 +67,7 @@ public class ProfileService {
 
 	public ProfileReadDTO getProfileReadResponseDTO(Long id) {
 		Profile profile = getProfile(id);
+		loadGraduations(profile);
 		return ProfileReadDTO.getProfileReadDTO(profile);
 	}
 
@@ -85,18 +106,31 @@ public class ProfileService {
     public ProfileReadDTO changeGraduation(Long id, GraduationDTO graduationDTO) {
 		Profile profile = this.getProfile(id);
 		Belt newGraduationBelt = Belt.getValueByDescriptionOrValue(graduationDTO.belt());
-		Graduation lastGraduation = findLastGraduation(profile.getGraduations());
-		validChangeGraduation(lastGraduation, newGraduationBelt);
-		Graduation newGraduation = Graduation.builder().belt(newGraduationBelt).profile(profile).build();
-		profile.getGraduations().add(newGraduation);
+		loadGraduations(profile);
+		Graduation newGraduation = getValidNewGraduation(findLastGraduation(getGraduations(profile.getProfileGraduations())), newGraduationBelt);
+		graduateProfile(profile, newGraduation);
 		profile = this.saveProfile(profile);
 		return ProfileReadDTO.getProfileReadDTO(profile);
     }
 
-	private void validChangeGraduation(Graduation lastGraduation, Belt graduationBelt) {
+	private void graduateProfile(Profile profile, Graduation graduation) {
+		Set<Graduation> graduationsByProfile = getGraduations(profile.getProfileGraduations());
+		if (!graduationsByProfile.contains(graduation)) {
+			ProfileGraduation profileGraduation = ProfileGraduation.builder().build();
+			profileGraduation.setGraduation(graduation);
+			profileGraduation.setProfile(profile);
+			profileGraduationService.saveGraduation(profileGraduation);
+		}
+	}
+
+	private Set<Graduation> getGraduations(Set<ProfileGraduation> profileGraduationsByProfile) {
+		return profileGraduationsByProfile.stream().map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
+	}
+
+	private Graduation getValidNewGraduation(Graduation lastGraduation, Belt graduationBelt) {
 		if (Objects.nonNull(lastGraduation)) {
-			Integer graduationBeltIndex = Belt.getIndexByValue(graduationBelt);
-			Integer lastGraduationBeltIndex = Belt.getIndexByValue(lastGraduation.getBelt());
+			Integer graduationBeltIndex = graduationBelt.getId();
+			Integer lastGraduationBeltIndex = lastGraduation.getBelt().getId();
 			if (graduationBeltIndex <= lastGraduationBeltIndex || graduationBeltIndex - lastGraduationBeltIndex > 1) {
 				throw new ForbiddenOperationException("Uma nova graduação não pode ser 2 ou mais vezes superior à anterior");
 			}
@@ -104,6 +138,7 @@ public class ProfileService {
 				throw new ForbiddenOperationException("Mais de 1 graduação em menos de 1 hora é proibido");
 			}
 		}
+		return graduationService.getGraduation(graduationBelt.toString());
 	}
 
 	private Graduation findLastGraduation(Set<Graduation> graduations) {

@@ -52,15 +52,16 @@ public class Profile {
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Set<String> phoneNumbers;
 
-	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "id.profile")
 	@Builder.Default
-	private Set<Graduation> graduations = new HashSet<>();
+	private Set<ProfileGraduation> profileGraduations = new HashSet<>();
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
 	private User user;
 
 	@ManyToMany(mappedBy = "participants")
+	@Builder.Default
 	private Set<Tournament> tournaments = new HashSet<>();
 
 	@Column(name = "updated_on")

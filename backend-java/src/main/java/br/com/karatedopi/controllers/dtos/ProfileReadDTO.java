@@ -2,6 +2,7 @@ package br.com.karatedopi.controllers.dtos;
 
 import br.com.karatedopi.entities.Graduation;
 import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.ProfileGraduation;
 import br.com.karatedopi.entities.enums.Belt;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -53,6 +55,8 @@ public class ProfileReadDTO {
 	private Belt currentBelt;
 
 	public static ProfileReadDTO getProfileReadDTO(Profile profile) {
+		Set<Graduation> graduations = profile.getProfileGraduations().stream()
+				.map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
 		return ProfileReadDTO.builder()
 				.id(profile.getId())
 				.fullname(profile.getFullname())
@@ -64,7 +68,7 @@ public class ProfileReadDTO {
 				.cpf(profile.getCpf())
 				.rg(profile.getRg())
 				.phoneNumbers(profile.getPhoneNumbers())
-				.currentBelt(profile.getGraduations().stream()
+				.currentBelt(graduations.stream()
 						.max(Comparator.comparing(Graduation::getCreatedOn))
 						.map(Graduation::getBelt)
 						.orElse(null))
