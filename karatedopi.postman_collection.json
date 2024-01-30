@@ -1,0 +1,1229 @@
+{
+	"info": {
+		"_postman_id": "c7818373-2e61-428b-b82b-f20f0347d9c5",
+		"name": "Karatê-DÔ Piauí",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6013042"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GET /users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/users?page=0&size=3&sort=firstname,asc",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								},
+								{
+									"key": "sort",
+									"value": "firstname,asc"
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /users/{id}/evaluations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authority\": \"USER\",\r\n    \"status\": \"ACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/users/5/evaluations",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"5",
+								"evaluations"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /users/{id}",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/users/2",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"2"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tournaments",
+			"item": [
+				{
+					"name": "POST /tournaments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2 Torneio de Karatê\",\r\n    \"status\": \"OPENED\",\r\n    \"address\": {\r\n        \"id\": 1,\r\n        \"street\": \"Rua Antônio Cavour de Miranda\",\r\n        \"number\": \"273\",\r\n        \"zipCode\": \"64017310\",\r\n        \"neighbourhood\": \"Monte Castelo\",\r\n        \"city\": \"Teresina\",\r\n        \"state\": \"Piauí\"\r\n    },\r\n    \"eventDateTime\": \"05/03/2024 08:01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/tournaments",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"tournaments"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /tournaments/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"II Torneio de Karatê\",\r\n    \"status\": \"OPENED\",\r\n    \"address\": {\r\n        \"street\": \"Rua Antônio Cavour de Miranda\",\r\n        \"number\": \"273\",\r\n        \"zipCode\": \"64017310\",\r\n        \"neighbourhood\": \"Monte Castelo\",\r\n        \"city\": \"Teresina\",\r\n        \"state\": \"Piauí\"\r\n    },\r\n    \"eventDateTime\": \"05/03/2024 08:01\",\r\n    \"numberOfParticipants\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/tournaments/3",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"tournaments",
+								"3"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /tournaments/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"II Torneio de Karatê\",\r\n    \"status\": \"OPENED\",\r\n    \"address\": {\r\n        \"id\": 1,\r\n        \"street\": \"Rua Antônio Cavour de Miranda\",\r\n        \"number\": \"273\",\r\n        \"zipCode\": \"64017310\",\r\n        \"neighbourhood\": \"Monte Castelo\",\r\n        \"city\": \"Teresina\",\r\n        \"state\": \"Piauí\"\r\n    },\r\n    \"eventDateTime\": \"05/03/2024 08:01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/tournaments/2",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"tournaments",
+								"2"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /tournaments/{id}",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"II Torneio de Karatê\",\r\n    \"status\": \"OPENED\",\r\n    \"address\": {\r\n        \"id\": 1,\r\n        \"street\": \"Rua Antônio Cavour de Miranda\",\r\n        \"number\": \"273\",\r\n        \"zipCode\": \"64017310\",\r\n        \"neighbourhood\": \"Monte Castelo\",\r\n        \"city\": \"Teresina\",\r\n        \"state\": \"Piauí\"\r\n    },\r\n    \"eventDateTime\": \"05/03/2024 08:01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/tournaments/3",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"tournaments",
+								"3"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /tournaments?city=Teresina&page=0&size=5&sort=id,asc",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/tournaments",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"tournaments"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Teresina",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "PI",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "city.name,desc",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "street,asc",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "GET /profiles?parameterName=contentOfParameterName",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/profiles?name=Antonio",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profiles"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Antonio"
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /profiles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/profiles?page=0&size=5",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profiles"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /profiles paged",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/profiles?page=0&size=3&sort=firstname,asc",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profiles"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								},
+								{
+									"key": "sort",
+									"value": "firstname,asc"
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /profiles/{id}",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/profiles/1",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profiles",
+								"1"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /profiles/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Jonatas 2a\",\r\n    \"lastname\": \"Laet\",\r\n    \"fullname\": \"Aluno Nome Completo\",\r\n    \"father\": \"Pai do Aluno\",\r\n    \"mother\": \"Mae do Aluno\",\r\n    \"hometown\": \"Teresina\",\r\n    \"birthday\": \"01/03/1973\",\r\n    \"creationDate\": \"04/05/2023 10:46\",\r\n    \"lastUpdate\": \"04/05/2023 10:46\",\r\n    \"cpf\": \"05510256389\",\r\n    \"rg\": \"2953921\",\r\n    \"phoneNumbers\": [\r\n        \"32229756\",\r\n        \"88894625\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/profiles/2",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profiles",
+								"2"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /profiles/{id} Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"belt\": \"WHITE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/profiles/5/graduations",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profiles",
+								"5",
+								"graduations"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cities",
+			"item": [
+				{
+					"name": "GET /cities",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/cities",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"cities"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /cities Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/cities",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"cities"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /cities?UF=PI&page=1&size=5&sort=id,asc",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/cities?stateAbbreviation=PI&page=0&size=5&sort=name,asc",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"cities"
+							],
+							"query": [
+								{
+									"key": "stateAbbreviation",
+									"value": "PI"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Addresses",
+			"item": [
+				{
+					"name": "GET /addresses?city=Teresina&page=0&size=5&sort=id,asc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/addresses?state=PI&page=0&size=5",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"addresses"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Teresina",
+									"disabled": true
+								},
+								{
+									"key": "state",
+									"value": "PI"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "city.name,desc",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "street,asc",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /addresses?city=Teresina&page=0&size=5&sort=id,asc Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{hostname}}:{{port}}/addresses?city=Teresina&state=PI&page=0&size=5&sort=city.name,desc&sort=street,asc",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"addresses"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Teresina"
+								},
+								{
+									"key": "state",
+									"value": "PI"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "city.name,desc"
+								},
+								{
+									"key": "sort",
+									"value": "street,asc"
+								}
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "POST /login ROOT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code >= 200 && responseCode.code <= 299) {\r",
+									"   var json = JSON.parse(responseBody);\r",
+									"   postman.setEnvironmentVariable('token', json.accessToken);\r",
+									"} "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"blendolove@hotmail.com\",\r\n    \"password\": \"blendo273\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/login",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"login"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /login USER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code >= 200 && responseCode.code <= 299) {\r",
+									"   var json = JSON.parse(responseBody);\r",
+									"   postman.setEnvironmentVariable('token', json.accessToken);\r",
+									"} "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mariothomasmartins@lojaprincezinha.com.br\",\r\n    \"password\": \"blendo273\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/login",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"login"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code >= 200 && responseCode.code <= 299) {\r",
+									"   var json = JSON.parse(responseBody);\r",
+									"   postman.setEnvironmentVariable('token', json.accessToken);\r",
+									"} "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Workspaces/ws-personal/cars-api/Postman collection/Localhost.postman_environment.json"
+								},
+								{
+									"key": "to",
+									"value": "jonataslaet@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "cc",
+									"value": "jonataslaetprogramador@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "subject",
+									"value": "Teste",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "Testando envio de mais de um anexo",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Workspaces/ws-personal/cars-api/Postman collection/Cars API.postman_collection.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/email",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"email"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /recovery-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code >= 200 && responseCode.code <= 299) {\r",
+									"   var json = JSON.parse(responseBody);\r",
+									"   postman.setEnvironmentVariable('token', json.accessToken);\r",
+									"} "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": \"blendolove@hotmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/recovery-token",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"recovery-token"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /new-password/{token}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code >= 200 && responseCode.code <= 299) {\r",
+									"   var json = JSON.parse(responseBody);\r",
+									"   postman.setEnvironmentVariable('token', json.accessToken);\r",
+									"} "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPassword\": \"blendo6996\",\r\n    \"newPasswordConfirmation\": \"blendo6996\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/new-password/6c8cbf15-f432-48dc-8d0c-6afbb5c1015b",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"new-password",
+								"6c8cbf15-f432-48dc-8d0c-6afbb5c1015b"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Registrations",
+			"item": [
+				{
+					"name": "POST /registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"alunoteste@gmail.com\",\r\n    \"password\": \"12345\",\r\n    \"fullname\": \"Aluno Nome Completo Teste\",\r\n    \"father\": \"Pai do Aluno Teste\",\r\n    \"mother\": \"Mae do Aluno Teste\",\r\n    \"zipCode\": \"64000000\",\r\n    \"street\": \"Rua Teste\",\r\n    \"number\": \"273\",\r\n    \"neighbourhood\": \"Bairro do Aluno Teste\",\r\n    \"city\": \"Teresina\",\r\n    \"state\": \"Piauí\",\r\n    \"bloodType\": \"A-\",\r\n    \"birthday\": \"1975-03-01\",\r\n    \"rg\": \"2953921\",\r\n    \"cpf\": \"05510256389\",\r\n    \"hometown\": \"Teresina\",\r\n    \"phoneNumbers\": [\r\n        \"32229756\",\r\n        \"88894625\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/registration",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"registration"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"item": [
+				{
+					"name": "GET /home",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJLYXJhdGUgVHJhZGljaW9uYWwgZG8gUGlhdcOtIiwic3ViIjoiMSIsImV4cCI6MTYyMDU3ODQ4M30.gDtG-seZf6BlviBMHskr67Syvf3ubqADkWb7tMe7Y8t-gdQrv83KwkNjo8iVMkEpSikahpYVCf6eyAe7s18p3g",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{hostname}}:{{port}}/home",
+							"protocol": "http",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"home"
+							]
+						},
+						"description": "Retornar todos os caratecas da plataforma"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
