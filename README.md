@@ -1,6 +1,6 @@
 # Karatedopi
 
-This project aims to build an application that manages karate practitioners and karate tournaments.
+Here you find an application that manages karate practitioners and tournaments. You also find the UML project of this application.
 
 
 ## 🚀 Introduction
@@ -39,7 +39,8 @@ The following are the technologies used in building this project:
 * [Angular 16](https://angular.io/) - Framework for Single Page Application
 * [Angular Material](https://material.angular.io/) - UI Component Library
 * [TypeScript](https://www.typescriptlang.org/docs/) - JavaScript superset programming language
-
+* [UML](https://www.uml.org/) - Unified Modeling Language
+* [Astah Community 7.2.0](https://astah.net/products/astah-uml/) - UML Editor
 
 ## ✒️ Authors
 
