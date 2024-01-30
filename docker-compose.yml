@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   karatedopi-backend:
-    image: 'jonataslaet/karatedopi'
+    image: 'jonataslaet/karatedopi-backend'
     build:
       context: .
       dockerfile: ./backend-java/Dockerfile
@@ -14,7 +14,6 @@ services:
       - DB_URL=jdbc:postgresql://postgres-server:5432/dbkaratedopi
       - DB_USERNAME=jonataslaet
       - DB_PASSWORD=blendo273
-    command: mvn spring-boot:run
     networks:
       - karatedopi-network
 
