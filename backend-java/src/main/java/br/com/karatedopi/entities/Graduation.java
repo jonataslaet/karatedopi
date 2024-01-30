@@ -51,7 +51,7 @@ public class Graduation {
 
 	@OneToMany(mappedBy="id.graduation")
 	@Builder.Default
-	private Set<ProfileGraduation> profileGraduations = new HashSet<>();
+	private Set<ProfileGraduation> gradedProfiles = new HashSet<>();
 
 	@PrePersist
 	public void prePersist() {
