@@ -35,7 +35,8 @@ docker-compose -p karatedopi -f docker-compose.yml up -d
 
 The following are the technologies used in building this project:
 
-* [Java 17](https://www.oracle.com/java/) - Backend programming language
+* [Java 21](https://www.oracle.com/java/) - Backend programming language
+* [Spring Boot 3.2.0](https://spring.io/projects/spring-boot) - Java-based framework for Spring based Applications
 * [Angular 16](https://angular.io/) - Framework for Single Page Application
 * [Angular Material](https://material.angular.io/) - UI Component Library
 * [TypeScript](https://www.typescriptlang.org/docs/) - JavaScript superset programming language
