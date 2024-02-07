@@ -1,7 +1,6 @@
 package br.com.karatedopi.services;
 
 import br.com.karatedopi.entities.Role;
-import br.com.karatedopi.entities.User;
 import br.com.karatedopi.repositories.RoleRepository;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;

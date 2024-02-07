@@ -11,7 +11,6 @@ import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.entities.enums.TournamentStatus;
 import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.TournamentRepository;
-import br.com.karatedopi.services.exceptions.InvalidAuthenticationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import br.com.karatedopi.services.exceptions.ResourceStorageException;
 import br.com.karatedopi.services.exceptions.TournamentParticipationException;

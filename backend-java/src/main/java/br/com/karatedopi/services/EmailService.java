@@ -4,7 +4,6 @@ import br.com.karatedopi.controllers.dtos.SendingEmailDTO;
 import br.com.karatedopi.services.exceptions.EmailException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;

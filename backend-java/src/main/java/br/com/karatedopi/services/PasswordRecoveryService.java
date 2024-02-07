@@ -1,7 +1,6 @@
 package br.com.karatedopi.services;
 
 import br.com.karatedopi.entities.PasswordRecovery;
-import br.com.karatedopi.entities.User;
 import br.com.karatedopi.repositories.PasswordRecoveryRepository;
 import br.com.karatedopi.services.exceptions.ResourceStorageException;
 import br.com.karatedopi.services.exceptions.TokenExpirationException;
