@@ -98,8 +98,8 @@ public class ProfileService {
 		foundProfile.setFather(profileCreateDTO.getFather());
 		foundProfile.setBloodType(profileCreateDTO.getBloodType());
 		foundProfile.setBirthday(profileCreateDTO.getBirthday());
-		foundProfile.setCpf(profileCreateDTO.getCpf());
-		foundProfile.setRg(profileCreateDTO.getRg());
+		foundProfile.setItin(profileCreateDTO.getItin());
+		foundProfile.setNid(profileCreateDTO.getNid());
 		foundProfile.setPhoneNumbers(profileCreateDTO.getPhoneNumbers());
 	}
 

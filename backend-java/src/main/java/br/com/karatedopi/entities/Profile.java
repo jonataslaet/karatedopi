@@ -45,8 +45,8 @@ public class Profile {
 	private Address address;
 
 	private String bloodType;
-	private String cpf;
-	private String rg;
+	private String itin;
+	private String nid;
 	private LocalDate birthday;
 
 	@ElementCollection(fetch=FetchType.EAGER)

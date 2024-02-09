@@ -43,8 +43,8 @@ public class DBService {
 
         RegisterDTO registerDTO01 = RegisterDTO.builder()
                 .fullname("Roberto Hugo Raul Rocha")
-                .cpf("72619735300")
-                .rg("422434875")
+                .itin("72619735300")
+                .nid("422434875")
                 .birthday(LocalDate.of(2005, Month.MAY, 6))
                 .mother("Alana Giovanna Nair")
                 .father("Luan Mário Rocha")
@@ -62,8 +62,8 @@ public class DBService {
 
         RegisterDTO registerDTO02 = RegisterDTO.builder()
                 .fullname("João Roberto Márcio Barros")
-                .cpf("00391725386")
-                .rg("219316624")
+                .itin("00391725386")
+                .nid("219316624")
                 .birthday(LocalDate.of(2005, Month.MAY, 2))
                 .mother("Ana Isabella")
                 .father("Antonio Julio Barros")
@@ -81,8 +81,8 @@ public class DBService {
 
         RegisterDTO registerDTO03 = RegisterDTO.builder()
                 .fullname("Edson Davi Dias")
-                .cpf("57858207300")
-                .rg("346208063")
+                .itin("57858207300")
+                .nid("346208063")
                 .birthday(LocalDate.of(2005, Month.JANUARY, 23))
                 .mother("Emily Kamilly Lorena")
                 .father("Miguel Martin Vitor Dias")
@@ -100,8 +100,8 @@ public class DBService {
 
         RegisterDTO registerDTO04 = RegisterDTO.builder()
                 .fullname("Mário Thomas Martins")
-                .cpf("32570538353")
-                .rg("110150727")
+                .itin("32570538353")
+                .nid("110150727")
                 .birthday(LocalDate.of(2005, Month.MAY, 1))
                 .mother("Hadassa Vanessa")
                 .father("Fernando Danilo Paulo Martins")

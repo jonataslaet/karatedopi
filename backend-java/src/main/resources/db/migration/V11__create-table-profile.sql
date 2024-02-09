@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS profile (
     father varchar(64) NOT NULL,
     fullname varchar(64) NOT NULL,
     mother varchar(64) NOT NULL,
-    nit varchar(10) NOT NULL,
+    nid varchar(10) NOT NULL,
     current_belt varchar(9) NULL,
     CONSTRAINT profile_pkey PRIMARY KEY (user_id)
 );

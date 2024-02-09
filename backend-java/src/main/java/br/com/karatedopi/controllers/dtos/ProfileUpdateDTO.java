@@ -29,8 +29,8 @@ public class ProfileUpdateDTO {
 	private AddressDTO address;
 	private String mother;
 	private String bloodType;
-	private String cpf;
-	private String rg;
+	private String itin;
+	private String nid;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
 	private LocalDate birthday;
@@ -56,8 +56,8 @@ public class ProfileUpdateDTO {
 				.address(AddressDTO.getAddressDTO(profile.getAddress()))
 				.bloodType(profile.getBloodType())
 				.birthday(profile.getBirthday())
-				.cpf(profile.getCpf())
-				.rg(profile.getRg())
+				.itin(profile.getItin())
+				.nid(profile.getNid())
 				.phoneNumbers(profile.getPhoneNumbers())
 				.creationDate(profile.getCreatedOn())
 				.lastUpdate(profile.getUpdatedOn())

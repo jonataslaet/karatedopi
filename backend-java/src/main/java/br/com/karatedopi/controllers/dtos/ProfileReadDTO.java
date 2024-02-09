@@ -33,8 +33,8 @@ public class ProfileReadDTO {
 	private String mother;
 	private AddressDTO address;
 	private String bloodType;
-	private String cpf;
-	private String rg;
+	private String itin;
+	private String nid;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
 	private LocalDate birthday;
@@ -65,8 +65,8 @@ public class ProfileReadDTO {
 				.address(AddressDTO.getAddressDTO(profile.getAddress()))
 				.bloodType(profile.getBloodType())
 				.birthday(profile.getBirthday())
-				.cpf(profile.getCpf())
-				.rg(profile.getRg())
+				.itin(profile.getItin())
+				.nid(profile.getNid())
 				.phoneNumbers(profile.getPhoneNumbers())
 				.currentBelt(graduations.stream()
 						.max(Comparator.comparing(Graduation::getCreatedOn))

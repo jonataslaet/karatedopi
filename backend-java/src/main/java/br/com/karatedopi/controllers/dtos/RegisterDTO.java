@@ -51,8 +51,8 @@ public class RegisterDTO {
     @Builder.Default
     private LocalDateTime updatedOn = LocalDateTime.now();
 
-    private String cpf;
-    private String rg;
+    private String itin;
+    private String nid;
 
     @Builder.Default
     private Set<String> phoneNumbers = new HashSet<>();

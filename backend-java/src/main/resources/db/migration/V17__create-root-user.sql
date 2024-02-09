@@ -1,0 +1,10 @@
+INSERT INTO address (city_id, neighbourhood, number, street, zip_code) VALUES(3179, 'Monte Castelo', '273', 'Rua Antônio Cavour de Miranda', '64017310');
+INSERT INTO tb_user (created_on, email, firstname, lastname, password, status) values (CURRENT_TIMESTAMP(6), 'blendolove@hotmail.com', 'Jonatas', 'Laet', '$2a$10$qNOtpf.WH7.uxNGYyRKCMug9Zh9ovh/Mqf49DIVnE88pDbj700ufy', 'ACTIVE');
+INSERT INTO profile (address_id, birthday, blood_type, itin, created_on, father, fullname, mother, nid, user_id) values (1, '1993-03-05', 'A-', '05510256389', CURRENT_TIMESTAMP(6), 'Afonso Celso de Laet Lopes', 'Jonatas Blendo dos Santos Laet', 'Maria Jucilene dos Santos', '2953921', 1);
+INSERT INTO tb_user_role (user_id, role_id) values (1, 1);
+INSERT INTO tb_user_role (user_id, role_id) values (1, 2);
+INSERT INTO tb_user_role (user_id, role_id) values (1, 3);
+INSERT INTO tb_user_role (user_id, role_id) values (1, 4);
+INSERT INTO profile_phone_numbers (profile_user_id, phone_numbers) values (1, '86994643741');
+INSERT INTO profile_phone_numbers (profile_user_id, phone_numbers) values (1, '86988894625');
+INSERT INTO profile_graduation (profile_user_id, graduation_id, created_on) values (1, 1, CURRENT_TIMESTAMP(6));

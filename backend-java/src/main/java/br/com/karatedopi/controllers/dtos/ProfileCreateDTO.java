@@ -32,8 +32,8 @@ public class ProfileCreateDTO {
 	private String city;
 	private String state;
 	private String bloodType;
-	private String cpf;
-	private String rg;
+	private String itin;
+	private String nid;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
 	private LocalDate birthday;
