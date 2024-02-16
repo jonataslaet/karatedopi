@@ -48,7 +48,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public AuthenticationResponse login(CredentialsDTO credentialsDTO) {
         User user = userRepository.findByEmail(credentialsDTO.email())
-                .orElseThrow(() -> new ResourceNotFoundException("Unknown user"));
+                .orElseThrow(() -> new ResourceNotFoundException("Email ou senha estão inválidos"));
         if (isMatchedPassword(credentialsDTO, user.getPassword())) {
             return AuthenticationResponse.builder()
                     .id(user.getId())
