@@ -1,6 +1,5 @@
 package br.com.karatedopi.entities.enums;
 
-import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -19,13 +18,4 @@ public enum TournamentStatus {
 
 	private final Integer id;
 	private final String name;
-
-	public static TournamentStatus getByValue(String value) {
-		for (TournamentStatus status : values()) {
-			if (status.getName().equalsIgnoreCase(value)) {
-				return status;
-			}
-		}
-		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
-	}
 }

@@ -1,6 +1,5 @@
 package br.com.karatedopi.entities.enums;
 
-import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -19,13 +18,4 @@ public enum UserRole {
 
 	private final Integer id;
 	private final String name;
-
-	public static UserRole getByValue(String value) {
-		for (UserRole role : values()) {
-			if (role.getName().equalsIgnoreCase(value)) {
-				return role;
-			}
-		}
-		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
-	}
 }

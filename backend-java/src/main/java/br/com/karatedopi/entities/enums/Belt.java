@@ -41,32 +41,4 @@ public enum Belt {
 		}
 		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + name);
 	}
-
-	public static Belt getValueByDescription(String name) {
-		for (Belt belt : values()) {
-			if (belt.getDescription().equalsIgnoreCase(name)) {
-				return belt;
-			}
-		}
-		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + name);
-	}
-
-	public static Belt getValueByValue(String value) {
-		for (Belt belt : values()) {
-			if (belt.toString().equalsIgnoreCase(value)) {
-				return belt;
-			}
-		}
-		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + value);
-	}
-
-	public static int getIndexByValue(Belt enumValue) {
-		Belt[] belts = Belt.values();
-		for (int i = 0; i < belts.length; i++) {
-			if (belts[i] == enumValue) {
-				return i;
-			}
-		}
-		throw new ResourceNotFoundException("Nenhuma constante enum com o nome " + enumValue);
-	}
 }
