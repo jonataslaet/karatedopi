@@ -16,4 +16,10 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
     @Query("SELECT DISTINCT tournament FROM Tournament tournament")
     Page<Tournament> findAllTournaments(Pageable pagination);
+
+    @Query("""
+            SELECT tournament FROM Tournament tournament 
+            WHERE LOWER(tournament.name) like LOWER(CONCAT('%', :search, '%')) 
+            """)
+    Page<Tournament> findAllByName(@Param("search") String search, Pageable pagination);
 }

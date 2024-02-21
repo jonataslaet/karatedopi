@@ -36,10 +36,10 @@ public class TournamentController {
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
 	public ResponseEntity<Page<TournamentDTO>> getPagedTournaments(
-		@RequestParam(required = false) String status,
+			@RequestParam(name = "search", required = false) String search,
 		@PageableDefault(sort="eventDate", direction = Direction.DESC) Pageable pageable
 	){
-		Page<TournamentDTO> pagedTournaments = tournamentService.findAllTournaments(status, pageable);
+		Page<TournamentDTO> pagedTournaments = tournamentService.findAllTournaments(search, pageable);
 		return ResponseEntity.ok().body(pagedTournaments);
 	}
 

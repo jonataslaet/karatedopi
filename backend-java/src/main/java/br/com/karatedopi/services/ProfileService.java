@@ -34,12 +34,12 @@ public class ProfileService {
 	private final ProfileGraduationService profileGraduationService;
 
 	@Transactional(readOnly = true)
-	public Page<ProfileReadDTO> getPagedProfiles(String hometown, Pageable pageable) {
+	public Page<ProfileReadDTO> getPagedProfiles(String search, Pageable pageable) {
 		Page<Profile> profiles;
-		if (isBlank(hometown)) {
+		if (isBlank(search)) {
 			profiles = profileRepository.findAll(pageable);
 		} else {
-			profiles = profileRepository.findAllByHometown(hometown, pageable);
+			profiles = profileRepository.findAllByFullname(search, pageable);
 		}
 		loadGraduations(profiles);
 		return profiles.map(ProfileReadDTO::getProfileReadDTO);

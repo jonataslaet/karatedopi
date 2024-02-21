@@ -2,6 +2,9 @@ package br.com.karatedopi.repositories;
 
 import br.com.karatedopi.entities.User;
 import br.com.karatedopi.entities.UserDetailsProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
 	@Query("SELECT COUNT(u) FROM User u WHERE u.email = :email")
 	Long countUsersByEmail(@Param("email") String email);
+
+	@Query("SELECT user FROM User user WHERE LOWER(user.firstname) like LOWER(CONCAT('%', :search, '%')) ")
+	Page<User> findAllByFirstname(@Param("search") String search, Pageable pagination);
 }

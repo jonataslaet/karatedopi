@@ -32,9 +32,9 @@ public class ProfileController {
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
 	public ResponseEntity<Page<ProfileReadDTO>> getPagedProfiles(
-			@RequestParam(required = false) String state,
+			@RequestParam(name = "search", required = false) String search,
 			@PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-		Page<ProfileReadDTO> profiles = profileService.getPagedProfiles(state, pageable);
+		Page<ProfileReadDTO> profiles = profileService.getPagedProfiles(search, pageable);
 		return ResponseEntity.ok().body(profiles);
 	}
 

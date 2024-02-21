@@ -40,7 +40,7 @@ public class TournamentService {
 		if (Objects.isNull(status) || status.isEmpty()){
 			return tournamentRepository.findAllTournaments(pagination).map(TournamentDTO::getTournamentDTO);
 		}
-		return tournamentRepository.findAllTournamentsByStatus(status, pagination).map(TournamentDTO::getTournamentDTO);
+		return tournamentRepository.findAllByName(status, pagination).map(TournamentDTO::getTournamentDTO);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)

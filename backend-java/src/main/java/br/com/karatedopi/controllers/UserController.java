@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/users")
@@ -27,8 +28,9 @@ public class UserController {
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
 	public ResponseEntity<Page<UserReadDTO>> getPagedUsers(
+			@RequestParam(name = "search", required = false) String search,
 			@PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-		Page<UserReadDTO> users = userService.getPagedUsers(pageable);
+		Page<UserReadDTO> users = userService.getPagedUsers(search, pageable);
 		return ResponseEntity.ok().body(users);
 	}
 

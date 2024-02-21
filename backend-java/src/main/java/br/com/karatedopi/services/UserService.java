@@ -63,10 +63,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserReadDTO> getPagedUsers(Pageable pageable) {
+    public Page<UserReadDTO> getPagedUsers(String search, Pageable pageable) {
         validPageable(pageable);
-        Page<User> users = userRepository.findAll(pageable);
-        return users.map(UserReadDTO::getUserReadDTO);
+        if (Objects.isNull(search) || search.trim().isEmpty()) {
+            return userRepository.findAll(pageable).map(UserReadDTO::getUserReadDTO);
+        }
+        return userRepository.findAllByFirstname(search, pageable).map(UserReadDTO::getUserReadDTO);
     }
 
     private void validPageable(Pageable pageable) {
