@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 public enum UserRole {
 
 	ROLE_ROOT(1, "Root"),
-	ROLE_ADMIN(2, "Administrator"),
-	ROLE_MODERATOR(3, "Moderator"),
-	ROLE_USER(4, "User");
+	ROLE_ADMIN(2, "Administrador"),
+	ROLE_MODERATOR(3, "Moderador"),
+	ROLE_USER(4, "Usuário");
 
 	private final Integer id;
 	private final String name;

@@ -12,23 +12,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Belt {
 
-	WHITE(1, "White Belt"),
-	YELLOW(2, "Yellow Belt"),
-	RED(3, "Red Belt"),
-	ORANGE(4, "Orange Belt"),
-	GREEN(5, "Green Belt"),
-	PURPLE(6, "Purple Belt"),
-	BROWN(7, "Brown Belt"),
-	BLACK_01(8, "Shodan - 1st-degree black belt"),
-	BLACK_02(9, "Nidan - 2nd-degree black belt"),
-	BLACK_03(10, "Sandan - 3rd-degree black belt"),
-	BLACK_04(11, "Yondan - 4th-degree black belt"),
-	BLACK_05(12, "Godan - 5th-degree black belt"),
-	BLACK_06(13, "Rokudan - 6th-degree black belt"),
-	BLACK_07(14, "Shichidan - 7th-degree black belt"),
-	BLACK_08(15, "Hachidan - 8th-degree black belt"),
-	BLACK_09(16, "Kudan - 9th-degree black belt"),
-	BLACK_10(17, "Judan - 10th-degree black belt");
+	WHITE(1, "Faixa Branca"),
+	YELLOW(2, "Faixa Amarela"),
+	RED(3, "Faixa Vermelha"),
+	ORANGE(4, "Faixa Laranja"),
+	GREEN(5, "Faixa Verde"),
+	PURPLE(6, "Faixa Roxa"),
+	BROWN(7, "Faixa Marrom"),
+	BLACK_01(8, "Faixa Preta - 1º Dan"),
+	BLACK_02(9, "Faixa Preta - 2º Dan"),
+	BLACK_03(10, "Faixa Preta - 3º Dan"),
+	BLACK_04(11, "Faixa Preta - 4º Dan"),
+	BLACK_05(12, "Faixa Preta - 5º Dan"),
+	BLACK_06(13, "Faixa Preta - 6º Dan"),
+	BLACK_07(14, "Faixa Preta - 7º Dan"),
+	BLACK_08(15, "Faixa Preta - 8º Dan"),
+	BLACK_09(16, "Faixa Preta - 9º Dan"),
+	BLACK_10(17, "Faixa Preta - 10º Dan");
 
 	private final Integer id;
 	private final String description;

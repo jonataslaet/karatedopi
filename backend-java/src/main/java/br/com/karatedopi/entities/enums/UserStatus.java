@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserStatus {
 
-	PENDING_EVALUATION(1, "Pending evaluation"),
-	ACTIVE(2, "Active"),
-	SUSPENDED(3, "Suspended");
+	PENDING_EVALUATION(1, "Aguardando avaliação"),
+	ACTIVE(2, "Ativo"),
+	SUSPENDED(3, "Suspenso");
 
 	private final Integer id;
 	private final String name;

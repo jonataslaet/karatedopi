@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum TournamentStatus {
 
-	OPENED(1, "Opened"),
-	IN_PROGRESS(2, "In progress"),
-	SUSPENDED(3, "Suspended"),
-	FINISHED(4, "Finished");
+	OPENED(1, "Aberto"),
+	IN_PROGRESS(2, "Em andamento"),
+	SUSPENDED(3, "Suspenso"),
+	FINISHED(4, "Finalizado");
 
 	private final Integer id;
 	private final String name;
