@@ -50,7 +50,8 @@ public class Profile {
 	private LocalDate birthday;
 
 	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> phoneNumbers;
+	@Builder.Default
+	private Set<String> phoneNumbers = new HashSet<>();;
 
 	@OneToMany(mappedBy = "id.profile")
 	@Builder.Default

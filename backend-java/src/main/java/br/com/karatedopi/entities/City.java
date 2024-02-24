@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -39,6 +40,6 @@ public class City {
 	private State state;
 
 	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
-	private Set<Address> addresses;
+	private Set<Address> addresses = new HashSet<>();;
 
 }
