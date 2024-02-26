@@ -1,6 +1,6 @@
 export enum TournamentStatusEnum {
-  OPENED = 'Opened',
-  IN_PROGRESS = 'In progress',
-  SUSPENDED = 'Suspended',
-  FINISHED = "Finished"
+  OPENED = 'Aberto',
+  IN_PROGRESS = 'Em andamento',
+  SUSPENDED = 'Suspenso',
+  FINISHED = "Finalizado"
 }
