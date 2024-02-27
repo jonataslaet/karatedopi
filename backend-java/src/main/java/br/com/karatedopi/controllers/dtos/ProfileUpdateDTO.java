@@ -31,10 +31,10 @@ public class ProfileUpdateDTO {
 	private String bloodType;
 	private String itin;
 	private String nid;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")  
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm")
 	@JsonProperty(access = Access.READ_ONLY)
 	@Builder.Default
