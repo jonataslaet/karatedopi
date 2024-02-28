@@ -100,7 +100,8 @@ public class ProfileService {
 		foundProfile.setBirthday(profileCreateDTO.getBirthday());
 		foundProfile.setItin(profileCreateDTO.getItin());
 		foundProfile.setNid(profileCreateDTO.getNid());
-		foundProfile.setPhoneNumbers(profileCreateDTO.getPhoneNumbers());
+		foundProfile.setPhoneNumbers(profileCreateDTO.getPhoneNumbers().stream().filter(phone ->
+				Objects.nonNull(phone) && !phone.trim().isEmpty()).collect(Collectors.toSet()));
 	}
 
     public ProfileReadDTO changeGraduation(Long id, GraduationDTO graduationDTO) {
