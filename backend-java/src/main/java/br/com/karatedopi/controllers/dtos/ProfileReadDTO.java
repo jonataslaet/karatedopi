@@ -55,8 +55,7 @@ public class ProfileReadDTO {
 	private Belt currentBelt;
 
 	public static ProfileReadDTO getProfileReadDTO(Profile profile) {
-		Set<Graduation> graduations = profile.getProfileGraduations().stream()
-				.map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
+		Set<ProfileGraduation> profileGraduations = profile.getProfileGraduations();
 		return ProfileReadDTO.builder()
 				.id(profile.getId())
 				.fullname(profile.getFullname())
@@ -68,9 +67,9 @@ public class ProfileReadDTO {
 				.itin(profile.getItin())
 				.nid(profile.getNid())
 				.phoneNumbers(profile.getPhoneNumbers())
-				.currentBelt(graduations.stream()
-						.max(Comparator.comparing(Graduation::getCreatedOn))
-						.map(Graduation::getBelt)
+				.currentBelt(profileGraduations.stream()
+						.max(Comparator.comparing(ProfileGraduation::getCreatedOn))
+						.map(ProfileGraduation::getGraduation).map(Graduation::getBelt)
 						.orElse(null))
 				.creationDate(profile.getCreatedOn())
 				.lastUpdate(profile.getUpdatedOn())
