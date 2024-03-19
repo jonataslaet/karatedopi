@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS address (
     city_id bigserial,
     neighbourhood varchar(32) NOT NULL,
     number varchar(16) NOT NULL,
-    street varchar(32) NOT NULL,
+    street varchar(39) NOT NULL,
     zip_code varchar(9) NULL,
     CONSTRAINT address_pkey PRIMARY KEY (id)
 );

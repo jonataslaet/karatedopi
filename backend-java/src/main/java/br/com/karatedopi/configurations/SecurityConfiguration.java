@@ -22,10 +22,12 @@ public class SecurityConfiguration {
 
     private final TokenConfiguration tokenConfig;
     private final CorsConfigurationSource corsConfigurationSource;
-    
+
     private final String[] PUBLIC_ENDPOINTS = {"/hello"};
-    private final String[] POST_PUBLIC_ENDPOINTS = {"/login", "/registration", "/email", "/recovery-token", "/new-password/**"};
-    private final String[] GET_PUBLIC_ENDPOINTS = {"/cities**", "/states/all", "/cities/all"};
+    private final String[] POST_PUBLIC_ENDPOINTS = {"/login", "/registrationforms", "/registrationforms/**", "/recovery-token", "/new-password/**"};
+    private final String[] GET_PUBLIC_ENDPOINTS = {
+            "/cities**", "/states/all", "/cities/all", "/actuator/health",
+            "/associations/abbreviations/all", "/federations/abbreviations/all"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

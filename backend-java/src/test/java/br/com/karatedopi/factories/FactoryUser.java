@@ -1,26 +1,40 @@
 package br.com.karatedopi.factories;
 
+import br.com.karatedopi.controllers.dtos.UserOutputDTO;
 import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
+import br.com.karatedopi.entities.enums.UserRole;
 import br.com.karatedopi.entities.enums.UserStatus;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FactoryUser {
 
-    public static User newSimpleValidUser() {
+    public static User createUser(Long userId, String email, String password, String firstname,
+        String lastname, UserStatus status, UserRole userRole) {
+        Role roleAdmin = Role.builder().authority(userRole.toString()).build();
         return User.builder()
-                .status(UserStatus.PENDING_EVALUATION)
-                .roles(Stream.of(Role.builder().id(1L).authority("ROLE_USER").build())
-                        .collect(Collectors.toCollection(HashSet::new)))
-                .email("teste@gmail.com")
-                .firstname("Teste")
-                .lastname("Laet")
-                .createdOn(LocalDateTime.now())
-                .password("teste123")
+                .id(userId)
+                .email(email)
+                .password(password)
+                .firstname(firstname)
+                .lastname(lastname)
+                .status(status)
+                .roles(new HashSet<>(Collections.singletonList(roleAdmin)))
                 .build();
     }
+
+    public static List<User> createAllUsers() {
+        Long id = 1L;
+        List<User> users = new ArrayList<>();
+        users.add(createUser(id, "blendolove@hotmail.com", "", "Jonatas", "Laet",
+                UserStatus.ACTIVE, UserRole.ROLE_USER));
+        return users;
+    }
+
+    public static List<UserOutputDTO> createAllUserOutputDTOs() {
+        return createAllUsers().stream().map(UserOutputDTO::getUserOutputDTO).collect(Collectors.toList());
+    }
+
 }

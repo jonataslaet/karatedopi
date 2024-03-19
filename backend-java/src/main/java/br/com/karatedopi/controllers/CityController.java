@@ -21,18 +21,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CityController {
 
-	private final CityService cityService;
-	
-	@GetMapping
-	public ResponseEntity<Page<CityDTO>> getPagedCities(@RequestParam(required=false) StateAbbreviation stateAbbreviation, @PageableDefault(sort="id", direction = Direction.DESC) Pageable paginacao){
-		Page<CityDTO> pagedCities = cityService.getPagedCities(stateAbbreviation, paginacao);
-		return ResponseEntity.ok().body(pagedCities);
-	}
+    private final CityService cityService;
 
-	@GetMapping("/all")
-	public ResponseEntity<List<CityDTO>> getAllCitiesByState(@RequestParam StateAbbreviation stateAbbreviation){
-		List<CityDTO> allCitiesByState = cityService.getAllCitiesByStateNameOrAbbreviation(stateAbbreviation.getName()).stream().map(CityDTO::getCityDTO).toList();
-		return ResponseEntity.ok().body(allCitiesByState);
-	}
+    @GetMapping
+    public ResponseEntity<Page<CityDTO>> getPagedCities(@RequestParam(required=false) StateAbbreviation stateAbbreviation, @PageableDefault(sort="id", direction = Direction.DESC) Pageable paginacao){
+        Page<CityDTO> pagedCities = cityService.getPagedCities(stateAbbreviation, paginacao);
+        return ResponseEntity.ok().body(pagedCities);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CityDTO>> getAllCitiesByState(@RequestParam StateAbbreviation stateAbbreviation){
+        List<CityDTO> allCitiesByState = cityService.getAllCitiesByStateNameOrAbbreviation(stateAbbreviation.getName()).stream().map(CityDTO::getCityDTO).toList();
+        return ResponseEntity.ok().body(allCitiesByState);
+    }
 
 }

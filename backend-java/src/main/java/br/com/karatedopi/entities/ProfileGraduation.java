@@ -49,6 +49,10 @@ public class ProfileGraduation {
         return this.id.getGraduation();
     }
 
+    public LocalDateTime getCreatedOn() {
+        return this.createdOn;
+    }
+
     @PrePersist
     public void prePersist() {
         createdOn = LocalDateTime.now();

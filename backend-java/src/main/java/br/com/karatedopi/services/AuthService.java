@@ -3,9 +3,9 @@ package br.com.karatedopi.services;
 import br.com.karatedopi.configurations.TokenConfiguration;
 import br.com.karatedopi.controllers.dtos.AuthenticationResponse;
 import br.com.karatedopi.controllers.dtos.CredentialsDTO;
-import br.com.karatedopi.controllers.dtos.SendingEmailDTO;
 import br.com.karatedopi.controllers.dtos.EmailDTO;
 import br.com.karatedopi.controllers.dtos.PasswordResetDTO;
+import br.com.karatedopi.controllers.dtos.SendingEmailDTO;
 import br.com.karatedopi.entities.PasswordRecovery;
 import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.User;
@@ -42,8 +42,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenConfiguration tokenConfiguration;
     private final HttpServletRequest httpServletRequest;
-    private final EmailService emailService;
     private final PasswordRecoveryService passwordRecoveryService;
+    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     public AuthenticationResponse login(CredentialsDTO credentialsDTO) {
@@ -87,6 +87,35 @@ public class AuthService {
         }
     }
 
+    private boolean isMatchedPassword(CredentialsDTO credentialsDTO, String encodedPassword) {
+        return passwordEncoder.matches(credentialsDTO.password(), encodedPassword);
+    }
+
+    @Transactional
+    public void resetPassword(String uuidToken, PasswordResetDTO passwordRenovationDTO) {
+        validPasswordRenovation(passwordRenovationDTO);
+        List<PasswordRecovery> passwordRecoveries =
+                passwordRecoveryService.getValidPasswordRecoveries(uuidToken, Instant.now());
+        PasswordRecovery validPasswordRecovery = passwordRecoveries.get(0);
+        User user = userRepository.findByEmail(validPasswordRecovery.getEmail()).orElseThrow(() ->
+                new ResourceNotFoundException("Usuário não encontrado"));
+        validPasswordRecovery.setExpiration(Instant.now());
+        user.setPassword(passwordEncoder.encode(passwordRenovationDTO.getNewPassword()));
+        saveUserAndPasswordRecovery(validPasswordRecovery, user);
+    }
+
+    private void validPasswordRenovation(PasswordResetDTO passwordRenovationDTO) {
+        if (!passwordRenovationDTO.getNewPassword().equals(passwordRenovationDTO.getNewPasswordConfirmation())) {
+            throw new InvalidAuthenticationException("A senha e a confirmação dela devem ser exatamente iguais");
+        }
+    }
+
+    @Transactional
+    private void saveUserAndPasswordRecovery(PasswordRecovery passwordRecovery, User user) {
+        userRepository.save(user);
+        passwordRecoveryService.savePasswordRecovery(passwordRecovery);
+    }
+
     @Transactional
     public void recoveryToken(EmailDTO emailDTO) {
         User user = userRepository.findByEmail(emailDTO.getAddress())
@@ -103,41 +132,8 @@ public class AuthService {
                     + "\n\n Esse link expirará daqui a 30 minutos. " +
                     "Portanto, se esse email não foi solicitado por você, apenas o ignore.";
             emailService.sendEmail(SendingEmailDTO.builder()
-                .body(emailBody).to(emailDTO.getAddress()).subject("Resetamento de senha")
-                .build());
+                    .body(emailBody).to(emailDTO.getAddress()).subject("Resetamento de senha")
+                    .build());
         }
-    }
-
-    @Transactional
-    public void resetPassword(String uuidToken, PasswordResetDTO passwordRenovationDTO) {
-        validPasswordRenovation(passwordRenovationDTO);
-        List<PasswordRecovery> passwordRecoveries =
-                passwordRecoveryService.getValidPasswordRecoveries(uuidToken, Instant.now());
-        PasswordRecovery validPasswordRecovery = passwordRecoveries.get(0);
-        User user = userRepository.findByEmail(validPasswordRecovery.getEmail()).orElseThrow(() ->
-                new ResourceNotFoundException("Usuário não encontrado"));
-        validPasswordRecovery.setExpiration(Instant.now());
-        user.setPassword(passwordEncoder.encode(passwordRenovationDTO.getNewPassword()));
-        saveUserAndPasswordRecovery(validPasswordRecovery, user);
-    }
-
-    @Transactional
-    private void saveUserAndPasswordRecovery(PasswordRecovery passwordRecovery, User user) {
-        userRepository.save(user);
-        passwordRecoveryService.savePasswordRecovery(passwordRecovery);
-    }
-
-    private void validPasswordRenovation(PasswordResetDTO passwordRenovationDTO) {
-        if (!passwordRenovationDTO.getNewPassword().equals(passwordRenovationDTO.getNewPasswordConfirmation())) {
-            throw new InvalidAuthenticationException("A senha e a confirmação dela devem ser exatamente iguais");
-        }
-    }
-
-    private boolean isMatchedPassword(CredentialsDTO credentialsDTO, String encodedPassword) {
-        return passwordEncoder.matches(credentialsDTO.password(), encodedPassword);
-    }
-
-    public void sendEmail(MultipartFile[] files, SendingEmailDTO sendingEmailDTO) {
-        emailService.sendEmail(files, sendingEmailDTO);
     }
 }

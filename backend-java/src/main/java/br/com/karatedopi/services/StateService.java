@@ -3,6 +3,7 @@ package br.com.karatedopi.services;
 import br.com.karatedopi.controllers.dtos.StateDTO;
 import br.com.karatedopi.entities.State;
 import br.com.karatedopi.repositories.StateRepository;
+
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,19 +19,18 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class StateService {
 
-	private final StateRepository stateRepository;
+    private final StateRepository stateRepository;
 
-	public Page<StateDTO> getStates(Pageable pagination){
-		Page<State> foundStates = stateRepository.findAll(pagination);
-		return foundStates.map(StateDTO::getStateDTO);
-	}
-
-    public List<StateDTO> getAllStates() {
-		return stateRepository.findAll().stream().map(StateDTO::getStateDTO).collect(Collectors.toList());
+    public Page<StateDTO> getStates(Pageable pagination){
+        Page<State> foundStates = stateRepository.findAll(pagination);
+        return foundStates.map(StateDTO::getStateDTO);
     }
 
-	public State findStateByNameOrAbbreviation(String name) {
-		return stateRepository.findStateByNameOrAbbreviation(name).orElseThrow(() -> new ResourceNotFoundException("No state was found"));
-	}
-}
+    public List<StateDTO> getAllStates() {
+        return stateRepository.findAll().stream().map(StateDTO::getStateDTO).collect(Collectors.toList());
+    }
 
+    public State findStateByNameOrAbbreviation(String name) {
+        return stateRepository.findStateByNameOrAbbreviation(name).orElseThrow(() -> new ResourceNotFoundException("Nenhum estado encontrado com o nome " + name));
+    }
+}

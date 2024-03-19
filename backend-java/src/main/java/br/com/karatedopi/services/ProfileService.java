@@ -1,9 +1,7 @@
 package br.com.karatedopi.services;
 
 import br.com.karatedopi.controllers.dtos.GraduationDTO;
-import br.com.karatedopi.controllers.dtos.ProfileCreateDTO;
-import br.com.karatedopi.controllers.dtos.ProfileReadDTO;
-import br.com.karatedopi.controllers.dtos.ProfileUpdateDTO;
+import br.com.karatedopi.controllers.dtos.ProfileOutputDTO;
 import br.com.karatedopi.entities.Graduation;
 import br.com.karatedopi.entities.Profile;
 import br.com.karatedopi.entities.ProfileGraduation;
@@ -11,11 +9,8 @@ import br.com.karatedopi.entities.enums.Belt;
 import br.com.karatedopi.repositories.ProfileRepository;
 import br.com.karatedopi.services.exceptions.ForbiddenOperationException;
 import br.com.karatedopi.services.exceptions.ResourceNotFoundException;
-import br.com.karatedopi.services.exceptions.ResourceStorageException;
 import br.com.karatedopi.utils.Utils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,135 +24,75 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProfileService {
 
-	private final ProfileRepository profileRepository;
-	private final GraduationService graduationService;
-	private final ProfileGraduationService profileGraduationService;
+    private final ProfileRepository profileRepository;
+    private final GraduationService graduationService;
+    private final ProfileGraduationService profileGraduationService;
 
-	@Transactional(readOnly = true)
-	public Page<ProfileReadDTO> getPagedProfiles(String search, Pageable pageable) {
-		Page<Profile> profiles;
-		if (isBlank(search)) {
-			profiles = profileRepository.findAll(pageable);
-		} else {
-			profiles = profileRepository.findAllByFullname(search, pageable);
-		}
-		loadGraduations(profiles);
-		return profiles.map(ProfileReadDTO::getProfileReadDTO);
-	}
-
-	private void loadGraduations(Profile profile) {
-		Set<ProfileGraduation> profileGraduations = profileGraduationService
-				.getProfileGraduationsByProfile(profile);
-		profile.setProfileGraduations(profileGraduations);
-	}
-
-	private void loadGraduations(Page<Profile> profiles) {
-		Set<ProfileGraduation> profileGraduations = profileGraduationService
-				.getProfileGraduationsByProfiles(profiles.stream().map(profile ->
-						profile.getUser().getProfile()).collect(Collectors.toSet()));
-		profiles.forEach(profile -> {
-			profile.setProfileGraduations(profileGraduations.stream().filter(profileGraduation ->
-					profileGraduation.getProfile().equals(profile)).collect(Collectors.toSet()));
-		});
-	}
-
-	private static boolean isBlank(String hometown) {
-		return hometown == null || hometown.isEmpty();
-	}
-
-	public ProfileReadDTO getProfileReadResponseDTO(Long id) {
-		Profile profile = getProfile(id);
-		loadGraduations(profile);
-		return ProfileReadDTO.getProfileReadDTO(profile);
-	}
-
-	@Transactional(readOnly = true)
-	public Profile getProfile(Long id) {
-		Profile foundProfile = profileRepository.findById(id).orElse(null);
-		if (Objects.isNull(foundProfile)) {
-			throw new ResourceNotFoundException("Perfil não encontrado com o id " + id);
-		}
-		return foundProfile;
-	}
-
-	@Transactional
-	public ProfileUpdateDTO updateProfile(Long id, ProfileCreateDTO profileCreateDTO) {
-		Profile foundProfile = getProfile(id);
-		try {
-			fillProfileFromProfileDTO(foundProfile, profileCreateDTO);
-			Profile updatedProfile = profileRepository.save(foundProfile);
-			return ProfileUpdateDTO.getProfileUpdateResponseDTO(updatedProfile);
-		} catch (Exception e) {
-			throw new ResourceStorageException("Problema desconhecido ao salvar perfil");
-		}
-	}
-
-	private void fillProfileFromProfileDTO(Profile foundProfile, ProfileCreateDTO profileCreateDTO) {
-		foundProfile.setFullname(profileCreateDTO.getFullname());
-		foundProfile.setMother(profileCreateDTO.getMother());
-		foundProfile.setFather(profileCreateDTO.getFather());
-		foundProfile.setBloodType(profileCreateDTO.getBloodType());
-		foundProfile.setBirthday(profileCreateDTO.getBirthday());
-		foundProfile.setItin(profileCreateDTO.getItin());
-		foundProfile.setNid(profileCreateDTO.getNid());
-		foundProfile.setPhoneNumbers(profileCreateDTO.getPhoneNumbers().stream().filter(phone ->
-				Objects.nonNull(phone) && !phone.trim().isEmpty()).collect(Collectors.toSet()));
-	}
-
-    public ProfileReadDTO changeGraduation(Long id, GraduationDTO graduationDTO) {
-		Profile profile = this.getProfile(id);
-		Belt newGraduationBelt = Belt.getValueByDescriptionOrValue(graduationDTO.belt());
-		loadGraduations(profile);
-		Graduation newGraduation = getValidNewGraduation(findLastGraduation(getGraduations(profile.getProfileGraduations())), newGraduationBelt);
-		graduateProfile(profile, newGraduation);
-		profile = this.saveProfile(profile);
-		return ProfileReadDTO.getProfileReadDTO(profile);
+    @Transactional(readOnly = true)
+    public Profile getProfile(Long id) {
+        Profile foundProfile = profileRepository.findById(id).orElse(null);
+        if (Objects.isNull(foundProfile)) {
+            throw new ResourceNotFoundException("Perfil não encontrado com o id " + id);
+        }
+        return foundProfile;
     }
 
-	private void graduateProfile(Profile profile, Graduation graduation) {
-		Set<Graduation> graduationsByProfile = getGraduations(profile.getProfileGraduations());
-		if (!graduationsByProfile.contains(graduation)) {
-			ProfileGraduation profileGraduation = ProfileGraduation.builder().build();
-			profileGraduation.setGraduation(graduation);
-			profileGraduation.setProfile(profile);
-			profileGraduationService.saveGraduation(profileGraduation);
-		}
-	}
+    public ProfileOutputDTO changeGraduation(Long profileId, GraduationDTO graduationDTO) {
+        Profile profile = this.getProfile(profileId);
+        Belt newGraduationBelt = Belt.getValueByDescriptionOrValue(graduationDTO.belt());
+        loadGraduations(profile);
+        ProfileGraduation lastProfileGraduation = findLastProfileGraduation(profile.getProfileGraduations());
+        Graduation newGraduation = getValidNewGraduation(lastProfileGraduation, newGraduationBelt);
+        graduateProfile(profile, newGraduation);
+        return ProfileOutputDTO.getProfileOutputDTO(profile);
+    }
 
-	private Set<Graduation> getGraduations(Set<ProfileGraduation> profileGraduationsByProfile) {
-		return profileGraduationsByProfile.stream().map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
-	}
+    private ProfileGraduation findLastProfileGraduation(Set<ProfileGraduation> profileGraduations) {
+        if (!profileGraduations.isEmpty()) {
+            return profileGraduations.stream()
+                    .max(Comparator.comparing(ProfileGraduation::getCreatedOn))
+                    .orElse(null);
+        } else {
+            return null;
+        }
+    }
 
-	private Graduation getValidNewGraduation(Graduation lastGraduation, Belt graduationBelt) {
-		if (Objects.nonNull(lastGraduation)) {
-			Integer graduationBeltIndex = graduationBelt.getId();
-			Integer lastGraduationBeltIndex = lastGraduation.getBelt().getId();
-			if (graduationBeltIndex <= lastGraduationBeltIndex || graduationBeltIndex - lastGraduationBeltIndex > 1) {
-				throw new ForbiddenOperationException("Uma nova graduação não pode ser 2 ou mais vezes superior à anterior");
-			}
-			if (Utils.getDifferenceInHours(lastGraduation.getCreatedOn(), LocalDateTime.now()) < 1) {
-				throw new ForbiddenOperationException("Mais de 1 graduação em menos de 1 hora é proibido");
-			}
-		}
-		return graduationService.getGraduation(graduationBelt.toString());
-	}
+    private void loadGraduations(Profile profile) {
+        Set<ProfileGraduation> profileGraduations = profileGraduationService
+                .getProfileGraduationsByProfile(profile);
+        profile.setProfileGraduations(profileGraduations);
+    }
 
-	private Graduation findLastGraduation(Set<Graduation> graduations) {
-		if (!graduations.isEmpty()) {
-			return graduations.stream()
-					.max(Comparator.comparing(Graduation::getCreatedOn))
-					.orElse(null);
-		} else {
-			return null;
-		}
-	}
+    private Graduation getValidNewGraduation(ProfileGraduation lastProfileGraduation, Belt graduationBelt) {
+        if (Objects.nonNull(lastProfileGraduation)) {
+            Integer graduationBeltIndex = graduationBelt.getId();
+            Integer lastGraduationBeltIndex = lastProfileGraduation.getGraduation().getBelt().getId();
+            if (graduationBeltIndex <= lastGraduationBeltIndex) {
+                throw new ForbiddenOperationException("A nova graduação deve ser maior que a anterior");
+            }
+            if (graduationBeltIndex - lastGraduationBeltIndex > 1) {
+                throw new ForbiddenOperationException("Uma nova graduação não pode ser 2 ou mais vezes superior à anterior");
+            }
+            if (Utils.getDifferenceInMinutes(lastProfileGraduation.getCreatedOn(), LocalDateTime.now()) < 1L) {
+                throw new ForbiddenOperationException("Mais de 1 graduação em menos de 1 hora é proibido");
+            }
+        }
+        return graduationService.getGraduation(graduationBelt.toString());
+    }
 
-	@Transactional
-	public Profile saveProfile(Profile profile) {
-		try {
-			return profileRepository.save(profile);
-		} catch (Exception e) {
-			throw new ResourceStorageException("Problema desconhecido ao salvar perfil");
-		}
-	}
+    private Set<Graduation> getGraduations(Set<ProfileGraduation> profileGraduationsByProfile) {
+        return profileGraduationsByProfile.stream().map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
+    }
+
+    public void graduateProfile(Profile profile, Graduation graduation) {
+        Set<Graduation> graduationsByProfile = getGraduations(profile.getProfileGraduations());
+        if (!graduationsByProfile.contains(graduation)) {
+            ProfileGraduation profileGraduation = ProfileGraduation.builder().build();
+            profileGraduation.setGraduation(graduation);
+            profileGraduation.setProfile(profile);
+            profileGraduation = profileGraduationService.saveGraduation(profileGraduation);
+            profile.getProfileGraduations().add(profileGraduation);
+        }
+    }
+
 }

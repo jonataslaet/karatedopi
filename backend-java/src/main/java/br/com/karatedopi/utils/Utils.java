@@ -15,8 +15,8 @@ public class Utils {
         return period.getYears();
     }
 
-    public static long getDifferenceInHours(LocalDateTime dateTime1, LocalDateTime dateTime2) {
-        long difference = ChronoUnit.HOURS.between(dateTime1, dateTime2);
+    public static long getDifferenceInMinutes(LocalDateTime dateTime1, LocalDateTime dateTime2) {
+        long difference = ChronoUnit.MINUTES.between(dateTime1, dateTime2);
         return difference < 0 ? -1 * difference : difference;
     }
 }

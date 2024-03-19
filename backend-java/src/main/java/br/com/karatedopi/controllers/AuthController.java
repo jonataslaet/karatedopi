@@ -2,7 +2,6 @@ package br.com.karatedopi.controllers;
 
 import br.com.karatedopi.controllers.dtos.AuthenticationResponse;
 import br.com.karatedopi.controllers.dtos.CredentialsDTO;
-import br.com.karatedopi.controllers.dtos.SendingEmailDTO;
 import br.com.karatedopi.controllers.dtos.EmailDTO;
 import br.com.karatedopi.controllers.dtos.PasswordResetDTO;
 import br.com.karatedopi.services.AuthService;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping
@@ -39,13 +36,6 @@ public class AuthController {
         return ResponseEntity.ok(authenticationResponse);
     }
 
-    @PostMapping("/email")
-    public ResponseEntity<Void> sendingEmail(@RequestParam(value = "file", required = false) MultipartFile[] files,
-        SendingEmailDTO sendingEmailDTO) {
-        authService.sendEmail(files, sendingEmailDTO);
-        return ResponseEntity.noContent().build();
-    }
-
     @PostMapping("/recovery-token")
     public ResponseEntity<?> recoveryToken(@RequestBody @Valid EmailDTO emailDTO) {
         authService.recoveryToken(emailDTO);
@@ -54,7 +44,7 @@ public class AuthController {
 
     @PostMapping("/new-password/{token}")
     public ResponseEntity<?> renewPassword(@PathVariable String token,
-        @RequestBody @Valid PasswordResetDTO passwordResetDTO) {
+                                           @RequestBody @Valid PasswordResetDTO passwordResetDTO) {
         authService.resetPassword(token, passwordResetDTO);
         return ResponseEntity.noContent().build();
     }

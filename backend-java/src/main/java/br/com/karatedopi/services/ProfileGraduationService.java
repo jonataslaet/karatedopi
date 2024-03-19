@@ -17,49 +17,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProfileGraduationService {
 
-	private final ProfileGraduationRepository profileGraduationRepository;
+    private final ProfileGraduationRepository profileGraduationRepository;
 
-	@Transactional(readOnly = true)
-	public Graduation getGraduationByProfileAndBelt(Profile profile, String belt) {
-		ProfileGraduation profileGraduationByProfileAndBelt =
-				profileGraduationRepository.findProfileGraduationByProfileAndBelt(profile, belt);
-		return profileGraduationByProfileAndBelt.getGraduation();
-	}
+    @Transactional(readOnly = true)
+    public Set<ProfileGraduation> getProfileGraduationsByProfiles(Set<Profile> profiles) {
+        return profileGraduationRepository.findProfileGraduationsByProfiles(profiles);
+    }
 
-	@Transactional(readOnly = true)
-	public Set<Graduation> getGraduationsByProfile(Profile profile) {
-		Set<ProfileGraduation> profileGraduationsByProfile =
-				this.getProfileGraduationsByProfile(profile);
-		return profileGraduationsByProfile.stream().map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
-	}
+    @Transactional(readOnly = true)
+    public Set<ProfileGraduation> getProfileGraduationsByProfile(Profile profile) {
+        return profileGraduationRepository.findProfileGraduationsByProfile(profile);
+    }
 
-	@Transactional(readOnly = true)
-	public Set<Graduation> getGraduationsByBelt(String belt) {
-		Set<ProfileGraduation> profileGraduationsByProfile =
-				profileGraduationRepository.findProfileGraduationsByBelt(belt);
-		return profileGraduationsByProfile.stream().map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
-	}
-
-	@Transactional
-	public void saveGraduation(ProfileGraduation profileGraduation) {
-		try {
-			profileGraduationRepository.save(profileGraduation);
-		} catch (Exception e) {
-			throw new ResourceStorageException("Problema desconhecido ao salvar graduação");
-		}
-	}
-
-	public Set<ProfileGraduation> getProfileGraduationsByBelt(String belt) {
-		return new HashSet<>(profileGraduationRepository.findProfileGraduationsByBelt(belt));
-	}
-
-	@Transactional(readOnly = true)
-	public Set<ProfileGraduation> getProfileGraduationsByProfile(Profile profile) {
-		return profileGraduationRepository.findProfileGraduationsByProfile(profile);
-	}
-
-	public Set<ProfileGraduation> getProfileGraduationsByProfiles(Set<Profile> profiles) {
-		return profileGraduationRepository.findProfileGraduationsByProfiles(profiles);
-	}
+    @Transactional
+    public ProfileGraduation saveGraduation(ProfileGraduation profileGraduation) {
+        try {
+            return profileGraduationRepository.save(profileGraduation);
+        } catch (Exception e) {
+            throw new ResourceStorageException("Problema desconhecido ao salvar graduação");
+        }
+    }
 }
-

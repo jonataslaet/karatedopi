@@ -1,13 +1,12 @@
 package br.com.karatedopi.services;
 
 import br.com.karatedopi.controllers.dtos.UserEvaluationDTO;
-import br.com.karatedopi.controllers.dtos.UserReadDTO;
-import br.com.karatedopi.entities.Graduation;
-import br.com.karatedopi.entities.Role;
-import br.com.karatedopi.entities.User;
+import br.com.karatedopi.controllers.dtos.UserOutputDTO;
 import br.com.karatedopi.entities.UserDetailsProjection;
-import br.com.karatedopi.entities.ProfileGraduation;
+import br.com.karatedopi.entities.User;
+import br.com.karatedopi.entities.Role;
 import br.com.karatedopi.entities.Profile;
+import br.com.karatedopi.entities.ProfileGraduation;
 import br.com.karatedopi.entities.enums.Belt;
 import br.com.karatedopi.entities.enums.UserStatus;
 import br.com.karatedopi.repositories.UserRepository;
@@ -20,26 +19,26 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final GraduationService graduationService;
+    private final ProfileService profileService;
     private final ProfileGraduationService profileGraduationService;
 
     @Transactional(readOnly = true)
@@ -63,33 +62,79 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserReadDTO> getPagedUsers(String search, Pageable pageable) {
+    public Page<User> getPagedUsers(String search, Pageable pageable) {
         validPageable(pageable);
-        if (Objects.isNull(search) || search.trim().isEmpty()) {
-            return userRepository.findAll(pageable).map(UserReadDTO::getUserReadDTO);
+        return userRepository.findAllBySearchContent(search, pageable);
+    }
+
+    @Transactional
+    public User saveUser(User user) {
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new ResourceStorageException("Problema desconhecido ao salvar usuário");
         }
-        return userRepository.findAllByFirstname(search, pageable).map(UserReadDTO::getUserReadDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean userExistsByEmail(String email) {
+        return userRepository.countUsersByEmail(email) > 0;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserOutputDTO> getPagedUsersDTOs(String search, Pageable pageable) {
+        return this.getPagedUsers(search, pageable).map(UserOutputDTO::getUserOutputDTO);
+    }
+
+    public void loadGraduations(Page<Profile> profiles) {
+        Set<ProfileGraduation> profileGraduations = profileGraduationService
+                .getProfileGraduationsByProfiles(profiles.stream().map(profile ->
+                        profile.getUser().getProfile()).collect(Collectors.toSet()));
+        profiles.forEach(profile -> profile.setProfileGraduations(profileGraduations.stream().filter(profileGraduation ->
+                profileGraduation.getProfile().equals(profile)).collect(Collectors.toSet())));
+    }
+
+    @Transactional
+    public void deleteUserById(Long userId) {
+        User user = this.getUser(userId);
+        userRepository.deleteById(user.getId());
     }
 
     private void validPageable(Pageable pageable) {
         Sort sort = pageable.getSort();
         Field[] fields = User.class.getDeclaredFields();
         sort.stream().toList().forEach(order -> {
-            final String errorMessage = "The field "+ order.getProperty() +" is not present in the user";
+            final String errorMessage = "O campo "+ order.getProperty() +" não está presente neste usuário";
             Arrays.stream(fields).filter(field -> field.getName().equalsIgnoreCase(order.getProperty()))
-                .findFirst().orElseThrow(() ->  new NoSuchFieldException(errorMessage));
+                    .findFirst().orElseThrow(() ->  new NoSuchFieldException(errorMessage));
 
         });
     }
 
     @Transactional
-    public UserReadDTO evaluateUser(Long id, UserEvaluationDTO userEvaluationDTO) {
+    public UserOutputDTO evaluateUser(Long id, UserEvaluationDTO userEvaluationDTO) {
         User authenticatedUser = AuthService.authenticated();
-        User userToBeEvaluate = getUser(id);
+        User userToBeEvaluate = getUserWithProfileAndGraduations(id);
         validEvaluate(userToBeEvaluate, authenticatedUser, userEvaluationDTO);
         fillEvaluation(userToBeEvaluate, userEvaluationDTO);
         User updatedUser = this.saveUser(userToBeEvaluate);
-        return UserReadDTO.getUserReadDTO(updatedUser);
+        return UserOutputDTO.getUserOutputDTO(updatedUser);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserWithProfileAndGraduations(Long id) {
+        User foundUser = this.getUser(id);
+        loadGraduations(foundUser.getProfile());
+        return foundUser;
+    }
+
+    @Transactional(readOnly = true)
+    public User getUser(Long id) {
+        User foundUser = userRepository.findById(id).orElse(null);
+        if (Objects.isNull(foundUser)) {
+            throw new ResourceNotFoundException("Usuário não encontrado com o id " + id);
+        }
+        return foundUser;
     }
 
     private void validEvaluate(User userToBeEvaluate, User authenticatedUser, UserEvaluationDTO userEvaluationDTO) {
@@ -129,14 +174,13 @@ public class UserService implements UserDetailsService {
         Role evaluationRole = roleService.getRoleByName(userEvaluationDTO.authority());
         removeBiggerAuthoritiesThanInEvaluationRole(foundUser, evaluationRole);
         foundUser.getRoles().add(evaluationRole);
-        foundUser.setStatus(UserStatus.getValueByName(userEvaluationDTO.status()));
+        foundUser.setStatus(UserStatus.getValueByValue(userEvaluationDTO.status()));
         loadGraduations(foundUser.getProfile());
-        if (!hasAnyGraduation(foundUser)) {
-            ProfileGraduation profileGraduation = ProfileGraduation.builder().build();
-            profileGraduation.setProfile(foundUser.getProfile());
-            profileGraduation.setGraduation(graduationService.getGraduation(Belt.WHITE.toString()));
-            profileGraduationService.saveGraduation(profileGraduation);
-        }
+        profileService.graduateProfile(foundUser.getProfile(), graduationService.getGraduation(Belt.WHITE.toString()));
+    }
+
+    private void removeBiggerAuthoritiesThanInEvaluationRole(User foundUser, Role evaluationRole) {
+        foundUser.getRoles().removeIf(role -> role.getId() < evaluationRole.getId());
     }
 
     private void loadGraduations(Profile profile) {
@@ -144,45 +188,4 @@ public class UserService implements UserDetailsService {
                 .getProfileGraduationsByProfile(profile);
         profile.setProfileGraduations(profileGraduations);
     }
-
-    private boolean hasAnyGraduation(User foundUser) {
-        return !getGraduations(foundUser.getProfile().getProfileGraduations()).isEmpty();
-    }
-
-    private Set<Graduation> getGraduations(Set<ProfileGraduation> profileGraduationsByProfile) {
-        return profileGraduationsByProfile.stream().map(ProfileGraduation::getGraduation).collect(Collectors.toSet());
-    }
-
-    private void removeBiggerAuthoritiesThanInEvaluationRole(User foundUser, Role evaluationRole) {
-        foundUser.getRoles().removeIf(role -> role.getId() < evaluationRole.getId());
-    }
-
-    @Transactional(readOnly = true)
-    private User getUser(Long id) {
-        User foundUser = userRepository.findById(id).orElse(null);
-        if (Objects.isNull(foundUser)) {
-            throw new ResourceNotFoundException("Usuário não encontrado com o id " + id);
-        }
-        return foundUser;
-    }
-
-    @Transactional
-    public User saveUser(User user) {
-        try {
-            return userRepository.save(user);
-        } catch (Exception e) {
-            throw new ResourceStorageException("Problema desconhecido ao salvar usuário");
-        }
-    }
-
-    public Boolean userExistsByEmail(String email) {
-        return userRepository.countUsersByEmail(email) > 0;
-    }
-
-    @Transactional
-    public void deleteUserById(Long userId) {
-        User user = this.getUser(userId);
-        userRepository.deleteById(user.getId());
-    }
-
 }

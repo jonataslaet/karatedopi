@@ -13,11 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CityDTO {
-	private Long id;
-	private String name;
+    private Long id;
+    private String name;
+    private StateDTO state;
 
-	public static CityDTO getCityDTO(City city) {
-		return CityDTO.builder().id(city.getId()).name(city.getName()).build();
-	}
+    public static CityDTO getCityDTO(City city) {
+        return CityDTO.builder()
+                .id(city.getId())
+                .name(city.getName())
+                .state(StateDTO.getStateDTO(city.getState()))
+                .build();
+    }
 }
-

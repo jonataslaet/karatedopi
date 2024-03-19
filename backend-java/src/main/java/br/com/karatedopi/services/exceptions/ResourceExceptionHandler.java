@@ -15,18 +15,6 @@ import java.time.Instant;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(TokenExpirationException.class)
-    public ResponseEntity<StandardError> handleTokenExpirationException(
-            TokenExpirationException ex, HttpServletRequest httpServletRequest) {
-        StandardError standardError = new StandardError();
-        standardError.setTimestamp(Instant.now());
-        standardError.setStatus(HttpStatus.UNAUTHORIZED.value());
-        standardError.setError("Token inválido");
-        standardError.setMessage(ex.getLocalizedMessage());
-        standardError.setPath(httpServletRequest.getRequestURI());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(standardError);
-    }
-
     @ExceptionHandler(TournamentParticipationException.class)
     public ResponseEntity<StandardError> handleTournamentParticipationException(
             TournamentParticipationException ex, HttpServletRequest httpServletRequest) {
@@ -46,7 +34,7 @@ public class ResourceExceptionHandler {
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(HttpStatus.FORBIDDEN.value());
         standardError.setError("Acesso negado");
-        standardError.setMessage(ex.getLocalizedMessage());
+        standardError.setMessage("O papel deste usuário não permite esta operação");
         standardError.setPath(httpServletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(standardError);
     }
@@ -133,4 +121,5 @@ public class ResourceExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
     }
+
 }

@@ -13,15 +13,14 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class GraduationService {
 
-	private final GraduationRepository graduationRepository;
+    private final GraduationRepository graduationRepository;
 
-	@Transactional(readOnly = true)
-	public Graduation getGraduation(String belt) {
-		Graduation foundGraduation = graduationRepository.findGraduationByBelt(belt);
-		if (Objects.isNull(foundGraduation)) {
-			throw new ResourceNotFoundException("Graduação não encontrada para a faixa " + belt);
-		}
-		return foundGraduation;
-	}
+    @Transactional(readOnly = true)
+    public Graduation getGraduation(String belt) {
+        Graduation foundGraduation = graduationRepository.findGraduationByBelt(belt);
+        if (Objects.isNull(foundGraduation)) {
+            throw new ResourceNotFoundException("Graduação não encontrada para a faixa " + belt);
+        }
+        return foundGraduation;
+    }
 }
-

@@ -1,7 +1,7 @@
 package br.com.karatedopi.controllers;
 
-import br.com.karatedopi.controllers.dtos.UserReadDTO;
 import br.com.karatedopi.controllers.dtos.UserEvaluationDTO;
+import br.com.karatedopi.controllers.dtos.UserOutputDTO;
 import br.com.karatedopi.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,9 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -23,21 +23,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class UserController {
 
-	private final UserService userService;
-	
-	@GetMapping
-	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
-	public ResponseEntity<Page<UserReadDTO>> getPagedUsers(
-			@RequestParam(name = "search", required = false) String search,
-			@PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-		Page<UserReadDTO> users = userService.getPagedUsers(search, pageable);
-		return ResponseEntity.ok().body(users);
-	}
+    private final UserService userService;
 
-	@PutMapping("/{id}/evaluations")
-	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
-	public ResponseEntity<UserReadDTO> evaluateUser(@PathVariable("id") Long id, @RequestBody UserEvaluationDTO userEvaluationDTO){
-		UserReadDTO updatedUser = userService.evaluateUser(id, userEvaluationDTO);
-		return ResponseEntity.ok().body(updatedUser);
-	}
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
+    public ResponseEntity<Page<UserOutputDTO>> getPagedUsers(
+            @RequestParam(name = "search", required = false) String search,
+            @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<UserOutputDTO> users = userService.getPagedUsersDTOs(search, pageable);
+        return ResponseEntity.ok().body(users);
+    }
+
+    @PutMapping("/{id}/evaluations")
+    @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
+    public ResponseEntity<UserOutputDTO> evaluateUser(@PathVariable("id") Long id, @RequestBody UserEvaluationDTO userEvaluationDTO){
+        UserOutputDTO updatedUser = userService.evaluateUser(id, userEvaluationDTO);
+        return ResponseEntity.ok().body(updatedUser);
+    }
 }
