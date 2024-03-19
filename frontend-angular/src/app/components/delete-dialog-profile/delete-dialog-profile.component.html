@@ -1,8 +1,10 @@
-<h1 mat-dialog-title>Delete Item</h1>
-<div mat-dialog-content>
-  Would you like to delete ?
+<h1 class="modal-title">Deleção de ficha</h1>
+<div class="modal-body">
+    <div>
+        Você quer mesmo apagar essa ficha?
+    </div>
 </div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>No</button>
-  <button mat-button (click)="confirmDelete()" >Ok</button>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeDialog()">Não</button>
+    <button type="button" class="btn btn-primary" (click)="confirmDelete()">Sim</button>
 </div>

@@ -1,0 +1,138 @@
+<div class="container-fluid">
+    <div class="create-registration-container">
+        <form [formGroup]="registrationFormGroup" (ngSubmit)="updateRegistrationForm()">
+            <div class="between-formgroupsnames"></div>
+
+            <div formGroupName="user" class="row g-3 form-group-outline">
+                <h3>Dados de autenticação</h3>
+                <div class="col-md-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" [value]="registrationFormInputDto.user.email" formControlName="email">
+                </div>
+                <div class="col-md-3">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="password" formControlName="password">
+                </div>
+                <div class="col-md-3">
+                    <label for="firstname" class="form-label">Primeiro nome</label>
+                    <input type="text" class="form-control" id="firstname"  [value]="registrationFormInputDto.user.firstname" formControlName="firstname">
+                </div>
+                <div class="col-md-3">
+                    <label for="lastname" class="form-label">Último nome</label>
+                    <input type="text" class="form-control" id="lastname" [value]="registrationFormInputDto.user.lastname" formControlName="lastname">
+                </div>
+            </div>
+
+            <div class="between-formgroupsnames"></div>
+
+            <div formGroupName="profile" class="row g-3 form-group-outline">
+                <h3>Dados pessoais</h3>
+                <div class="col-md-10">
+                    <label for="fullname" class="form-label">Nome completo</label>
+                    <input type="text" class="form-control" [value]="registrationFormInputDto.profile.fullname" id="fullname" formControlName="fullname">
+                </div>
+                <div class="col-md-2">
+                    <label for="bloodType" class="form-label">Tipo Sanguíneo</label>
+                    <select formControlName="bloodType" class="form-select" id="bloodType">
+                        <option *ngFor="let bloodType of bloodTipies" [ngValue]="bloodType">{{ bloodType }}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="birthday" class="form-label">Data de nascimento</label>
+                    <input type="date" class="form-control" id="birthday" [value]="registrationFormInputDto.profile.birthday | date: 'yyyy-MM-dd'" formControlName="birthday"
+                        placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-md-2">
+                    <label for="itin" class="form-label">CPF</label>
+                    <input type="text" class="form-control" id="itin" [value]="registrationFormInputDto.profile.itin" formControlName="itin">
+                </div>
+                <div class="col-md-2">
+                    <label for="nid" class="form-label">RG</label>
+                    <input type="text" class="form-control" id="nid" [value]="registrationFormInputDto.profile.nid" formControlName="nid">
+                </div>
+                <div class="col-md-2">
+                    <label for="firstPhone" class="form-label">Telefone 1</label>
+                    <input class="form-control" type="tel" [value]="registrationFormInputDto.profile.phoneNumbers[0]" id="firstPhone"
+                        name="firstPhone" maxlength="11" #editFirstPhone placeholder="(00) 00000-0000"
+                        pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" formControlName="firstPhone"
+                        (blur)="updatePhoneNumber(editFirstPhone, 0)">
+                </div>
+                <div class="col-md-2">
+                    <label for="secondPhone" class="form-label">Telefone 2</label>
+                    <input class="form-control" type="tel" [value]="registrationFormInputDto.profile.phoneNumbers[1]" id="secondPhone"
+                        name="secondPhone" maxlength="11" #editSecondPhone placeholder="(00) 00000-0000"
+                        pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" formControlName="secondPhone"
+                        (blur)="updatePhoneNumber(editSecondPhone, 1)">
+                </div>
+                <div class="col-md-2">
+                    <label for="thirdPhone" class="form-label">Telefone 3</label>
+                    <input class="form-control" type="tel" [value]="registrationFormInputDto.profile.phoneNumbers[2]" id="thirdPhone"
+                        name="thirdPhone" maxlength="11" #editThirdPhone placeholder="(00) 00000-0000"
+                        pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" formControlName="thirdPhone"
+                        (blur)="updatePhoneNumber(editThirdPhone, 2)">
+                </div>
+
+                <div class="col-md-10">
+                    <label for="father" class="form-label">Nome do pai</label>
+                    <input type="text" class="form-control" id="father" [value]="registrationFormInputDto.profile.father" formControlName="father">
+                </div>
+                <div class="col-md-2">
+                    <label for="associationAbbreviation" class="form-label">Associação</label>
+                    <select formControlName="associationAbbreviation" class="form-select" id="associationAbbreviation">
+                        <option *ngIf="registrationFormInputDto.profile.associationAbbreviation === null" selected disable></option>
+                        <option *ngFor="let associationAbbreviation of associationAbbreviations" [selected]="getSelectedAssociationAbbreviationOption(associationAbbreviation)">
+                        {{ associationAbbreviation }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-10">
+                    <label for="mother" class="form-label">Nome da mãe</label>
+                    <input type="text" class="form-control" id="mother" [value]="registrationFormInputDto.profile.mother" formControlName="mother">
+                </div>
+            </div>
+
+            <div class="between-formgroupsnames"></div>
+
+            <div formGroupName="address" class="row g-3 form-group-outline">
+                <h3>Endereço</h3>
+                <div class="col-md-6">
+                    <label for="street" class="form-label">Logradouro</label>
+                    <input type="text" class="form-control" id="street" [value]="registrationFormInputDto.address.street" formControlName="street">
+                </div>
+                <div class="col-md-2">
+                    <label for="number" class="form-label">Número</label>
+                    <input type="text" class="form-control" id="number" [value]="registrationFormInputDto.address.number" formControlName="number">
+                </div>
+                <div class="col-md-4">
+                    <label for="neighbourhood" class="form-label">Bairro</label>
+                    <input type="text" class="form-control" id="neighbourhood" [value]="registrationFormInputDto.address.neighbourhood" formControlName="neighbourhood">
+                </div>
+                <div class="col-md-6">
+                    <label for="city" class="form-label">Cidade</label>
+                    <select formControlName="city" class="form-select" id="city">
+                        <option *ngFor="let city of addressCities" [selected]="getSelectedCityOption(city)">
+                            {{ city.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="state" class="form-label">Estado</label>
+                    <select formControlName="state" (change)="fillCities()" class="form-select" id="state">
+                        <option *ngFor="let state of addressStates" [selected]="getSelectedStateOption(state)">
+                            {{ state.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="zipCode" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="zipCode"  [value]="registrationFormInputDto.address.zipCode" formControlName="zipCode">
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Atualizar</button>
+                <button class="btn btn-secondary" (click)="cancel()">Voltar</button>
+            </div>
+        </form>
+    </div>
+</div>

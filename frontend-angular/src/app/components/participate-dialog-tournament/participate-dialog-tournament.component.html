@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Inscrição em Torneio</h1>
-<div mat-dialog-content>
+<h1 class="modal-title">Inscrição em torneio</h1>
+<div class="modal-body">
     <div *ngIf="isParticipant === true">
         Você gostaria mesmo de cancelar sua inscrição neste torneio?
     </div>
@@ -7,7 +7,7 @@
         Você gostaria mesmo de participar deste torneio?
     </div>
 </div>
-<div mat-dialog-actions>
-    <button mat-button mat-dialog-close>No</button>
-    <button mat-button (click)="toggleParticipation()">Ok</button>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeDialog()">Não</button>
+    <button type="button" class="btn btn-primary" (click)="toggleParticipation()">Sim</button>
 </div>

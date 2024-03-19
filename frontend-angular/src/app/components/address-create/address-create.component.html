@@ -1,0 +1,33 @@
+<form [formGroup]="formInputGroup" action="">
+    <div class="row g-3 form-group-outline">
+        <h3>Endereço</h3>
+        <div class="col-md-6">
+            <label for="street" class="form-label">Logradouro</label>
+            <input type="text" class="form-control" id="street" formControlName="street">
+        </div>
+        <div class="col-md-2">
+            <label for="number" class="form-label">Número</label>
+            <input type="text" class="form-control" id="number" formControlName="number">
+        </div>
+        <div class="col-md-4">
+            <label for="neighbourhood" class="form-label">Bairro</label>
+            <input type="text" class="form-control" id="neighbourhood" formControlName="neighbourhood">
+        </div>
+        <div class="col-md-6">
+            <label for="city" class="form-label">Cidade</label>
+            <select class="form-select" formControlName="city">
+                <option *ngFor="let city of addressCities" [ngValue]="city">{{ city.name }}</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="state" class="form-label">Estado</label>
+            <select formControlName="state" (change)="fillCities()" class="form-select" id="state">
+                <option *ngFor="let state of addressStates" [ngValue]="state">{{ state.name }}</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="zipCode" class="form-label">CEP</label>
+            <input type="text" class="form-control" id="zipCode" formControlName="zipCode">
+        </div>
+    </div>
+</form>

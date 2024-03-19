@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationResponse } from 'src/app/common/authentication-response';
+import { ToastrService } from 'ngx-toastr';
+import { AuthenticationResponse } from 'src/app/common/authentication.response';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -19,7 +20,8 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -28,7 +30,7 @@ export class HomeComponent implements OnInit {
         this.authenticationResponse = response;
         this.authenticationService.currentUserSignal.set(response);
       },
-      error: () => {
+      error: (err) => {
         this.authenticationResponse = {
           id: null,
           firstname: '',
@@ -38,6 +40,7 @@ export class HomeComponent implements OnInit {
           authorities: []
         }
         this.authenticationService.startFromLogin();
+        this.toastrService.error(err.error.message, err.error.error);
       },
     });
   }

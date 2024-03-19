@@ -1,76 +1,75 @@
-<div class="tournament-list-container">
-    <mat-form-field>
-        <mat-label>Busca</mat-label>
-        <input matInput (keyup)="search($event.target.value)" #input>
-    </mat-form-field>
-    <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
-
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
-                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="location">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Localização </th>
-                <td mat-cell *matCellDef="let row"> {{row.address.city}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-                <td mat-cell *matCellDef="let row"> {{row.status | enumTranslation}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="numberOfParticipants">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade de participantes </th>
-                <td mat-cell *matCellDef="let row"> {{row.participants.length}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="eventDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de realização </th>
-                <td mat-cell *matCellDef="let row"> {{row.eventDateTime | date: 'dd/MM/yyyy'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="eventTime">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Horário de início </th>
-                <td mat-cell *matCellDef="let row"> {{row.eventDateTime | date: 'hh:mm'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element">
-                    <div *ngIf="isLoggedUserParticipating(element.participants)">
-                        <mat-icon matTooltip="Desinscrever-se deste torneio"
-                            (click)="openParticipationInTournament(element.id)">
-                            <span class="material-symbols-outlined">
-                                cancel
-                            </span>
-                        </mat-icon>
-                    </div>
-                    <div *ngIf="!isLoggedUserParticipating(element.participants)">
-                        <mat-icon matTooltip="Inscrever-se neste torneio"
-                            (click)="openParticipationInTournament(element.id)">
-                            <span class="material-symbols-outlined">
-                                add_circle
-                            </span>
-                        </mat-icon>
-                    </div>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-            <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-            </tr>
-        </table>
-
-        <mat-paginator #paginator [length]="dataLength" [pageIndex]="0" [pageSize]="3" [pageSizeOptions]="[2, 3, 4, 5]"
-            (page)="listTournaments($event)">
-        </mat-paginator>
-    </div>
-    <div *ngIf="hasPrivileges()" class="create-profile-container">
-        <a mat-raised-button color="primary" routerLink="/tournaments/create">Adicionar</a>
+<div class="container-fluid">
+    <div class="tournament-list-container">
+        <div class="col-md-6">
+            <div class="input-group">
+                <button class="btn btn-outline-primary" (click)="search(searchInput)">Buscar</button>
+                <input type="text" class="form-control" #searchInput>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th (click)="onSortChange('name')"> Nome </th>
+                        <th (click)="onSortChange('address.city.name')"> Localização </th>
+                        <th (click)="onSortChange('status')"> Status </th>
+                        <th> Quantidade de participantes </th>
+                        <th (click)="onSortChange('eventDateTime')"> Data de realização </th>
+                        <th (click)="onSortChange('eventDateTime')"> Horário de início </th>
+                        <th> Ações </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let tournament of tournaments">
+                        <td>{{ tournament.name }}</td>
+                        <td>{{ tournament.address.city.name }}</td>
+                        <td>{{ tournament.status | statusEnumTranslation }}</td>
+                        <td>{{ tournament.participants.length }}</td>
+                        <td>{{ tournament.eventDateTime | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ tournament.eventDateTime | date: 'HH:mm' }}</td>
+                        <td>
+                            <button class="btn btn-light dropdown-toggle" type="button" role="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item">
+                                    <div *ngIf="isLoggedUserParticipating(tournament.participants)">
+                                        <span class="bi bi-x" data-toggle="tooltip" title="Desinscrever-se deste torneio"
+                                            (click)="openParticipationInTournament(tournament.id)">
+                                            Desinscrever-se
+                                        </span>
+                                    </div>
+                                    <div *ngIf="!isLoggedUserParticipating(tournament.participants)">
+                                        <span class="bi bi-plus-circle" data-toggle="tooltip" title="Inscrever-se neste torneio"
+                                            (click)="openParticipationInTournament(tournament.id)">
+                                            Inscrever-se
+                                        </span>
+                                    </div>
+                                </a></li>
+                                <li *ngIf="hasPrivileges('/torneios'+ tournament.id +'/atualizar')">
+                                    <div class="dropdown-item" [routerLink]="['/torneios', tournament.id, 'atualizar']">
+                                        <span class="bi bi-plus-circle">
+                                            Editar torneio
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <div class="pagination">
+                <ul class="pagination">
+                    <li class="page-item" *ngFor="let page of getPages()">
+                        <a class="page-link" (click)="listTournaments({ pageIndex: page, pageSize: pageSize })">{{ page + 1
+                            }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div *ngIf="hasPrivileges('/torneios/criar')" class="create-tournament-container">
+            <a class="btn btn-primary" routerLink="/torneios/criar">Adicionar</a>
+        </div>
     </div>
 </div>

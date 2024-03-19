@@ -1,0 +1,11 @@
+<div class="modal-card">
+    <h3 class="modal-title">Telefones</h3>
+    <div class="modal-body">
+        <ul>
+            <li *ngFor="let number of data.phoneNumbers">{{ number }}</li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDialog()">Fechar</button>
+    </div>
+</div>

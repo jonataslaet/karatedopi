@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root',
 })
 export class RequestService {
+    
     private baseUrl = `${environment.apiUrl}`;
 
     constructor(private httpClient: HttpClient) {}
@@ -46,7 +47,7 @@ export class RequestService {
         case 'DELETE':
             return this.httpClient.delete(url, options);
         case 'PATCH':
-            return this.httpClient.patch(url, options);
+            return this.httpClient.patch(url, body, options.headers);
         default:
             throw new Error(`Método HTTP não suportado: ${method}`);
         }

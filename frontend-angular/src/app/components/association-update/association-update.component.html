@@ -1,0 +1,105 @@
+<div class="container-fluid">
+    <div class="association-update-container">
+        <form [formGroup]="associationInputGroup" (ngSubmit)="updateAssociation()">
+            <div formGroupName="information" class="row g-3 form-group-outline">
+                <h3>Informações da Associação</h3>
+                <div class="col-md-4">
+                    <label for="businessName" class="form-label">Razão Social</label>
+                    <input type="text" class="form-control" id="businessName" [value]="associationInputDto.businessName" formControlName="businessName">
+                </div>
+                <div class="col-md-2">
+                    <label for="tradeName" class="form-label">Nome Fantasia</label>
+                    <input type="text" class="form-control" id="tradeName" [value]="associationInputDto.tradeName" formControlName="tradeName">
+                </div>
+                <div class="col-md-2">
+                    <label for="associationAbbreviation" class="form-label">Sigla</label>
+                    <input type="text" class="form-control" id="associationAbbreviation" [value]="associationInputDto.associationAbbreviation" formControlName="associationAbbreviation">
+                </div>
+                <div class="col-md-2">
+                    <label for="federationAbbreviation" class="form-label">Federação</label>
+                    <select formControlName="federationAbbreviation" class="form-select" id="federationAbbreviation">
+                        <option *ngFor="let federationAbbreviation of federationAbbreviations" [selected]="getSelectedFederationAbbreviationOption(federationAbbreviation)">
+                        {{ federationAbbreviation }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="foundationDate" class="form-label">Data de Fundação</label>
+                    <input type="date" class="form-control" id="foundationDate" [value]="associationInputDto.foundationDate" formControlName="foundationDate"
+                        placeholder="dd/mm/yyyy">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="ein" class="form-label">CNPJ</label>
+                    <input type="text" class="form-control" id="ein" [value]="associationInputDto.ein" formControlName="ein">
+                </div>
+                <div class="col-md-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" [value]="associationInputDto.email ? associationInputDto.email: 'Não cadastrado'" formControlName="email">
+                </div>
+                <div class="col-md-2">
+                    <label for="firstPhone" class="form-label">Telefone 1</label>
+                    <input class="form-control" type="tel" [value]="associationInputDto.phoneNumbers[0]" id="firstPhone"
+                        name="firstPhone" maxlength="11" #editFirstPhone placeholder="(00) 00000-0000"
+                        pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" formControlName="firstPhone"
+                        (blur)="updatePhoneNumber(editFirstPhone, 0)">
+                </div>
+                <div class="col-md-2">
+                    <label for="secondPhone" class="form-label">Telefone 2</label>
+                    <input class="form-control" type="tel" [value]="associationInputDto.phoneNumbers[1]" id="secondPhone"
+                        name="secondPhone" maxlength="11" #editSecondPhone placeholder="(00) 00000-0000"
+                        pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" formControlName="secondPhone"
+                        (blur)="updatePhoneNumber(editSecondPhone, 1)">
+                </div>
+                <div class="col-md-2">
+                    <label for="thirdPhone" class="form-label">Telefone 3</label>
+                    <input class="form-control" type="tel" [value]="associationInputDto.phoneNumbers[2]" id="thirdPhone"
+                        name="thirdPhone" maxlength="11" #editThirdPhone placeholder="(00) 00000-0000"
+                        pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" formControlName="thirdPhone"
+                        (blur)="updatePhoneNumber(editThirdPhone, 2)">
+                </div>
+            </div>
+
+            <div formGroupName="address" class="row g-3 form-group-outline">
+                <h3>Endereço</h3>
+                <div class="col-md-6">
+                    <label for="street" class="form-label">Logradouro</label>
+                    <input type="text" class="form-control" id="street" [value]="associationInputDto.address.street" formControlName="street">
+                </div>
+                <div class="col-md-2">
+                    <label for="number" class="form-label">Número</label>
+                    <input type="text" class="form-control" id="number" [value]="associationInputDto.address.number" formControlName="number">
+                </div>
+                <div class="col-md-4">
+                    <label for="neighbourhood" class="form-label">Bairro</label>
+                    <input type="text" class="form-control" id="neighbourhood" [value]="associationInputDto.address.neighbourhood" formControlName="neighbourhood">
+                </div>
+                <div class="col-md-6">
+                    <label for="city" class="form-label">Cidade</label>
+                    <select formControlName="city" class="form-select" id="city">
+                        <option *ngFor="let city of addressCities" [selected]="getSelectedCityOption(city)">
+                            {{ city.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="state" class="form-label">Estado</label>
+                    <select formControlName="state" (change)="fillCities()" class="form-select" id="state">
+                        <option *ngFor="let state of addressStates" [selected]="getSelectedStateOption(state)">
+                            {{ state.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="zipCode" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="zipCode"  [value]="associationInputDto.address.zipCode" formControlName="zipCode">
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+                <button class="btn btn-secondary" (click)="cancel()">Voltar</button>
+            </div>
+        </form>
+    </div>
+</div>

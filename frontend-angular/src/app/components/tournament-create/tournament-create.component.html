@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <div class="tournament-update-container">
+        <form [formGroup]="tournamentFormGroup" (ngSubmit)="createTournament()">
+            <div class="between-formgroupsnames"></div>
+            <div formGroupName="championship" class="row g-3 form-group-outline">
+                <h3>Informações do Torneio</h3>
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+                <div class="col-md-2">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" formControlName="status">
+                        <option #statusOption *ngFor="let status of statuses">
+                            {{ status | statusEnumTranslation }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="eventDate" class="form-label">Data do torneio</label>
+                    <input type="date" class="form-control" id="eventDate" formControlName="eventDate" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-md-2">
+                    <label for="eventTime" class="form-label">Horário do torneio</label>
+                    <input type="time" class="form-control" id="eventTime" formControlName="eventTime" placeholder="hh:mm">
+                </div>
+            </div>
+
+            <div class="between-formgroupsnames"></div>
+            
+            <app-address-create formGroupName="address"></app-address-create>
+    
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Criar</button>
+                <button type="button" class="btn btn-secondary" (click)="cancel()">Voltar</button>
+            </div>
+        </form>
+    </div>
+</div>

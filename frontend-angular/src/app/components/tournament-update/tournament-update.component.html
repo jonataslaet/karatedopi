@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="tournament-update-container">
+        <form [formGroup]="tournamentFormGroup" (ngSubmit)="updateTournament()">
+            <div class="row g-3 form-group-outline" formGroupName="championship">
+                <h3>Informações do Torneio</h3>
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="name" [value]="tournamentItem.name" formControlName="name">
+                </div>
+                <div class="col-md-2">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" formControlName="status">
+                        <option *ngFor="let status of statuses" [selected]="this.tournamentItem.status === status">
+                            {{ status | statusEnumTranslation }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="eventDate" class="form-label">Data do torneio</label>
+                    <input type="date" class="form-control" id="eventDate" [value]="tournamentItem.eventDateTime | date: 'yyyy-MM-dd'" formControlName="eventDate" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-md-2">
+                    <label for="eventTime" class="form-label">Horário do torneio</label>
+                    <input type="time" class="form-control" id="eventTime" [value]="tournamentItem.eventDateTime | date: 'HH:mm'" formControlName="eventTime" placeholder="hh:mm">
+                </div>
+            </div>
+
+            <div class="row g-3 form-group-outline" formGroupName="address">
+                <h3>Endereço</h3>
+                <div class="col-md-6">
+                    <label for="street" class="form-label">Logradouro</label>
+                    <input type="text" class="form-control" id="street" [value]="tournamentItem.address.street" formControlName="street">
+                </div>
+                <div class="col-md-2">
+                    <label for="number" class="form-label">Número</label>
+                    <input type="text" class="form-control" id="number" [value]="tournamentItem.address.number" formControlName="number">
+                </div>
+                <div class="col-md-4">
+                    <label for="neighbourhood" class="form-label">Bairro</label>
+                    <input type="text" class="form-control" id="neighbourhood" [value]="tournamentItem.address.neighbourhood" formControlName="neighbourhood">
+                </div>
+                <div class="col-md-6">
+                    <label for="city" class="form-label">Cidade</label>
+                    <select formControlName="city" class="form-select" id="city">
+                        <option *ngFor="let city of addressCities" [selected]="city.id === this.tournamentItem.address.city.id">
+                            {{ city.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="state" class="form-label">Estado</label>
+                    <select formControlName="state" (change)="fillCities($event)" #stateSelection class="form-select" id="state">
+                        <option *ngFor="let state of addressStates" [selected]="getSelectedStateOption(state)">
+                            {{ state.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="zipCode" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="zipCode" [value]="tournamentItem.address.zipCode" formControlName="zipCode">
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+                <button class="btn btn-secondary" (click)="cancel()">Voltar</button>
+            </div>
+        </form>
+    </div>
+</div>

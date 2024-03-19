@@ -1,22 +1,29 @@
-.mat-elevation-z8 {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.tournament-list-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+.table {
+    margin-top: 20px;
 }
 
-th {
+th,
+td {
+    text-align: center;
+}
+
+.table thead th {
+    cursor: pointer;
     background-color: #f5f5f5;
-    text-align: left;
     padding: 10px;
     font-weight: bold;
     border-bottom: 1px solid #ccc;
+}
+
+.table thead th:hover {
+    background-color: #e9ecef;
 }
 
 tr:nth-child(even) {
@@ -28,13 +35,10 @@ td {
     border-bottom: 1px solid #ccc;
 }
 
-.mat-paginator {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
+.pagination {
+    margin-top: 20px;
 }
 
-.mat-no-data-row {
-    font-style: italic;
-    color: #888;
+.create-tournament-container {
+    margin-top: 20px;
 }

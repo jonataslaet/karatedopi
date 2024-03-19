@@ -1,21 +1,28 @@
-<div class="login-container">
-    <mat-card class="login-card">
-        <mat-card-header>
-            <mat-card-title class="login-title">Login</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
+<div class="container login-container">
+    <div class="card login-card">
+        <div class="card-header">
+            <h5 class="card-title login-title">Login</h5>
+        </div>
+        <div class="card-body">
             <form [formGroup]="formGroup" (ngSubmit)="onSubmitLogin()">
-                <mat-form-field class="login-input">
-                    <input matInput type="text" placeholder="Email" formControlName="email" name="email">
-                </mat-form-field>
-                <mat-form-field class="login-input">
-                    <input matInput type="password" placeholder="Senha" formControlName="password" name="password">
-                </mat-form-field>
-                <div class="login-button-container">
-                    <button mat-raised-button color="primary" type="submit">Login</button>
-                    <button mat-raised-button color="accent" routerLink="/registration">Cadastrar</button>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email" placeholder="Email" formControlName="email" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="password" placeholder="Senha" formControlName="password" name="password" autocomplete="password">
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">Entrar</button>
+                </div>
+                <div class="d-grid gap-2 mt-2">
+                    <a routerLink="/fichas/criar" class="btn btn-secondary">Cadastrar</a>
+                </div>
+                <div class="d-grid gap-2 mt-2">
+                    <a routerLink="/recupera-token" class="btn btn-secondary">Renovar senha</a>
                 </div>
             </form>
-        </mat-card-content>
-    </mat-card>
+        </div>
+    </div>
 </div>

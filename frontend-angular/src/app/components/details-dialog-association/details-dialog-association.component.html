@@ -1,0 +1,20 @@
+<div class="modal-title">
+    <h1>Detalhes da Associação</h1>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <p><strong>Razão Social:</strong> {{ data?.businessName }}</p>
+        <p><strong>Nome Fantasia:</strong> {{ data?.tradeName }}</p>
+        <p><strong>Sigla:</strong> {{ data?.federationAbbreviation }}</p>
+        <p><strong>Data de Fundação:</strong> {{ data?.foundationDate | date: 'dd/MM/yyyy' }}</p>
+        <p><strong>CNPJ:</strong> {{ data?.ein }}</p>
+        <p><strong>Status:</strong> {{ data?.status | statusEnumTranslation }}</p>
+        <p><strong>Email:</strong> {{ data?.email ? data?.email: 'Não cadastrado' }}</p>
+        <p><strong>Presidente:</strong> {{ data?.presidentName ? data?.presidentName: 'Não cadastrado' }}</p>
+        <p><strong>Endereço:</strong> {{ data?.address.street }}, {{ data?.address.number }}, {{ data?.address.zipCode }}, {{ data?.address.city.name }} - {{ data?.address.city.state.name }}</p>
+        <p><strong>Telefones:</strong> {{ data?.phoneNumbers && data.phoneNumbers.length > 0 ? data.phoneNumbers.join(', ') : 'Nenhum telefone disponível' }}</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="closeDialog()">Fechar</button>
+</div>

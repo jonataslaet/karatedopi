@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="federation-create-container">
+        <form [formGroup]="federationInputGroup" (ngSubmit)="createTournament()">
+            <div class="between-formgroupsnames"></div>
+            <div formGroupName="information" class="row g-3 form-group-outline">
+                <h3>Informações da Federação</h3>
+                <div class="col-md-4">
+                    <label for="businessName" class="form-label">Razão Social</label>
+                    <input type="text" class="form-control" id="businessName" formControlName="businessName">
+                </div>
+                <div class="col-md-3">
+                    <label for="tradeName" class="form-label">Nome Fantasia</label>
+                    <input type="text" class="form-control" id="tradeName" formControlName="tradeName">
+                </div>
+                <div class="col-md-3">
+                    <label for="federationAbbreviation" class="form-label">Sigla</label>
+                    <input type="text" class="form-control" id="federationAbbreviation" formControlName="federationAbbreviation">
+                </div>
+                <div class="col-md-2">
+                    <label for="foundationDate" class="form-label">Data de Fundação</label>
+                    <input type="date" class="form-control" id="foundationDate" formControlName="foundationDate" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-md-3">
+                    <label for="ein" class="form-label">CNPJ</label>
+                    <input type="text" class="form-control" id="ein" formControlName="ein">
+                </div>
+                <div class="col-md-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" formControlName="email">
+                </div>
+                <div class="col-md-2">
+                    <label for="firstPhone" class="form-label">Telefone 1 <span class="bi bi-info-circle" data-toggle="tooltip"
+                    title="Este é o principal telefone"></span></label>
+                    <input type="tel" class="form-control" pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" placeholder="(00) 00000-0000" formControlName="firstPhone">
+                </div>
+                <div class="col-md-2">
+                    <label for="secondPhone" class="form-label">Telefone 2</label>
+                    <input type="tel" class="form-control" placeholder="(00) 00000-0000" formControlName="secondPhone">
+                </div>
+                <div class="col-md-2">
+                    <label for="thirdPhone" class="form-label">Telefone 3</label>
+                    <input type="tel" class="form-control" placeholder="(00) 00000-0000" formControlName="thirdPhone">
+                </div>
+            </div>
+
+            <div class="between-formgroupsnames"></div>
+    
+            <app-address-create formGroupName="address"></app-address-create>
+    
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Criar</button>
+                <button type="button" class="btn btn-secondary" (click)="cancel()">Voltar</button>
+            </div>
+        </form>
+    </div>
+</div>

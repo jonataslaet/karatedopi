@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { endpoints } from 'src/app/common/app.endpoints';
-import { AuthenticationResponse } from 'src/app/common/authentication-response';
-import { RouteItem } from 'src/app/common/route-item';
+import { RouteItem } from 'src/app/common/route.item';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -11,38 +8,14 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-
-  authenticationResponse: AuthenticationResponse = {
-    id: null,
-    firstname: '',
-    lastname: '',
-    email: '',
-    accessToken: '',
-    authorities: [],
-  };
-
+  menusByRole: RouteItem[] = [];
+  
   constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
+    private authenticationService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
-    this.authenticationService.getAuthenticatedUser().subscribe({
-      next: (response: AuthenticationResponse) => {
-        this.authenticationService.currentUserSignal.set(response);
-        let menusByRole: RouteItem[] = [];
-        endpoints.routes.forEach((route: RouteItem) => {
-          if (this.checkAuthority(route, response.authorities) && route.isMenu) {
-            menusByRole.push(route);
-          }
-        });
-        this.authenticationService.currentMenusByRole.set(menusByRole);
-        this.authenticationService.currentUserSignal.set(this.authenticationResponse);
-      },
-      error: () => {
-        this.authenticationService.startFromLogin();
-      },
-    });
+    this.authenticationService.setCurrentUser();
   }
 
   logout(): void {
@@ -59,5 +32,16 @@ export class HeaderComponent implements OnInit {
 
   checkAuthority(route: RouteItem, authorities: string[]): boolean {
     return route.authorities.some((authority) => authorities.includes(authority));
+  }
+
+  getFirstAndLastName(): string {
+    const firstname = this.currentUserSignal().firstname;
+    const lastname = this.currentUserSignal().lastname;
+    const firstAndLastName = firstname.concat(' ').concat(lastname)
+    return firstAndLastName;
+  }
+
+  hasPrivileges(uri: string): boolean {
+    return this.authenticationService.hasPrivileges(uri);
   }
 }

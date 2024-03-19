@@ -17,14 +17,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border:3px solid #021bf4
 }
 
-mat-toolbar {
-    background-color: #2196F3;
-    color: #fff;
-    height: 64px;
-    display: flex;
-    align-items: center;
-}
-
 .menu-item {
     text-decoration: none;
     color: #fff;
@@ -40,4 +32,16 @@ mat-toolbar {
 
 .menu-item:last-child {
     margin-right: auto;
+}
+
+.between-formgroupsnames {
+    margin-bottom: 20px;
+}
+
+.form-group-outline {
+    border: 2px solid #007bff; /* Cor da borda - você pode ajustar conforme necessário */
+    border-radius: 8px; /* Raio da borda - ajuste conforme necessário */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ao redor - ajuste conforme necessário */
+    padding: 15px; /* Espaçamento interno para melhorar a aparência */
+    margin-bottom: 20px; /* Espaçamento inferior entre os grupos - ajuste conforme necessário */
 }

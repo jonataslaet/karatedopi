@@ -1,19 +1,38 @@
-<mat-toolbar color="primary">
-    <div style="display: flex; align-items: center;">
-        <div><a [routerLink]="['/home']" class="menu-item">Karatê-DÔ Tradicional do Piauí</a></div>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Karatê-DÔ Tradicional do Piauí</a>
 
-    <div *ngIf="currentUserSignal()" style="display: flex; align-items: center;">
-        <div *ngFor="let menu of currentMenusByRole()"><a [routerLink]="[menu.path]" class="menu-item">{{ menu.text }}</a></div>
-        <div style="flex-grow: 1; text-align: right;">
-            <button (click)="logout()" class="menu-item" style="text-align: right;">Sair</button>
+        <button  *ngIf="currentUserSignal()" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div *ngIf="currentUserSignal()" class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li *ngFor="let menu of currentMenusByRole()" class="nav-item">
+                    <a class="nav-link" [routerLink]="[menu.path]">{{ menu.text }}</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown ml-auto">
+                    <button class="btn btn-light dropdown-toggle" type="button" role="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-fill-gear"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item " (click)="logout()">
+                            <span class="bi bi-box-arrow-right">
+                                Sair
+                            </span></a>
+                        </li>
+                        <li *ngIf="hasPrivileges('/fichas/'+ currentUserSignal().id +'/atualizar')">
+                            <div class="dropdown-item" [routerLink]="['/fichas', currentUserSignal().id, 'atualizar']">
+                                <span class="bi bi-plus-circle">
+                                    Editar minha ficha
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
-
-    <div *ngIf="currentUserSignal() === null" style="display: flex; align-items: center;">
-        <div *ngFor="let menu of menusByRole"><a [routerLink]="[menu.path]" class="menu-item">{{ menu.text }}</a></div>
-        <div style="flex-grow: 1; text-align: right;">
-            <a [routerLink]="['/login']" class="menu-item" style="text-align: right;">Entrar</a>
-        </div>
-    </div>
-</mat-toolbar>
+</nav>

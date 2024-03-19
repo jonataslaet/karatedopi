@@ -1,5 +1,5 @@
-import { RouteItem } from './route-item';
-import { UserRoleEnum } from './user-role-enum';
+import { RouteItem } from './route.item';
+import { UserRoleEnum } from './user.role.enum';
 
 export const endpoints = {
     routes: [
@@ -10,34 +10,76 @@ export const endpoints = {
             isMenu: true
         },
         {
-            path: '/addresses',
-            text: 'Endereços',
+            path: '/usuarios',
+            text: 'Usuários',
+            authorities: ['ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR'],
+            isMenu: true
+        },
+        {
+            path: '/federacoes',
+            text: 'Federações',
             authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
             isMenu: true
         },
         {
-            path: '/profiles',
-            text: 'Fichas',
+            path: '/federacoes/:id/associacoes',
+            text: 'Associações',
             authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
-            isMenu: true
+            isMenu: false
         },
         {
-            path: '/tournaments',
+            path: '/torneios',
             text: 'Torneios',
             authorities: ['ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER'],
             isMenu: true
         },
         {
-            path: '/tournaments/create',
+            path: '/torneios/criar',
             text: 'Criação de Torneios',
             authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
             isMenu: false
         },
         {
-            path: '/users',
-            text: 'Usuários',
-            authorities: ['ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR'],
+            path: '/associacoes/criar',
+            text: 'Criação de Associação',
+            authorities: ['ROLE_ROOT'],
+            isMenu: false
+        },
+        {
+            path: '/federacoes/criar',
+            text: 'Criação de Torneios',
+            authorities: ['ROLE_ROOT'],
+            isMenu: false
+        },
+        {
+            path: '/torneios/:id/atualizar',
+            text: 'Atualização de Torneio',
+            authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
+            isMenu: false
+        },
+        {
+            path: '/federacoes/:id/atualizar',
+            text: 'Atualização de Federação',
+            authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
+            isMenu: false
+        },
+        {
+            path: '/associacoes/:id/atualizar',
+            text: 'Atualização de Associação',
+            authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
+            isMenu: false
+        },
+        {
+            path: '/fichas',
+            text: 'Fichas',
+            authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
             isMenu: true
-        }
+        },
+        {
+            path: '/fichas/:id/atualizar',
+            text: 'Atualização de Ficha',
+            authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
+            isMenu: false
+        },
     ].map((route, index) => new RouteItem(index + 1, route.path, route.text, route.authorities, route.isMenu))
 }

@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { jwtDecode } from 'jwt-decode';
-import { TournamentParticipant } from 'src/app/common/tournament-participant';
+import { ToastrService } from 'ngx-toastr';
+import { TournamentParticipant } from 'src/app/common/tournament.participant';
 import { TournamentService } from 'src/app/services/tournament.service';
 
 @Component({
@@ -12,10 +13,11 @@ import { TournamentService } from 'src/app/services/tournament.service';
 export class ParticipateDialogTournamentComponent implements OnInit {
   tournamentParticipants: TournamentParticipant[] = [];
   isParticipant: boolean = false;
+  data: any;
   constructor(
-    public dialogRef: MatDialogRef<ParticipateDialogTournamentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private tournamentService: TournamentService
+    public activeModal: NgbActiveModal,
+    private tournamentService: TournamentService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -26,6 +28,9 @@ export class ParticipateDialogTournamentComponent implements OnInit {
         if (token && token !== null && token.length > 7) {
           this.isParticipant = this.tournamentParticipants.some((participant) => participant.id === jwtDecode(token)['id']);
         }
+      },
+      error: err => {
+        this.toastrService.error(err.error.message, err.error.error);
       }
     });
   }
@@ -33,8 +38,17 @@ export class ParticipateDialogTournamentComponent implements OnInit {
   toggleParticipation() {
     this.tournamentService
       .toggleParticipantInTournament(this.data.id)
-      .subscribe(() => {
-        this.dialogRef.close(this.data.id);
+      .subscribe({
+        next: () => {
+          this.activeModal.close(this.data.id);
+        },
+        error: err => {
+          this.toastrService.error(err.error.message, err.error.error);
+        }
       });
+  }
+
+  closeDialog() {
+    this.activeModal.close(this.data.id);
   }
 }

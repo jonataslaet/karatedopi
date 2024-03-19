@@ -1,0 +1,32 @@
+export const StateAbbreviation = {
+    AC: { id: 1, codigoIbge: 12, name: 'Acre' },
+    AL: { id: 2, codigoIbge: 27, name: 'Alagoas' },
+    AM: { id: 3, codigoIbge: 13, name: 'Amazonas' },
+    AP: { id: 4, codigoIbge: 16, name: 'Amapá' },
+    BA: { id: 5, codigoIbge: 29, name: 'Bahia' },
+    CE: { id: 6, codigoIbge: 23, name: 'Ceará' },
+    DF: { id: 7, codigoIbge: 53, name: 'Distrito Federal' },
+    ES: { id: 8, codigoIbge: 32, name: 'Espírito Santo' },
+    GO: { id: 9, codigoIbge: 52, name: 'Goiás' },
+    MA: { id: 10, codigoIbge: 21, name: 'Maranhão' },
+    MG: { id: 11, codigoIbge: 31, name: 'Minas Gerais' },
+    MS: { id: 12, codigoIbge: 50, name: 'Mato Grosso do Sul' },
+    MT: { id: 13, codigoIbge: 51, name: 'Mato Grosso' },
+    PA: { id: 14, codigoIbge: 15, name: 'Pará' },
+    PB: { id: 15, codigoIbge: 25, name: 'Paraíba' },
+    PE: { id: 16, codigoIbge: 26, name: 'Pernambuco' },
+    PI: { id: 17, codigoIbge: 22, name: 'Piauí' },
+    PR: { id: 18, codigoIbge: 41, name: 'Paraná' },
+    RJ: { id: 19, codigoIbge: 33, name: 'Rio de Janeiro' },
+    RN: { id: 20, codigoIbge: 24, name: 'Rio Grande do Norte' },
+    RO: { id: 21, codigoIbge: 11, name: 'Rondônia' },
+    RR: { id: 22, codigoIbge: 14, name: 'Roraima' },
+    RS: { id: 23, codigoIbge: 43, name: 'Rio Grande do Sul' },
+    SC: { id: 24, codigoIbge: 42, name: 'Santa Catarina' },
+    SE: { id: 25, codigoIbge: 28, name: 'Sergipe' },
+    SP: { id: 26, codigoIbge: 35, name: 'São Paulo' },
+    TO: { id: 27, codigoIbge: 17, name: 'Tocantins' },
+} as const;
+
+export type StateAbbreviation = keyof typeof StateAbbreviation;
+export type State = (typeof StateAbbreviation)[StateAbbreviation];

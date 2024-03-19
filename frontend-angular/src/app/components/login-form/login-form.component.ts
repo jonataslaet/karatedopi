@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AuthenticationResponse } from 'src/app/common/authentication-response';
-import { CredentialsDTO } from 'src/app/common/credentials-dto';
-import { RouteItem } from 'src/app/common/route-item';
+import { ToastrService } from 'ngx-toastr';
+import { AuthenticationResponse } from 'src/app/common/authentication.response';
+import { CredentialsDTO } from 'src/app/common/credentials.dto';
+import { RouteItem } from 'src/app/common/route.item';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { KaratedopiValidators } from 'src/app/validators/karatedopi-validators';
 
@@ -14,20 +14,12 @@ import { KaratedopiValidators } from 'src/app/validators/karatedopi-validators';
   styleUrls: ['./login-form.component.css'],
 })
 export class LoginFormComponent {
-  authenticationResponse: AuthenticationResponse = {
-    id: null,
-    firstname: '',
-    lastname: '',
-    email: '',
-    accessToken: '',
-    authorities: []
-  };
 
   constructor(
+    private toastrService: ToastrService,
     private formBuiilder: FormBuilder,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private snackBar: MatSnackBar
+    private authenticationService: AuthenticationService
   ) {}
 
   formGroup = this.formBuiilder.nonNullable.group({
@@ -42,21 +34,12 @@ export class LoginFormComponent {
     };
     this.authenticationService.authenticate(credentialsDTO).subscribe({
       next: (response: AuthenticationResponse) => {
-        this.authenticationResponse = response;
-        this.authenticationService.setAuthToken(this.authenticationResponse.accessToken);
-        this.authenticationService.currentUserSignal.set(this.authenticationResponse);
+        this.authenticationService.loadAuthenticationResponse(response);
+        this.toastrService.success('Autenticação realizada com sucesso.', 'Credenciais corretas');
         this.router.navigate(['/home']);
       },
       error: () => {
-        this.authenticationResponse = {
-          id: null,
-          firstname: '',
-          lastname: '',
-          email: '',
-          accessToken: '',
-          authorities: []
-        };
-        this.snackBar.open('Login ou Senha incorretos.','❌')._dismissAfter(3000);
+        this.toastrService.error('Login ou senha incorretos.', 'Erro na autenticação');
         this.authenticationService.startFromLogin();
       },
     });

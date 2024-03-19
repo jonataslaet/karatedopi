@@ -1,0 +1,32 @@
+/* login.component.css */
+.renew-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.renew-card {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.renew-title {
+    text-align: center;
+}
+
+.renew-input {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.renew-button-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.renew-button-container button {
+    margin-bottom: 10px;
+}
