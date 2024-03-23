@@ -16,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -31,6 +33,7 @@ public class RegistrationFormService {
     private final AddressService addressService;
     private final AssociationService associationService;
     private final AuthService authService;
+    private final S3FileUploadService s3FileUploadService;
 
     @Transactional
     public RegistrationFormOutputDTO createRegistration(RegistrationFormInputDTO registrationFormDTO) {
@@ -252,4 +255,9 @@ public class RegistrationFormService {
     private boolean areDifferents(String word1, String word2) {
         return isNotNullAndNotEmpty(word1) && isNotNullAndNotEmpty(word2) && !word1.equals(word2);
     }
+
+    public URI uploadProfilePicture(MultipartFile file) {
+        return s3FileUploadService.uploadFile(file);
+    }
+
 }

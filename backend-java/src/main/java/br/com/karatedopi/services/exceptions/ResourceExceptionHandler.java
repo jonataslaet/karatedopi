@@ -1,5 +1,8 @@
 package br.com.karatedopi.services.exceptions;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,56 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+
+    @ExceptionHandler(AmazonS3Exception.class)
+    public ResponseEntity<ValidationError> amazonS3Exception(AmazonS3Exception ex, HttpServletRequest httpServletRequest) {
+        ValidationError validationError = new ValidationError();
+        validationError.setTimestamp(Instant.now());
+        validationError.setStatus(HttpStatus.BAD_REQUEST.value());
+        validationError.setError("Erro de requisição");
+        validationError.setMessage(ex.getMessage());
+        validationError.setPath(httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
+    }
+
+    @ExceptionHandler(AmazonClientException.class)
+    public ResponseEntity<ValidationError> amazonClientException(AmazonClientException ex, HttpServletRequest httpServletRequest) {
+        ValidationError validationError = new ValidationError();
+        validationError.setTimestamp(Instant.now());
+        validationError.setStatus(HttpStatus.BAD_REQUEST.value());
+        validationError.setError("Erro de requisição");
+        validationError.setMessage(ex.getMessage());
+        validationError.setPath(httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
+    }
+
+    @ExceptionHandler(AmazonServiceException.class)
+    public ResponseEntity<ValidationError> amazonServiceException(AmazonServiceException ex, HttpServletRequest httpServletRequest) {
+        Integer errorCode = Integer.parseInt(ex.getErrorCode());
+        ValidationError validationError = new ValidationError();
+        validationError.setTimestamp(Instant.now());
+        validationError.setStatus(errorCode);
+        validationError.setError("Erro de requisição");
+        validationError.setMessage(ex.getMessage());
+        validationError.setPath(httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(errorCode).body(validationError);
+    }
+
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<ValidationError> fileExceptionException(FileException ex, HttpServletRequest httpServletRequest) {
+        ValidationError validationError = new ValidationError();
+        validationError.setTimestamp(Instant.now());
+        validationError.setStatus(HttpStatus.BAD_REQUEST.value());
+        validationError.setError("Erro de requisição");
+        validationError.setMessage(ex.getMessage());
+        validationError.setPath(httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(validationError);
+    }
+
 
     @ExceptionHandler(TournamentParticipationException.class)
     public ResponseEntity<StandardError> handleTournamentParticipationException(

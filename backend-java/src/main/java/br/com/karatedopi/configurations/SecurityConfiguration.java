@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     };
 
     private final String[] POST_PUBLIC_ENDPOINTS = {
-            "/login", "/registrationforms", "/registrationforms/**", "/recovery-token", "/new-password/**"
+            "/login", "/registrationforms", "/registrationforms/picture", "/recovery-token", "/new-password/**"
     };
 
     private final String[] GET_PUBLIC_ENDPOINTS = {
