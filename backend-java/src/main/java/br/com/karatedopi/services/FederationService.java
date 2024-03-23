@@ -30,8 +30,8 @@ public class FederationService {
     private final AuthService authService;
 
     @Transactional(readOnly = true)
-    public Page<FederationOutputDTO> getPagedFederations(String search, Pageable pagination){
-        return federationRepository.findAllBySearchContent(search, pagination).map(FederationOutputDTO::getFederationOutputDTO);
+    public Page<FederationOutputDTO> getPagedFederations(String search, String status, Pageable pagination){
+        return federationRepository.findAllBySearchContent(search, status, pagination).map(FederationOutputDTO::getFederationOutputDTO);
     }
 
     @Transactional

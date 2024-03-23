@@ -239,8 +239,8 @@ public class RegistrationFormService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RegistrationFormOutputDTO> getPagedRegistrationForms(String search, Pageable pageable) {
-        Page<User> pagedUsers = userService.getPagedUsers(search, pageable);
+    public Page<RegistrationFormOutputDTO> getPagedRegistrationForms(String search, String status, Pageable pageable) {
+        Page<User> pagedUsers = userService.getPagedUsers(search, status, pageable);
         userService.loadGraduations(pagedUsers.map(User::getProfile));
         return pagedUsers.map(RegistrationFormOutputDTO::getRegistrationFormOutputDTO);
     }

@@ -34,8 +34,8 @@ public class TournamentService {
     private final TournamentParticipationService tournamentParticipationService;
 
     @Transactional(readOnly = true)
-    public Page<TournamentDTO> findAllTournaments(String search, Pageable pagination) {
-        return tournamentRepository.findAllBySearchContent(search, pagination).map(TournamentDTO::getTournamentDTO);
+    public Page<TournamentDTO> findAllTournaments(String search, String status, Pageable pagination) {
+        return tournamentRepository.findAllBySearchContent(search, status, pagination).map(TournamentDTO::getTournamentDTO);
     }
 
     @Transactional

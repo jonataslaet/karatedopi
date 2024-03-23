@@ -29,8 +29,9 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<Page<UserOutputDTO>> getPagedUsers(
             @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "status", required = false) String status,
             @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-        Page<UserOutputDTO> users = userService.getPagedUsersDTOs(search, pageable);
+        Page<UserOutputDTO> users = userService.getPagedUsersDTOs(search, status, pageable);
         return ResponseEntity.ok().body(users);
     }
 

@@ -31,9 +31,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserDetailsProjection> searchUserAndRolesByEmail(String email);
 
 	@Query(value = """
-        SELECT user FROM User user WHERE :search IS NULL OR TRIM(CAST(:search AS text)) = '' OR
-        LOWER(user.firstname) like LOWER(CONCAT('%', CAST(:search AS text), '%'))
+        SELECT user FROM User user WHERE (:search IS NULL OR TRIM(CAST(:search AS text)) = '' OR
+        LOWER(user.firstname) like LOWER(CONCAT('%', CAST(:search AS text), '%'))) AND (:status IS NULL OR TRIM(CAST(:status AS text)) = '' OR
+        LOWER(user.status) like LOWER(CONCAT('%', CAST(:status AS text), '%')))
         """)
-	Page<User> findAllBySearchContent(@Param("search") String search, Pageable pagination);
+	Page<User> findAllBySearchContent(@Param("search") String search, @Param("status") String status, Pageable pagination);
 
 }

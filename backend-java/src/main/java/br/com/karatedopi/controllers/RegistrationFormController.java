@@ -71,8 +71,10 @@ public class RegistrationFormController {
     @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<Page<RegistrationFormOutputDTO>> getPagedRegistrationForms(
             @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "status", required = false) String status,
             @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-        Page<RegistrationFormOutputDTO> registrationFormsDTOs = registrationFormService.getPagedRegistrationForms(search, pageable);
+        Page<RegistrationFormOutputDTO> registrationFormsDTOs =
+                registrationFormService.getPagedRegistrationForms(search, status, pageable);
         return ResponseEntity.ok().body(registrationFormsDTOs);
     }
 }

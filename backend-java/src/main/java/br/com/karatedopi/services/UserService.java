@@ -62,9 +62,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<User> getPagedUsers(String search, Pageable pageable) {
+    public Page<User> getPagedUsers(String search, String status, Pageable pageable) {
         validPageable(pageable);
-        return userRepository.findAllBySearchContent(search, pageable);
+        return userRepository.findAllBySearchContent(search, status, pageable);
     }
 
     @Transactional
@@ -82,8 +82,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserOutputDTO> getPagedUsersDTOs(String search, Pageable pageable) {
-        return this.getPagedUsers(search, pageable).map(UserOutputDTO::getUserOutputDTO);
+    public Page<UserOutputDTO> getPagedUsersDTOs(String search, String status, Pageable pageable) {
+        return this.getPagedUsers(search, status, pageable).map(UserOutputDTO::getUserOutputDTO);
     }
 
     public void loadGraduations(Page<Profile> profiles) {

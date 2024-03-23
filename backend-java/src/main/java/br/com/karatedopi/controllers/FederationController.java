@@ -76,8 +76,9 @@ public class FederationController {
     @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<Page<FederationOutputDTO>> getPagedFederations(
             @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "status", required = false) String status,
             @PageableDefault(sort="id", direction = Sort.Direction.DESC) Pageable pageable){
-        Page<FederationOutputDTO> federationOutputDTOs = federationService.getPagedFederations(search, pageable);
+        Page<FederationOutputDTO> federationOutputDTOs = federationService.getPagedFederations(search, status, pageable);
         return ResponseEntity.ok().body(federationOutputDTOs);
     }
 

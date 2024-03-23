@@ -35,9 +35,10 @@ public class TournamentController {
     @PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
     public ResponseEntity<Page<TournamentDTO>> getPagedTournaments(
             @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "status", required = false) String status,
             @PageableDefault(sort="eventDate", direction = Direction.DESC) Pageable pageable
     ){
-        Page<TournamentDTO> pagedTournaments = tournamentService.findAllTournaments(search, pageable);
+        Page<TournamentDTO> pagedTournaments = tournamentService.findAllTournaments(search, status, pageable);
         return ResponseEntity.ok().body(pagedTournaments);
     }
 

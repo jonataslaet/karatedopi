@@ -21,12 +21,14 @@ public interface FederationRepository extends JpaRepository<Federation, Long> {
 
     @Query("""
         SELECT federation FROM Federation federation 
-        WHERE :search IS NULL OR TRIM(CAST(:search AS text)) = '' OR
+        WHERE (:search IS NULL OR TRIM(CAST(:search AS text)) = '' OR
         UPPER(federation.businessName) like UPPER(CONCAT('%', CAST(:search AS text), '%')) OR 
         UPPER(federation.tradeName) like UPPER(CONCAT('%', CAST(:search AS text), '%')) OR  
         UPPER(federation.federationAbbreviation) like UPPER(CONCAT('%', CAST(:search AS text), '%')) OR  
         UPPER(federation.ein) like UPPER(CONCAT('%', CAST(:search AS text), '%')) OR  
-        UPPER(federation.email) like UPPER(CONCAT('%', CAST(:search AS text), '%')) 
+        UPPER(federation.email) like UPPER(CONCAT('%', CAST(:search AS text), '%'))) AND 
+        (:status IS NULL OR TRIM(CAST(:status AS text)) = '' OR
+        LOWER(federation.status) like LOWER(CONCAT('%', CAST(:status AS text), '%')))
         """)
-    Page<Federation> findAllBySearchContent(@Param("search") String search, Pageable pagination);
+    Page<Federation> findAllBySearchContent(@Param("search") String search, @Param("status") String status, Pageable pagination);
 }

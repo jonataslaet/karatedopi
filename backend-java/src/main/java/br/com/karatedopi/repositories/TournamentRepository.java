@@ -13,8 +13,10 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
     @Query("""
         SELECT tournament FROM Tournament tournament
-        WHERE :search IS NULL OR TRIM(CAST(:search AS text)) = '' OR
-        LOWER(tournament.name) like LOWER(CONCAT('%', CAST(:search AS text), '%'))
+        WHERE (:search IS NULL OR TRIM(CAST(:search AS text)) = '' OR
+        LOWER(tournament.name) like LOWER(CONCAT('%', CAST(:search AS text), '%'))) AND (:status IS NULL OR TRIM(CAST(:status AS text)) = '' OR
+        LOWER(tournament.status) like LOWER(CONCAT('%', CAST(:status AS text), '%')))
         """)
-    Page<Tournament> findAllBySearchContent(@Param("search") String search, Pageable pagination);
+    Page<Tournament> findAllBySearchContent(
+            @Param("search") String search, @Param("status") String status, Pageable pagination);
 }
