@@ -1,10 +1,7 @@
 <div class="container-fluid">
     <div class="user-list-container">
         <div class="col-md-6">
-            <div class="input-group">
-                <button class="btn btn-outline-primary" (click)="search(searchInput)">Buscar</button>
-                <input type="text" class="form-control" #searchInput>
-            </div>
+            <app-search-input [statuses]="statuses" (search)="search($event)"></app-search-input>
         </div>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -12,7 +9,7 @@
                     <tr>
                         <th (click)="onSortChange('firstname')">Nome</th>
                         <th (click)="onSortChange('lastname')">Sobrenome</th>
-                        <th (click)="onSortChange('authority')">Autoridade</th>
+                        <th>Autoridade</th>
                         <th (click)="onSortChange('email')">Email</th>
                         <th (click)="onSortChange('status')">Status</th>
                         <th>Ações</th>

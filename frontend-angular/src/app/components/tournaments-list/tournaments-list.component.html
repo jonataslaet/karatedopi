@@ -1,10 +1,7 @@
 <div class="container-fluid">
     <div class="tournament-list-container">
         <div class="col-md-6">
-            <div class="input-group">
-                <button class="btn btn-outline-primary" (click)="search(searchInput)">Buscar</button>
-                <input type="text" class="form-control" #searchInput>
-            </div>
+            <app-search-input [statuses]="statuses" (search)="search($event)"></app-search-input>
         </div>
         <div class="table-responsive">
             <table class="table table-striped">

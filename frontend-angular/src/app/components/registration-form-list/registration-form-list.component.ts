@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { RegistrationFormsResponse } from 'src/app/common/registration.forms.response';
 import { RegistratrionFormOutputDto } from 'src/app/common/registratrion.form.output.dto';
+import { UserStatusEnum } from 'src/app/common/user.status.enum';
 import { RegistrationService } from 'src/app/services/registration.service';
 import { DeleteDialogProfileComponent } from '../delete-dialog-profile/delete-dialog-profile.component';
 import { GraduateDialogComponent } from '../graduate-dialog/graduate-dialog.component';
@@ -14,12 +15,16 @@ import { PhonesDialogComponent } from '../phones-dialog/phones-dialog.component'
   styleUrls: ['./registration-form-list.component.css']
 })
 export class RegistrationFormListComponent implements AfterViewInit {
+  statuses: { name: string, value: string }[] = Object.entries(UserStatusEnum).map(([value, name]) => ({ name, value }));
+
   registrationFormsDtos: RegistratrionFormOutputDto[] = [];
   dataLength: number;
   pageIndex: number = 0;
   pageSize: number = 3;
   sortField: string = 'id';
   sortDirection: string = 'desc';
+  searchedContent: string = '';
+  selectedStatus: string = '';
 
   constructor(
     private registrationService: RegistrationService,
@@ -37,17 +42,19 @@ export class RegistrationFormListComponent implements AfterViewInit {
       this.pageSize = event.pageSize;
       this.dataLength = event.length;
     }
-    this.getPagedRegistrationFormsDtos(
-      null,
+
+    this.getPagedRegistrationFormsDtos(this.searchedContent, this.selectedStatus,
       this.pageIndex,
       this.pageSize,
       this.sortField,
-      this.sortDirection);
+      this.sortDirection);;
   }
 
-  search(event: HTMLInputElement) {
-    const searchedContent = event.value;
-    this.getPagedRegistrationFormsDtos(searchedContent,this.pageIndex,
+  search(searchParams: { searchInputValue: string, selectedStatus: string }): void {
+    this.searchedContent = searchParams.searchInputValue;
+    this.selectedStatus = searchParams.selectedStatus;
+    this.getPagedRegistrationFormsDtos(this.searchedContent, this.selectedStatus,
+      this.pageIndex,
       this.pageSize,
       this.sortField,
       this.sortDirection);
@@ -55,12 +62,13 @@ export class RegistrationFormListComponent implements AfterViewInit {
 
   private getPagedRegistrationFormsDtos(
     searchedContent: string,
+    selectedStatus: string,
     pageIndex: number,
     pageSize: number,
     sortField: string,
     sortDirection: string
     ) {
-    this.registrationService.getPagedRegistrationFormsDtos(searchedContent,
+    this.registrationService.getPagedRegistrationFormsDtos(searchedContent,selectedStatus,
       pageIndex,
       pageSize,
       sortField,
@@ -69,7 +77,9 @@ export class RegistrationFormListComponent implements AfterViewInit {
         next: (response: RegistrationFormsResponse) => {
           this.registrationFormsDtos = response.content;
           this.dataLength = response.totalElements;
-          this.pageIndex = response.pageable.pageNumber;
+          this.pageIndex = response.totalElements % response.pageable.pageSize == 0 ?
+            (response.totalElements / response.pageable.pageSize) - 1 :
+            (response.totalElements / response.pageable.pageSize);
           this.pageSize = response.pageable.pageSize;
         },
         error: err => {
@@ -81,7 +91,8 @@ export class RegistrationFormListComponent implements AfterViewInit {
   onSortChange(sortField: string) {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.sortField = sortField;
-    this.listProfiles(null);
+    this.getPagedRegistrationFormsDtos(this.searchedContent, this.selectedStatus,
+      this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
   }
 
   openDeleteModal(id: number) {

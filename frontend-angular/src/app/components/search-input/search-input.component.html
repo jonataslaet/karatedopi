@@ -1,4 +1,19 @@
-<div class="input-group">
-    <button class="btn btn-outline-primary" (click)="search.emit(searchInput)">Buscar</button>
-    <input type="text" class="form-control" #searchInput>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Digite sua busca..." #searchInput>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary"
+                        (click)="onSearch(searchInput.value, selectedStatus)">Buscar</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <select class="form-control" id="statusFilter" [(ngModel)]="selectedStatus">
+                <option value="">Qualquer status</option>
+                <option *ngFor="let status of statuses" [value]="status.value">{{ status.name }}</option>
+            </select>
+        </div>
+    </div>
 </div>

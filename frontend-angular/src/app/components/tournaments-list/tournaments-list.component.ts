@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { TournamentItem } from 'src/app/common/tournament.item';
 import { TournamentParticipant } from 'src/app/common/tournament.participant';
+import { TournamentStatusEnum } from 'src/app/common/tournament.status.enum';
 import { TournamentsReadResponse } from 'src/app/common/tournaments.read.response';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { TournamentService } from 'src/app/services/tournament.service';
@@ -15,12 +16,16 @@ import { ParticipateDialogTournamentComponent } from '../participate-dialog-tour
   styleUrls: ['./tournaments-list.component.css'],
 })
 export class TournamentsListComponent implements AfterViewInit {
+  statuses: { name: string, value: string }[] = Object.entries(TournamentStatusEnum).map(([value, status]) => ({ name: status.name, value }));
+
   tournaments: TournamentItem[] = [];
   dataLength: number;
   pageIndex: number = 0;
   pageSize: number = 3;
   sortField: string = 'id';
   sortDirection: string = 'desc';
+  searchedContent: string = '';
+  selectedStatus: string = '';
 
   constructor(
     private tournamentService: TournamentService,
@@ -39,36 +44,44 @@ export class TournamentsListComponent implements AfterViewInit {
       this.pageSize = event.pageSize;
       this.dataLength = event.length;
     }
-    this.getTournamentListPaginate(null, this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
+    this.getTournamentListPaginate(this.searchedContent, this.selectedStatus,
+      this.pageIndex,
+      this.pageSize,
+      this.sortField,
+      this.sortDirection);
   }
 
-  search(event: HTMLInputElement) {
-    const searchedContent = event.value;
-    this.getTournamentListPaginate(searchedContent, this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
+  search(searchParams: { searchInputValue: string, selectedStatus: string }): void {
+    this.searchedContent = searchParams.searchInputValue;
+    this.selectedStatus = searchParams.selectedStatus;
+    this.getTournamentListPaginate(this.searchedContent, this.selectedStatus,
+      this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
   }
 
-  private getTournamentListPaginate(searchedContent: string, pageIndex: number, pageSize: number,
+  private getTournamentListPaginate(searchedContent: string, selectedStatus: string, pageIndex: number, pageSize: number,
     sortField: string, sortDirection: string) {
     this.tournamentService
-      .getTournamentListPaginate(searchedContent, pageIndex, pageSize, sortField, sortDirection)
+      .getTournamentListPaginate(searchedContent, selectedStatus, pageIndex, pageSize, sortField, sortDirection)
       .subscribe({
         next: (response: TournamentsReadResponse) => {
           this.tournaments = response.content;
           this.dataLength = response.totalElements;
-          this.pageIndex = response.pageable.pageNumber;
+          this.pageIndex = response.totalElements % response.pageable.pageSize == 0 ?
+            (response.totalElements / response.pageable.pageSize) - 1 :
+            (response.totalElements / response.pageable.pageSize);
           this.pageSize = response.pageable.pageSize;
         },
         error: err => {
           this.toastrService.error(err.error.message, err.error.error);
         }
-        
       });
   }
 
   onSortChange(sortField: string) {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.sortField = sortField;
-    this.listTournaments(null);
+    this.getTournamentListPaginate(this.searchedContent, this.selectedStatus,
+      this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
   }
 
   openParticipationInTournament(id: number) {

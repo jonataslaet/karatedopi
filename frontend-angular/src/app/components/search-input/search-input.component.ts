@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-search-input',
@@ -6,11 +6,15 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./search-input.component.css']
 })
 export class SearchInputComponent {
-  @Output() search: EventEmitter<HTMLInputElement> = new EventEmitter();
+  selectedStatus: string = '';
+  
+  @Input() statuses: { name: string, value: string }[] = [];
+
+  @Output() search: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
-  onSearch(searchInput: HTMLInputElement) {
-    this.search.emit(searchInput);
+  onSearch(searchInputValue: string, selectedStatus: string): void {
+    this.search.emit({ searchInputValue, selectedStatus });
   }
 }

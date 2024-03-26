@@ -11,10 +11,10 @@ export class UserService {
 
     constructor(private requestService: RequestService) { }
 
-    getUserListPaginate(theContent: string, thePage: number, thePageSize: number,
+    getUserListPaginate(theContent: string, theStatus: string, thePage: number, thePageSize: number,
         theField: string, theDirection: string): Observable<UsersReadResponse> {
         if (theContent != null) {
-            const endpoint = `/users?search=${theContent}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
+            const endpoint = `/users?search=${theContent}&status=${theStatus}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
             return this.requestService.request('GET', endpoint);
         }
         const endpoint = `/users?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;

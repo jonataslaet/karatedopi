@@ -15,10 +15,10 @@ export class TournamentService {
         return this.requestService.request('POST', '/tournaments', tournamentForm);
     }
 
-    getTournamentListPaginate(theContent: string, thePage: number, thePageSize: number,
+    getTournamentListPaginate(theContent: string, theStatus: string, thePage: number, thePageSize: number,
         theField: string, theDirection: string): Observable<TournamentsReadResponse> {
         if (theContent != null) {
-            const endpoint = `/tournaments?search=${theContent}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
+            const endpoint = `/tournaments?search=${theContent}&status=${theStatus}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
             return this.requestService.request('GET', endpoint);
         }
         const endpoint = `/tournaments?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;

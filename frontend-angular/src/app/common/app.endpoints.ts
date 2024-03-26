@@ -78,7 +78,7 @@ export const endpoints = {
         {
             path: '/fichas/:id/atualizar',
             text: 'Atualização de Ficha',
-            authorities: ['ROLE_ROOT', 'ROLE_ADMIN'],
+            authorities: Object.keys(UserRoleEnum).map(key => `${key}`),
             isMenu: false
         },
     ].map((route, index) => new RouteItem(index + 1, route.path, route.text, route.authorities, route.isMenu))

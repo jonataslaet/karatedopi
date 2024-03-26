@@ -42,13 +42,14 @@ export class RegistrationService {
 
   getPagedRegistrationFormsDtos(
     theContent: string,
+    theStatus: string,
     thePage: number,
     thePageSize: number,
     theField: string,
     theDirection: string
 ): Observable<RegistrationFormsResponse> {
     if (theContent != null) {
-        const endpoint = `/registrationforms?search=${theContent}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
+        const endpoint = `/registrationforms?search=${theContent}&status=${theStatus}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
         return this.requestService.request('GET', endpoint);
     }
     const endpoint = `/registrationforms?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;

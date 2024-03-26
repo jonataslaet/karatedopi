@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AssociationOutputDto } from 'src/app/common/association.output.dto';
 import { AssociationsResponse } from 'src/app/common/associations.response';
+import { OrganizationStatusEnum } from 'src/app/common/organization.status.enum';
 import { AssociationService } from 'src/app/services/association.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DetailsDialogAssociationComponent } from '../details-dialog-association/details-dialog-association.component';
@@ -15,6 +16,7 @@ import { PhonesDialogComponent } from '../phones-dialog/phones-dialog.component'
   styleUrls: ['./associations-by-federation-list.component.css']
 })
 export class AssociationsByFederationListComponent implements AfterViewInit, OnInit {
+  statuses: { name: string, value: string }[] = Object.entries(OrganizationStatusEnum).map(([value, status]) => ({ name: status.name, value }));
 
   federationId: number = null;
   associationId: number = null;
@@ -24,6 +26,8 @@ export class AssociationsByFederationListComponent implements AfterViewInit, OnI
   pageSize: number = 3;
   sortField: string = 'id';
   sortDirection: string = 'desc';
+  searchedContent: string = '';
+  selectedStatus: string = '';
 
   constructor(
     private associationService: AssociationService,
@@ -51,21 +55,29 @@ export class AssociationsByFederationListComponent implements AfterViewInit, OnI
       this.pageSize = event.pageSize;
       this.dataLength = event.length;
     }
-    this.getPagedAssociationsDtos(this.federationId, null, this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
+    this.getPagedAssociationsDtos(this.federationId, this.searchedContent, this.selectedStatus,
+      this.pageIndex,
+      this.pageSize,
+      this.sortField,
+      this.sortDirection);
   }
 
-  search(event: HTMLInputElement) {
-    const searchedContent = event.value;
-    this.getPagedAssociationsDtos(this.federationId, searchedContent, this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
+  search(searchParams: { searchInputValue: string, selectedStatus: string }): void {
+    this.searchedContent = searchParams.searchInputValue;
+    this.selectedStatus = searchParams.selectedStatus;
+    this.getPagedAssociationsDtos(this.federationId, this.searchedContent, this.selectedStatus,
+        this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
   }
 
-  private getPagedAssociationsDtos(federationId: number, searchedContent: string | null, pageIndex: number, pageSize: number, sortField: string, sortDirection: string) {
-    this.associationService.getPagedAssociationsDtos(federationId, searchedContent, pageIndex, pageSize, sortField, sortDirection)
+  private getPagedAssociationsDtos(federationId: number, searchedContent: string | null, selectedStatus: string | null, pageIndex: number, pageSize: number, sortField: string, sortDirection: string) {
+    this.associationService.getPagedAssociationsDtos(federationId, searchedContent, selectedStatus, pageIndex, pageSize, sortField, sortDirection)
       .subscribe({
         next: (response: AssociationsResponse) => {
           this.associationsOutputsDtos = response.content;
           this.dataLength = response.totalElements;
-          this.pageIndex = response.pageable.pageNumber;
+          this.pageIndex = response.totalElements % response.pageable.pageSize == 0 ?
+            (response.totalElements / response.pageable.pageSize) - 1 :
+            (response.totalElements / response.pageable.pageSize);
           this.pageSize = response.pageable.pageSize;
         },
         error: err => {
@@ -77,7 +89,8 @@ export class AssociationsByFederationListComponent implements AfterViewInit, OnI
   onSortChange(sortField: string) {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.sortField = sortField;
-    this.listAssociationsByFederation(null);
+    this.getPagedAssociationsDtos(this.federationId, this.searchedContent, this.selectedStatus,
+      this.pageIndex, this.pageSize, this.sortField, this.sortDirection);
   }
 
   getPages(): number[] {

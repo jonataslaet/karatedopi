@@ -15,13 +15,14 @@ export class FederationService {
 
   getPagedFederationsDtos(
     theContent: string,
+    theStatus: string,
     thePage: number,
     thePageSize: number,
     theField: string,
     theDirection: string
   ): Observable<FederationsResponse> {
       if (theContent != null) {
-          const endpoint = `/federations?search=${theContent}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
+          const endpoint = `/federations?search=${theContent}&status=${theStatus}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
           return this.requestService.request('GET', endpoint);
       }
       const endpoint = `/federations?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;

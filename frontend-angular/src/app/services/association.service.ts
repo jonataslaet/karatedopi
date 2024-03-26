@@ -19,13 +19,14 @@ export class AssociationService {
     getPagedAssociationsDtos(
     federationId: number,
     theContent: string,
+    theStatus: string,
     thePage: number,
     thePageSize: number,
     theField: string,
     theDirection: string
     ): Observable<AssociationsResponse> {
         if (theContent != null) {
-            const endpoint = `/federations/${federationId}/associations?search=${theContent}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
+            const endpoint = `/federations/${federationId}/associations?search=${theContent}&status=${theStatus}&page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
             return this.requestService.request('GET', endpoint);
         }
         const endpoint = `/federations/${federationId}/associations?page=${thePage}&size=${thePageSize}&sort=${theField},${theDirection}`;
