@@ -2,7 +2,14 @@
     <div class="create-registration-container">
         <form [formGroup]="registrationFormGroup" (ngSubmit)="updateRegistrationForm()">
             <div class="between-formgroupsnames"></div>
-
+            <div class="row g-3 form-group-outline">
+                <h3>Foto 3x4</h3>
+                <div class="col-md-2">
+                    <input class="form-control" type="file" id="formFile" (change)="onPhotoSelected($event)" accept="image/*">
+                    <img *ngIf="registrationFormInputDto.profile.nidPhotoUrl" [src]="registrationFormInputDto.profile.nidPhotoUrl" alt="Foto 3x4" class="img-thumbnail">
+                </div>
+            </div>
+            <div class="between-formgroupsnames"></div>
             <div formGroupName="user" class="row g-3 form-group-outline">
                 <h3>Dados de autenticação</h3>
                 <div class="col-md-3">
@@ -71,7 +78,6 @@
                         pattern="([0-9]{2}) [0-9]{5}-[0-9]{4}" formControlName="thirdPhone"
                         (blur)="updatePhoneNumber(editThirdPhone, 2)">
                 </div>
-
                 <div class="col-md-10">
                     <label for="father" class="form-label">Nome do pai</label>
                     <input type="text" class="form-control" id="father" [value]="registrationFormInputDto.profile.father" formControlName="father">
