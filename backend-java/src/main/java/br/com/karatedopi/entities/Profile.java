@@ -14,7 +14,6 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
@@ -45,7 +44,7 @@ public class Profile {
     @ManyToOne
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Association association;
 
     private String bloodType;
@@ -56,7 +55,7 @@ public class Profile {
     @ElementCollection(fetch=FetchType.EAGER)
     private Set<String> phoneNumbers;
 
-    @OneToMany(mappedBy = "id.profile", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "id.profile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<ProfileGraduation> profileGraduations = new HashSet<>();
 
@@ -64,7 +63,7 @@ public class Profile {
     @MapsId
     private User user;
 
-    @OneToMany(mappedBy = "id.profile", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "id.profile", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<TournamentParticipation> tournaments = new HashSet<>();
 
