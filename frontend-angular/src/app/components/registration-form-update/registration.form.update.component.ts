@@ -20,6 +20,7 @@ import { KaratedopiValidators } from 'src/app/validators/karatedopi-validators';
   styleUrls: ['./registration.form.update.component.css']
 })
 export class RegistrationFormUpdateComponent implements OnInit {
+  selectedPhoto: File | null = null;
   registrationFormGroup: FormGroup;
   gotDefaultState: boolean = false;
   gotDefaultAssociationAbbreviation: boolean = false;
@@ -46,6 +47,7 @@ export class RegistrationFormUpdateComponent implements OnInit {
       birthday: null,
       itin: '',
       nid: '',
+      nidPhotoUrl: '',
       associationAbbreviation: null,
       phoneNumbers: []
     },
@@ -202,6 +204,23 @@ export class RegistrationFormUpdateComponent implements OnInit {
 
   updateRegistrationForm() {
     this.fillRegistrationForm();
+
+    this.registrationService.uploadImage(this.selectedPhoto)
+    .subscribe({
+      next: (response) => {
+        if (response !== null && response.headers !== null && response.headers.has('Location')) {
+          this.registrationFormInputDto.profile.nidPhotoUrl = response.headers.get('Location');
+          this.toastrService.success('Upload da foto realizado com sucesso.', 'Sucesso');
+        } else {
+          this.toastrService.error('URI não encontrada no cabeçalho da resposta.', 'Erro');
+        }
+      },
+      error: err => {
+        console.error('Erro ao enviar imagem:', err.error.error);
+        this.toastrService.error(err.error.message, err.error.error);
+      }
+    });
+
     if (this.userId !== jwtDecode(this.authenticationService.authenticatedToken)['id']) {
       this.registrationService.updateRegistrationFormByUserId(this.userId, this.registrationFormInputDto)
       .subscribe({
@@ -224,6 +243,11 @@ export class RegistrationFormUpdateComponent implements OnInit {
       });
     }
     
+  }
+
+  onPhotoSelected(event: any): void {
+    this.selectedPhoto = event.target.files[0] as File;
+    console.log(`this.selectedPhoto = ${this.selectedPhoto}`);
   }
 
   fillRegistrationForm() {
@@ -378,6 +402,7 @@ export class RegistrationFormUpdateComponent implements OnInit {
     this.registrationFormInputDto.profile.itin = response.profile.itin;
     this.registrationFormInputDto.profile.mother = response.profile.mother;
     this.registrationFormInputDto.profile.nid = response.profile.nid;
+    this.registrationFormInputDto.profile.nidPhotoUrl = response.profile.nidPhotoUrl;
     this.registrationFormInputDto.profile.phoneNumbers = response.profile.phoneNumbers;
   }
 

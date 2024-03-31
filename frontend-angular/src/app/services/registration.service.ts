@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RegistrationFormInputDto } from '../common/registration.form.input.dto';
@@ -13,6 +14,17 @@ export class RegistrationService {
 
   createRegistration(payload: RegistrationFormInputDto) {
     return this.requestService.request('POST', '/registrationforms', payload);
+  }
+
+  uploadImage(file: File): Observable<{ headers: HttpHeaders }>  {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    let options = {
+      headers: new HttpHeaders({
+      })
+    };
+    options.headers.append('Content-Type', 'multipart/form-data');
+    return this.requestService.request('POST', '/registrationforms/picture', formData, options);
   }
 
   deleteRegistrationByUserId(id: number) {
