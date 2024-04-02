@@ -3,11 +3,14 @@ package br.com.karatedopi.controllers;
 import br.com.karatedopi.controllers.dtos.RegistrationFormInputDTO;
 import br.com.karatedopi.controllers.dtos.RegistrationFormOutputDTO;
 import br.com.karatedopi.services.RegistrationFormService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -41,11 +46,20 @@ public class RegistrationFormController {
     }
 
     @PostMapping("/picture")
-    public ResponseEntity<Void> uploadProfilePicture(
+    public ResponseEntity<HttpHeaders> uploadProfilePicture(
             @RequestParam(name = "file") MultipartFile file
     ) {
         URI uri = registrationFormService.uploadProfilePicture(file);
-        return ResponseEntity.created(uri).build();
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.currentRequestAttributes()).getRequest();
+        HttpHeaders requestHeaders = new HttpHeaders();
+        request.getHeaderNames().asIterator().forEachRemaining(headerName -> {
+            requestHeaders.add(headerName, request.getHeader(headerName));
+        });
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setLocation(uri);
+        requestHeaders.forEach(responseHeaders::addAll);
+        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
     }
 
 

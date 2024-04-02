@@ -25,7 +25,7 @@ public class StateController {
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
 	public ResponseEntity<Page<StateDTO>> getStates(@PageableDefault(sort="name", direction = Sort.Direction.DESC) Pageable pagination){
-		Page<StateDTO> states = stateService.getStates(pagination);
+		Page<StateDTO> states = stateService.getPagedStates(pagination);
 		return ResponseEntity.ok().body(states);
 	}
 

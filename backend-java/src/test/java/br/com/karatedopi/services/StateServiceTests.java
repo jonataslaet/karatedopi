@@ -77,7 +77,7 @@ public class StateServiceTests {
         Pageable pageable = mock(Pageable.class);
         Page<State> page = new PageImpl<>(states, pageable, states.size());
         when(stateRepository.findAll(pageable)).thenReturn(page);
-        Page<StateDTO> resultPage = stateService.getStates(pageable);
+        Page<StateDTO> resultPage = stateService.getPagedStates(pageable);
         assertNotNull(resultPage);
         assertEquals(states.size(), resultPage.getContent().size());
         List<StateDTO> expectedDTOs = states.stream()
