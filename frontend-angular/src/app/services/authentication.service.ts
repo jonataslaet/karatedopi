@@ -59,11 +59,11 @@ export class AuthenticationService {
     return this.requestService.getAuthToken();
   }
 
-  startFromLogin(): void {
+  logoutAndStartFromLanding(): void {
     this.requestService.setAuthToken(null);
     this.currentUserSignal.set(null);
     this.currentMenusByRole.set(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/landing']);
   }
 
   setAuthToken(token: string) {
@@ -119,7 +119,7 @@ export class AuthenticationService {
       };
       return authenticationResponse;
     }
-    this.startFromLogin();
+    this.logoutAndStartFromLanding();
     return null;
   }
 

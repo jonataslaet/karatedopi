@@ -16,10 +16,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.authenticationService.setCurrentUser();
+    this.authenticationService.setCurrentMenusByRole();
   }
 
   logout(): void {
-    this.authenticationService.startFromLogin();
+    this.authenticationService.logoutAndStartFromLanding();
   }
 
   currentMenusByRole() {

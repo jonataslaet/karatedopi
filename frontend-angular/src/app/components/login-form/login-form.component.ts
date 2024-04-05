@@ -40,7 +40,7 @@ export class LoginFormComponent {
       },
       error: () => {
         this.toastrService.error('Login ou senha incorretos.', 'Erro na autenticação');
-        this.authenticationService.startFromLogin();
+        this.authenticationService.logoutAndStartFromLanding();
       },
     });
   }

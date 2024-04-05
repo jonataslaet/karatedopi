@@ -47,11 +47,11 @@ export class RecoveryTokenComponent {
   }
 
   cancel(): void{
-    this.authenticationService.startFromLogin();
+    this.authenticationService.logoutAndStartFromLanding();
   }
 
   requestAndStartFromLogin(): void {
     this.toastrService.success(this.responseMessage, 'Solicitação de recuperação');
-    this.authenticationService.startFromLogin();
+    this.authenticationService.logoutAndStartFromLanding();
   }
 }

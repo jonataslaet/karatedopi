@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
           accessToken: '',
           authorities: []
         }
-        this.authenticationService.startFromLogin();
+        this.authenticationService.logoutAndStartFromLanding();
         this.toastrService.error(err.error.message, err.error.error);
       },
     });

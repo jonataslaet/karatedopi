@@ -56,6 +56,12 @@ body {
     /* Space out the Bootstrap <hr> more */
 }
 
+/* Thin out the marketing headings */
+/* rtl:begin:remove */
+.featurette-heading {
+    letter-spacing: -.05rem;
+}
+
 /* rtl:end:remove */
 
 /* RESPONSIVE CSS
@@ -72,5 +78,11 @@ body {
 
     .featurette-heading {
         font-size: 50px;
+    }
+}
+
+@media (min-width: 62em) {
+    .featurette-heading {
+        margin-top: 7rem;
     }
 }
