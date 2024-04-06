@@ -39,6 +39,7 @@ export class RegistrationFormCreateComponent implements OnInit {
       birthday: null,
       itin: '',
       nid: '',
+      nidPhotoUrl: '',
       associationAbbreviation: null,
       phoneNumbers: []
     },
