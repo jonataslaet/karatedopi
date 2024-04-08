@@ -17,7 +17,7 @@ export const AuthenticationGuard: CanActivateFn = (
 
   if (jwtHelper.isTokenExpired(authenticationService.getAuthToken())) {
     toastrService.error('Sua sessão expirou. Por favor, faça login novamente.', 'Erro');
-    authenticationService.startFromLogin();
+    authenticationService.logoutAndStartFromLanding();
   }
 
   let isAllowedByRole: boolean = false;
@@ -51,7 +51,8 @@ export const AuthenticationGuard: CanActivateFn = (
     return false;
   }
 
-  return authenticationService.isLoggedIn
-    ? true
-    : inject(Router).navigate(['/login']);
+  if (!authenticationService.isLoggedIn) {
+    authenticationService.logoutAndStartFromLanding();
+  }
+  return authenticationService.isLoggedIn;
 };

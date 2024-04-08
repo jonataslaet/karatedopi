@@ -41,6 +41,7 @@ import { TournamentsListComponent } from './components/tournaments-list/tourname
 import { UserListComponent } from './components/user-list/user.list.component';
 import { appConfiguration } from './configurations/app.configuration';
 import { SearchInputComponent } from './components/search-input/search-input.component';
+import { LandingComponent } from './components/landing/landing.component';
 export function tokenGetter() {
   return sessionStorage.getItem("auth_token");
 }
@@ -77,7 +78,8 @@ export function tokenGetter() {
     AddressCreateComponent,
     RegistrationFormCreateComponent,
     TournamentCreateComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,

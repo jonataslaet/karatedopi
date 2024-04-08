@@ -50,17 +50,17 @@ export class RenewPasswordComponent implements OnInit{
     };
     this.authenticationService.renewPassword(this.token, passwordReset).subscribe({
       next: () => {
-        this.authenticationService.startFromLogin();
+        this.authenticationService.logoutAndStartFromLanding();
       },
       error: err => {
         this.toastrService.error(err.error.message, err.error.error);
-        this.authenticationService.startFromLogin();
+        this.authenticationService.logoutAndStartFromLanding();
       }
     });
   }
 
   cancel(): void{
-    this.authenticationService.startFromLogin();
+    this.authenticationService.logoutAndStartFromLanding();
   }
 
 }

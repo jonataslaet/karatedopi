@@ -6,6 +6,7 @@ import { FederationCreateComponent } from '../components/federation-create/feder
 import { FederationUpdateComponent } from '../components/federation-update/federation-update.component';
 import { FederationsListComponent } from '../components/federations-list/federations-list.component';
 import { HomeComponent } from '../components/home/home.component';
+import { LandingComponent } from '../components/landing/landing.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
 import { RecoveryTokenComponent } from '../components/recovery-token/recovery-token.component';
 import { RegistrationFormCreateComponent } from '../components/registration-form-create/registration-form-create.component';
@@ -20,6 +21,10 @@ import { AuthenticationGuard } from '../services/authentication.guard';
 import { LoginGuard } from '../services/login.guard';
 
 export const routes: Routes = [
+    {
+        path: 'landing',
+        component: LandingComponent
+    },
     {
         path: 'home',
         component: HomeComponent,
@@ -104,12 +109,12 @@ export const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/landing',
         pathMatch: 'full',
     },
     {
         path: '**',
-        redirectTo: '/login',
+        redirectTo: '/landing',
         pathMatch: 'full',
     },
 ];
