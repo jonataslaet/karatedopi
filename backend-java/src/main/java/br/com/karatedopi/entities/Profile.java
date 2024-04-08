@@ -44,7 +44,7 @@ public class Profile {
     @ManyToOne
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Association association;
 
     private String bloodType;
